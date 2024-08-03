@@ -1,0 +1,91 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\kulas\\source\\repos\\AMS\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{96F32C86-FBBF-4B8D-B937-4B0B147D08AA}|AMS\\AMS.csproj|c:\\users\\kulas\\source\\repos\\ams\\ams\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{96F32C86-FBBF-4B8D-B937-4B0B147D08AA}|AMS\\AMS.csproj|solutionrelative:ams\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{96F32C86-FBBF-4B8D-B937-4B0B147D08AA}|AMS\\AMS.csproj|c:\\users\\kulas\\source\\repos\\ams\\ams\\ams.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{96F32C86-FBBF-4B8D-B937-4B0B147D08AA}|AMS\\AMS.csproj|solutionrelative:ams\\ams.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{96F32C86-FBBF-4B8D-B937-4B0B147D08AA}|AMS\\AMS.csproj|c:\\users\\kulas\\source\\repos\\ams\\ams\\ams.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{96F32C86-FBBF-4B8D-B937-4B0B147D08AA}|AMS\\AMS.csproj|solutionrelative:ams\\ams.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{96F32C86-FBBF-4B8D-B937-4B0B147D08AA}|AMS\\AMS.csproj|c:\\users\\kulas\\source\\repos\\ams\\ams\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{96F32C86-FBBF-4B8D-B937-4B0B147D08AA}|AMS\\AMS.csproj|solutionrelative:ams\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AMS.http",
+              "DocumentMoniker": "C:\\Users\\kulas\\source\\repos\\AMS\\AMS\\AMS.http",
+              "RelativeDocumentMoniker": "AMS\\AMS.http",
+              "ToolTip": "C:\\Users\\kulas\\source\\repos\\AMS\\AMS\\AMS.http*",
+              "RelativeToolTip": "AMS\\AMS.http*",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAATAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
+              "WhenOpened": "2024-08-03T15:09:41.349Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\kulas\\source\\repos\\AMS\\AMS\\appsettings.json",
+              "RelativeDocumentMoniker": "AMS\\appsettings.json",
+              "ToolTip": "C:\\Users\\kulas\\source\\repos\\AMS\\AMS\\appsettings.json",
+              "RelativeToolTip": "AMS\\appsettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-08-03T15:07:29.945Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\kulas\\source\\repos\\AMS\\AMS\\Program.cs",
+              "RelativeDocumentMoniker": "AMS\\Program.cs",
+              "ToolTip": "C:\\Users\\kulas\\source\\repos\\AMS\\AMS\\Program.cs*",
+              "RelativeToolTip": "AMS\\Program.cs*",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAAcAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-03T15:06:10.74Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AMS",
+              "DocumentMoniker": "C:\\Users\\kulas\\source\\repos\\AMS\\AMS\\AMS.csproj",
+              "RelativeDocumentMoniker": "AMS\\AMS.csproj",
+              "ToolTip": "C:\\Users\\kulas\\source\\repos\\AMS\\AMS\\AMS.csproj",
+              "RelativeToolTip": "AMS\\AMS.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-08-03T15:07:23.867Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
