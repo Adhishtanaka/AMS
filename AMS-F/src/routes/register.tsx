@@ -29,7 +29,7 @@ const Register: React.FC = () => {
 
     const mutation = useMutation({
       mutationFn: (newUser: { name: string; email: string; password: string; dateOfBirth: string }) => {
-        return axios.post(`${process.env.REACT_APP_API_URL}/register`, newUser);
+        return axios.post('http://localhost:5195/api/register', newUser);
     }});
 
     const handleRegister = (e: React.FormEvent) => {

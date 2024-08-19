@@ -18,7 +18,7 @@ const Login: React.FC = () => {
 
     const mutation = useMutation({
         mutationFn: async (User: { email: string; password: string }) => {
-          const response = await axios.post(`${process.env.REACT_APP_API_URL}/login`, User);
+          const response = await axios.post('http://localhost:5195/api//login', User);
           return response.data;
     },
     onSuccess: (data) => {

@@ -12,9 +12,7 @@ import './index.css'
 import Login from './routes/login';
 import Register from './routes/register';
 import Error from './routes/error';
-import dotenv from 'dotenv';
 
-dotenv.config();
 
 const queryClient = new QueryClient()
 
