@@ -19,8 +19,13 @@ const Register: React.FC = () => {
   const schema = joi.object({
     password: joi.string().min(8).messages({'string.min': 'Password must be at least 8 characters long'}),
     confirmPassword: joi.any().equal(joi.ref('password')).required().messages({'any.only': 'Passwords do not match'}),
-    dateOfBirth: joi.date().max('now').messages({'date.max': 'Date of Birth cannot be in the future'}),
-    })
+    dateOfBirth: joi.date()
+    .max('now')
+    .min(new Date(new Date().setFullYear(new Date().getFullYear() - 18)))
+    .messages({
+      'date.max': 'Date of Birth cannot be in the future',
+      'date.min': 'You must be at least 18 years old to register',
+    })})
 
     const mutation = useMutation({
       mutationFn: (newUser: { name: string; email: string; password: string; dateOfBirth: string }) => {
