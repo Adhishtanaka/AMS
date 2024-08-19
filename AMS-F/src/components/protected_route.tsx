@@ -4,7 +4,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 
 const isTokenValid = async (): Promise<boolean> => {
     try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/validate-token`, {
+        const response = await axios.get('http://localhost:5195/api/validate-token', {
             headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
         });
         return response.status === 200;
