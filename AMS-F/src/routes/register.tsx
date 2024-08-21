@@ -50,7 +50,7 @@ const Register: React.FC = () => {
       }}
 
     return (
-      <div >
+      <div>
         <div >
           <form onSubmit={handleRegister} >
             <div>
