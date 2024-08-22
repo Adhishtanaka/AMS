@@ -49,84 +49,91 @@ const Register: React.FC = () => {
         alert(errorMessages);
       }}
 
-    return (
-      <div >
-        <div >
-          <form onSubmit={handleRegister} >
-            <div>
-              <label htmlFor="name" >
-                Name
-              </label>
-              <input
-                id="name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                placeholder="Name"
-               
-              />
-            </div>
-            <div>
-              <label htmlFor="email" >
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                placeholder="Email"
-              />
-            </div>
-            <div>
-              <label htmlFor="password" >
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                placeholder="Password"
-              />
-            </div>
-            <div>
-              <label htmlFor="confirmPassword" >
-                Confirm Password
-              </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                placeholder="Confirm Password"
-              />
-            </div>
-            <div>
-              <label htmlFor="dateOfBirth" >
-                Date of Birth
-              </label>
-              <input
-                id="dateOfBirth"
-                type="date"
-                value={dateOfBirth}
-                onChange={(e) => setDateOfBirth(e.target.value)}
-                required
-              />
-            </div>
-            <button
-              type="submit"
-            >
-              Register
-            </button>
-          </form>
-        </div>
+      return(
+        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+  <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+  <h2 className="text-2xl font-bold mb-6 text-center">Create Account</h2>
+    <form onSubmit={handleRegister}>
+      <div className="mb-4">
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+          Name
+        </label>
+        <input
+          id="name"
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          placeholder="Name"
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#10a37f] focus:border-[#10a37f] sm:text-sm"
+        />
       </div>
-    );
+      <div className="mb-4">
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+          Email
+        </label>
+        <input
+          id="email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          placeholder="Email"
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#10a37f] focus:border-[#10a37f] sm:text-sm"
+        />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+          Password
+        </label>
+        <input
+          id="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          placeholder="Password"
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#10a37f] focus:border-[#10a37f] sm:text-sm"
+        />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+          Confirm Password
+        </label>
+        <input
+          id="confirmPassword"
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+          placeholder="Confirm Password"
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#10a37f] focus:border-[#10a37f] sm:text-sm"
+        />
+      </div>
+      <div className="mb-6">
+        <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">
+          Date of Birth
+        </label>
+        <input
+          id="dateOfBirth"
+          type="date"
+          value={dateOfBirth}
+          onChange={(e) => setDateOfBirth(e.target.value)}
+          required
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#10a37f] focus:border-[#10a37f] sm:text-sm"
+        />
+      </div>
+      <button
+        type="submit"
+        className="w-full bg-[#10a37f] text-white py-2 px-4 rounded-md hover:bg-[#2d8f76] focus:outline-none focus:ring-2 focus:ring-[#10a37f] focus:ring-offset-2"
+      >
+        Register
+      </button>
+    </form>
+  </div>
+</div>
+
+    )
   };
   
   export default Register;
