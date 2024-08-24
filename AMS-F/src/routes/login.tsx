@@ -18,7 +18,7 @@ const Login: React.FC = () => {
 
     const mutation = useMutation({
         mutationFn: async (User: { email: string; password: string }) => {
-          const response = await axios.post('http://localhost:5195/api//login', User);
+          const response = await axios.post('http://localhost:5195/api/login', User);
           return response.data;
     },
     onSuccess: (data) => {
@@ -48,44 +48,48 @@ const Login: React.FC = () => {
         alert(errorMessages);
        }}
 
-         return (
-          <div >
-            <div >
-              <form onSubmit={handleLogin}>
-                <div>
-                  <label htmlFor="email" >
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    placeholder="Email"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="password" >
-                    Password
-                  </label>
-                  <input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    placeholder="Password"
-                  />
-                </div>
-                <button
-                  type="submit"
-                >
-                  Login
-                </button>
-              </form>
-            </div>
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="py-12 px-12 bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className=" text-3xl font-semibold mb-6 text-center">Login</h2>
+        <form onSubmit={handleLogin}>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-600">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              placeholder="Enter Your Email Addresss."
+              className="py-3 px-3 text-xs font-normal text-gray-100 mt-1 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#10a37e81]"
+            />
           </div>
+          <div className="mb-6">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-600">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="Type Your Password."
+              className="py-3 px-3 text-xs font-normal text-gray-100 mt-1 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#10a37e81]"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-[#10a37f] text-white py-2 px-4 rounded-lg hover:bg-[#2d8f76] transition duration-200"
+          >
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
         );
       };
       
