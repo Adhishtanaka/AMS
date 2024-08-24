@@ -7,18 +7,18 @@ namespace AWS_B.model
 {
     public class UserLoginRequest
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public required string Email { get; set; }
+        public required string Password { get; set; }
     }
 
     public class UserRegisterRequest
     {
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string Telephone { get; set; }
-        public string Address { get; set; }
-        public string Role { get; set; }
+        public required string Name { get; set; }
+        public required string Email { get; set; }
+        public required string Password { get; set; }
+        public required string Telephone { get; set; }
+        public required string Address { get; set; }
+        public required string Role { get; set; }
     }
 
     public abstract class User

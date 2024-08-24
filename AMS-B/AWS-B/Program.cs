@@ -7,7 +7,13 @@ namespace AWS_B
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddSingleton<Dbcon>();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactApp",  builder => builder.WithOrigins("http://localhost:5173").AllowAnyMethod().AllowAnyHeader());
+            });
+            
             var app = builder.Build();
+            app.UseCors("AllowReactApp");
 
             app.MapPost("/api/login", async (HttpContext httpContext, Dbcon dbcon) =>
             {
@@ -70,22 +76,22 @@ namespace AWS_B
                 {
                     return Results.BadRequest(new { Message = "Registration failed." });
                 }
-                });
+            });
 
 
 
-                app.MapGet("/api/validate-token", (HttpContext context) =>
-                {
+            app.MapGet("/api/validate-token", (HttpContext context) =>
+            {
 
-                    var token = context.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                var token = context.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
 
-                    var isValid = User.ValidateToken(token);
+                var isValid = User.ValidateToken(token);
 
-                    return Results.Ok(isValid);
+                return Results.Ok(isValid);
 
-                });
-                app.Run();
+            });
+            app.Run();
 
 
         }
