@@ -1,5 +1,5 @@
-using System.Data;
 using MySql.Data.MySqlClient;
+using System.Data.Common;
 
 namespace AWS_B.model { 
 public class Dbcon
@@ -8,34 +8,36 @@ public class Dbcon
 
         public Dbcon()
         {
+
             conn = null;
+
         }
 
-        public void Connect()
+        public async Task Connect()//connect database connection
         {
-            string connectionString = "Server=localhost;Database=AWS;Uid=root;Pwd=root;";
+            string connectionString = "Server=localhost;Port=3306;Database=ecomdb;Uid=root;Pwd=root;";
             conn = new MySqlConnection(connectionString);
-            conn.Open();
+            await conn.OpenAsync();
+
         }
 
-        public void Disconnect()
+        public void Disconnect()//disconnect database connection
         {
+
             conn?.Close();
         }
 
-        public MySqlDataReader ExecuteQuery(string query)
+        public async Task<MySqlDataReader> ExecuteQuery(string query)
         {
             MySqlCommand cmd = new(query, conn);
-            MySqlDataReader reader = cmd.ExecuteReader();
-            return reader;
+            DbDataReader reader = await cmd.ExecuteReaderAsync();
+            return (MySqlDataReader)reader;
         }
 
-        public DataTable DisplayQuery(string query){
-            MySqlCommand cmd = new(query, conn);
-            MySqlDataAdapter adapter = new(cmd);
-            DataTable dataTable = new();
-            adapter.Fill(dataTable);
-            return dataTable;
+         public async Task<int> ExecuteNonQuery(string query)
+        {
+            using var command = new MySqlCommand(query, conn);
+            return await command.ExecuteNonQueryAsync();
         }
 
 }}

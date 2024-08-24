@@ -1,1 +1,34 @@
-GET http://localhost:5195/
+### Login Request Correct
+POST http://localhost:5195/api/login
+Content-Type: application/json
+
+{
+  "Email": "john.doe@example.com",
+  "Password": "SecureP@ssw0rd"
+}
+
+### Login Request Wrong
+POST http://localhost:5195/api/login
+Content-Type: application/json
+
+{
+  "Email": "user@example.com",
+  "Password": "yourpassword"
+}
+
+### Register a new user
+POST http://localhost:5195/api/register
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "password": "SecureP@ssw0rd",
+  "telephone": "123-456-7890",
+  "address": "1234 Elm Street, Springfield, IL",
+  "role":"Buyer"
+}
+### Validate JWT Token
+GET http://localhost:5195/api/validate-token
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjhjMzQyMTQ5LWVmN2YtNDY1Zi05OWFmLWQ5MjAwMWMzMmU0NCIsImV4cCI6MTcyNDUyODMwNiwiaXNzIjoieW91cmRvbWFpbi5jb20iLCJhdWQiOiJ5b3VyZG9tYWluLmNvbSJ9.gRtfudc4p5yE455OgzcEwSh1a5en6CB5NlVEpejMDNo
+
