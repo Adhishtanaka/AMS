@@ -11,14 +11,15 @@ const Register: React.FC = () => {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const [dateOfBirth, setDateOfBirth] = useState<string>('');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [address, setAddress] = useState<string>('');
+  const [role, setRole] = useState<string>('');
 
   const navigate = useNavigate();
   
   const schema = joi.object({
     password: joi.string().min(8).messages({'string.min': 'Password must be at least 8 characters long'}),
-    confirmPassword: joi.any().equal(joi.ref('password')).required().messages({'any.only': 'Passwords do not match'}),
+    // confirmPassword: joi.any().equal(joi.ref('password')).required().messages({'any.only': 'Passwords do not match'}),
     dateOfBirth: joi.date()
     .max('now')
     .min(new Date(new Date().setFullYear(new Date().getFullYear() - 18)))
@@ -28,21 +29,22 @@ const Register: React.FC = () => {
     })})
 
     const mutation = useMutation({
-      mutationFn: (newUser: { name: string; email: string; password: string; dateOfBirth: string }) => {
+      mutationFn: (newUser: { name: string; email: string; password: string; address: string; role:string }) => {
         return axios.post('http://localhost:5195/api/register', newUser);
     }});
 
     const handleRegister = (e: React.FormEvent) => {
       e.preventDefault();
-      const { error } = schema.validate({ password, confirmPassword, dateOfBirth});
+      const { error } = schema.validate({ password, phoneNumber,});
       if(!error){
           const hashedPassword = cryptoJS.SHA256(password).toString();
-          mutation.mutate({ name, email, password: hashedPassword, dateOfBirth });
+          mutation.mutate({ name, email, password: hashedPassword,address,role});
           setName('');
           setEmail('');
           setPassword('');
-          setConfirmPassword('');
-          setDateOfBirth('');
+          setPhoneNumber('');
+          setAddress('');
+          setRole('');
           navigate('/login');
       }else{
         const errorMessages = error.details.map(detail => detail.message).join('\n');
@@ -97,31 +99,44 @@ const Register: React.FC = () => {
         />
       </div>
       <div className="mb-4">
-        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-          Confirm Password
+        <label htmlFor="phonNumber" className="block text-sm font-medium text-gray-700">
+          Phone Number
         </label>
         <input
-          id="confirmPassword"
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          id="phonNumber"
+          type="text"
+          value={phoneNumber} 
+          onChange={(e) => setPhoneNumber(e.target.value)}
           required
-          placeholder="Confirm Password"
+          placeholder="Phone Number"
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#10a37f] focus:border-[#10a37f] sm:text-sm"
         />
       </div>
-      <div className="mb-6">
-        <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">
-          Date of Birth
+      <div className="mb-4">
+        <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+          Address
         </label>
         <input
-          id="dateOfBirth"
-          type="date"
-          value={dateOfBirth}
-          onChange={(e) => setDateOfBirth(e.target.value)}
+          id="address"
+          type="text"
+          value={address} 
+          onChange={(e) => setAddress(e.target.value)}
           required
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#10a37f] focus:border-[#10a37f] sm:text-sm"
+          placeholder="Address"
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#10a37f] focus:border-[#10a37f] sm:text-sm"
         />
+      </div>
+      <div className="mb-4">
+      <label className="block text-sm font-medium text-gray-700">Role</label>
+          <select
+            name="role"
+            value={role}
+            onChange={(e) => setAddress(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#10a37f] focus:border-[#10a37f] sm:text-sm hover:appearance-none"
+          >
+            <option value="Buyer" className='hover:bg-[#10a37f]'>Buyer</option>
+            <option value="Seller">Seller</option>
+          </select>
       </div>
       <button
         type="submit"

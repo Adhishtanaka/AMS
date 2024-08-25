@@ -64,7 +64,7 @@ const Login: React.FC = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="Enter Your Email Addresss."
-              className="py-3 px-3 text-xs font-normal text-gray-100 mt-1 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#10a37e81]"
+              className="py-3 px-3 text-xs font-normal text-gray-700 mt-1 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#10a37e81]"
             />
           </div>
           <div className="mb-6">
@@ -78,15 +78,25 @@ const Login: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               placeholder="Type Your Password."
-              className="py-3 px-3 text-xs font-normal text-gray-100 mt-1 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#10a37e81]"
+              className="py-3 px-3 text-xs font-normal text-gray-700 mt-1 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#10a37e81]"
             />
+          </div>
+          <div className='mb-4'>
+          <a href='' className="block text-sm font-medium text-[#10a37f]">
+              Forgot Password?
+            </a>
           </div>
           <button
             type="submit"
-            className="w-full bg-[#10a37f] text-white py-2 px-4 rounded-lg hover:bg-[#2d8f76] transition duration-200"
+            className="w-full bg-[#10a37f] text-white py-2 px-4 rounded-lg hover:bg-[#2d8f76] transition duration-200 mb-4"
           >
             Login
           </button>
+          <div className=''>
+            <span className="block text-sm font-medium text-gray-600 text-center">
+                Don't have an account?  <a href='./register' className='text-[#10a37f]'> Sign up</a>
+            </span>
+          </div>
         </form>
       </div>
     </div>
