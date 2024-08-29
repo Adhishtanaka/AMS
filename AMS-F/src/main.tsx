@@ -15,6 +15,7 @@ import Error from './routes/error';
 import Nav from './components/navbar';
 
 
+
 const queryClient = new QueryClient()
 
 const router = createBrowserRouter([{
@@ -32,6 +33,8 @@ const router = createBrowserRouter([{
   path: "/navbar",
   element: <Nav/>,
 },])
+
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
  
  <React.StrictMode>
@@ -39,4 +42,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <RouterProvider router={router} />
     </QueryClientProvider>
   </React.StrictMode>,
+  
 )

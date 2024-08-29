@@ -3,7 +3,10 @@ import { useMutation } from '@tanstack/react-query';
 import joi from 'joi';
 import axios from 'axios';
 import cryptoJS from 'crypto-js';
+import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
+
+
 
 const Login: React.FC = () => {
 
@@ -49,9 +52,10 @@ const Login: React.FC = () => {
        }}
 
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="py-12 px-12 bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className=" text-3xl font-semibold mb-6 text-center">Login</h2>
+        <>
+        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-md p-8 px-12 py-12 bg-white rounded-lg shadow-lg">
+        <h2 className="mb-6 text-3xl font-semibold text-center ">Login</h2>
         <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-medium text-gray-600">
@@ -93,14 +97,19 @@ const Login: React.FC = () => {
             Login
           </button>
           <div className=''>
-            <span className="block text-sm font-medium text-gray-600 text-center">
+            <span className="block text-sm font-medium text-center text-gray-600">
                 Don't have an account?  <a href='./register' className='text-[#10a37f]'> Sign up</a>
             </span>
           </div>
         </form>
       </div>
     </div>
+    <Footer />
+    </>
         );
       };
       
       export default Login;
+      
+
+      
