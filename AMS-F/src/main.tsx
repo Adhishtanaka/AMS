@@ -12,6 +12,7 @@ import './index.css'
 import Login from './routes/login';
 import Register from './routes/register';
 import Error from './routes/error';
+import Nav from './components/navbar';
 
 
 const queryClient = new QueryClient()
@@ -26,6 +27,10 @@ const router = createBrowserRouter([{
 {
   path: "/Register",
   element: <Register/>,
+},
+{
+  path: "/navbar",
+  element: <Nav/>,
 },])
 ReactDOM.createRoot(document.getElementById('root')!).render(
  

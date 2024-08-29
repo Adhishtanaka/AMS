@@ -4,6 +4,7 @@ import joi from 'joi';
 import axios from 'axios';
 import cryptoJS from 'crypto-js';
 import { useNavigate } from 'react-router-dom';
+// import Nav from '../components/navbar';
 
 
 const Register: React.FC = () => {
@@ -57,6 +58,8 @@ const Register: React.FC = () => {
     }
   };
   return (
+    <div>
+      {/* <Nav/> */}
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white px-8 py-7 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4 text-center">Create Account</h2>
@@ -176,7 +179,7 @@ const Register: React.FC = () => {
         </div>
       </div>
     </div>
-
+    </div>
   )
 };
 
