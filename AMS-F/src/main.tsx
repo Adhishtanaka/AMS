@@ -14,6 +14,7 @@ import Register from './routes/register';
 import Error from './routes/error';
 
 
+
 const queryClient = new QueryClient()
 
 const router = createBrowserRouter([{
@@ -27,6 +28,8 @@ const router = createBrowserRouter([{
   path: "/Register",
   element: <Register/>,
 },])
+
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
  
  <React.StrictMode>
@@ -34,4 +37,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <RouterProvider router={router} />
     </QueryClientProvider>
   </React.StrictMode>,
+  
 )
