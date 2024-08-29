@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import joi from 'joi';
 import axios from 'axios';
 import cryptoJS from 'crypto-js';
+import Navbar from '../components/navbar';
 import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
 
@@ -53,7 +54,8 @@ const Login: React.FC = () => {
 
       return (
         <>
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <Navbar />
+        <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4 py-6">
       <div className="w-full max-w-md p-8 px-12 py-12 bg-white rounded-lg shadow-lg">
         <h2 className="mb-6 text-3xl font-semibold text-center ">Login</h2>
         <form onSubmit={handleLogin}>
