@@ -76,7 +76,7 @@ const Register: React.FC = () => {
               onChange={(e) => setName(e.target.value)}
               required
               placeholder="Name"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#10a37f] focus:border-[#10a37f] sm:text-sm"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#1D2945] focus:border-[#1D2945] sm:text-sm"
             />
           </div>
           <div className="mb-4">
@@ -90,7 +90,7 @@ const Register: React.FC = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="Email"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#10a37f] focus:border-[#10a37f] sm:text-sm"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#1D2945] focus:border-[#1D2945] sm:text-sm"
             />
           </div>
           <div className="mb-4">
@@ -104,7 +104,7 @@ const Register: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               placeholder="Password"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#10a37f] focus:border-[#10a37f] sm:text-sm"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#1D2945] focus:border-[#1D2945] sm:text-sm"
             />
           </div>
           <div className="mb-4">
@@ -118,7 +118,7 @@ const Register: React.FC = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
               placeholder="Confirm Password"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#10a37f] focus:border-[#10a37f] sm:text-sm"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#1D2945] focus:border-[#1D2945] sm:text-sm"
             />
           </div>
           <div className="mb-4">
@@ -132,7 +132,7 @@ const Register: React.FC = () => {
               onChange={(e) => setPhoneNumber(e.target.value)}
               required
               placeholder="Phone Number"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#10a37f] focus:border-[#10a37f] sm:text-sm"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#1D2945] focus:border-[#1D2945] sm:text-sm"
             />
           </div>
           <div className="mb-4">
@@ -146,7 +146,7 @@ const Register: React.FC = () => {
               required
               rows={3}
               placeholder="Address"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#10a37f] focus:border-[#10a37f] sm:text-sm"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#1D2945] focus:border-[#1D2945] sm:text-sm"
             />
           </div>
           <div className="mb-4">
@@ -156,16 +156,16 @@ const Register: React.FC = () => {
               value={role}
               required
               onChange={(e) => setRole(e.target.value)}
-              className="row-start-1 col-start-1 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#10a37f] focus:border-[#10a37f] sm:text-sm"
+              className="row-start-1 col-start-1 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#1D2945] focus:border-[#1D2945] sm:text-sm"
             >
               <option value="" disabled>Select a role</option>
-              <option value="Buyer" className="hover:bg-[#10a37f] hover:text-white">Buyer</option>
-              <option value="Seller" className="hover:bg-[#10a37f] hover:text-white">Seller</option>
+              <option value="Buyer" className="hover:bg-[#1D2945] hover:text-white">Buyer</option>
+              <option value="Seller" className="hover:bg-[#1D2945] hover:text-white">Seller</option>
             </select>
           </div>
           <button
             type="submit"
-            className="w-full bg-[#10a37f] text-white py-2 px-4 rounded-md hover:bg-[#2d8f76] focus:outline-none focus:ring-2 focus:ring-[#10a37f] focus:ring-offset-2"
+            className="w-full bg-[#1D2945] text-white py-2 px-4 rounded-md hover:bg-[#2b3a5c] focus:outline-none focus:ring-2 focus:ring-[#1D2945] focus:ring-offset-2"
           >
             Register
           </button>
@@ -173,7 +173,7 @@ const Register: React.FC = () => {
         <div className="mt-2 text-center">
           <p className="text-sm text-gray-600">
             Already have an account?{' '}
-            <a href="/login" className="font-medium text-[#10a37f] hover:text-[#2d8f76]">
+            <a href="/login" className="font-medium text-[#13244d] hover:text-[#516187]">
               Log in
             </a>
           </p>

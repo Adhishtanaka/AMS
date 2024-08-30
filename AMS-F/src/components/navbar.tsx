@@ -16,12 +16,12 @@ const Navbar = () => {
 
   return (
     <div className='flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 text-black'>
-      <h1 className='w-full text-3xl font-bold text-[#10a37f]'>AMS .</h1>
+      <h1 className='w-full text-3xl font-bold text-[#1D2945]'>AMS .</h1>
       <ul className='hidden md:flex cursor-pointer'>
         {
             Links.map((link)=>(
                 <li key={link.name} className='md:ml-[60px]'>
-                    <a href={link.link} className='p-4 hover:text-[#10a37f]'>{link.name}</a>
+                    <a href={link.link} className='p-4 hover:text-[#1D2945]'>{link.name}</a>
                 </li>
             ))
         }
@@ -30,10 +30,10 @@ const Navbar = () => {
           {nav ? <AiOutlineClose size={20}/> : <AiOutlineMenu size={20} />}
       </div>
       <ul className={nav ? 'fixed left-0 top-0 w-[60%] h-full border-r border-r-gray-200 bg-white ease-in-out duration-500' : 'ease-in-out duration-500 fixed left-[-100%]'}>
-        <h1 className='w-full text-3xl font-bold text-[#10a37f] m-4'>REACT.</h1>
-          <li className='p-4 border-b border-gray-200 hover:text-[#10a37f]'><a>Dashboard</a></li>
-          <li className='p-4 border-b border-gray-200 hover:text-[#10a37f]'><a>Auctions</a></li>
-          <li className='p-4 hover:text-[#10a37f]'><a>Contact</a></li>
+        <h1 className='w-full text-3xl font-bold text-[#1D2945] m-4'>AMS .</h1>
+          <li className='p-4 border-b border-gray-200 hover:text-[#1D2945]'><a>Dashboard</a></li>
+          <li className='p-4 border-b border-gray-200 hover:text-[#1D2945]'><a>Auctions</a></li>
+          <li className='p-4 hover:text-[#1D2945]'><a>Contact</a></li>
       </ul>
     </div>
   );

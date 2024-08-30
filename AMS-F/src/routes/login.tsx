@@ -70,7 +70,7 @@ const Login: React.FC = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="Enter Your Email Addresss."
-              className="py-3 px-3 text-xs font-normal text-gray-700 mt-1 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#10a37e81]"
+              className="py-3 px-3 text-xs font-normal text-gray-700 mt-1 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#1D2945]"
             />
           </div>
           <div className="mb-6">
@@ -84,23 +84,23 @@ const Login: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               placeholder="Type Your Password."
-              className="py-3 px-3 text-xs font-normal text-gray-700 mt-1 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#10a37e81]"
+              className="py-3 px-3 text-xs font-normal text-gray-700 mt-1 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#1D2945]"
             />
           </div>
           <div className='mb-4'>
-          <a href='' className="block text-sm font-medium text-[#10a37f]">
+          <a href='' className="block text-sm font-medium text-[#1D2945]">
               Forgot Password?
             </a>
           </div>
           <button
             type="submit"
-            className="w-full bg-[#10a37f] text-white py-2 px-4 rounded-lg hover:bg-[#2d8f76] transition duration-200 mb-4"
+            className="w-full bg-[#1D2945] text-white py-2 px-4 rounded-lg hover:bg-[#1D2945] transition duration-200 mb-4"
           >
             Login
           </button>
           <div className=''>
             <span className="block text-sm font-medium text-center text-gray-600">
-                Don't have an account?  <a href='./register' className='text-[#10a37f]'> Sign up</a>
+                Don't have an account?  <a href='./register' className='text-[#13244d] hover:text-[#516187]'> Sign up</a>
             </span>
           </div>
         </form>
