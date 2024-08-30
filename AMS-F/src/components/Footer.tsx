@@ -15,7 +15,7 @@ const items = [
 const Footer: React.FC = () => {
   return (
     
-    <footer className="py-10 text-white bg-[#246a58] overflow-hidden">
+    <footer className="py-10 overflow-hidden text-black bg-white">
       <div className="container px-6 mx-auto">
         {/* Top section with 6 columns */}
         <div className="grid grid-cols-1 gap-8 mb-8 md:grid-cols-4">
@@ -66,9 +66,9 @@ const Footer: React.FC = () => {
    </div>
 
         {/* Bottom section with Newsletter Signup and Copyright */}
-        <div className="pt-5 text-center border-t border-white">
+        <div className="pt-5 text-center border-t border-gray-900">
           
-          <p className="text-sm text-gray-200">© 2024 Auction Management System. All rights reserved.</p>
+          <p className="text-sm text-gray-600">© 2024 Auction Management System. All rights reserved.</p>
         </div>
       </div>
     </footer>
