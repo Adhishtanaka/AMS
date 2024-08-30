@@ -13,6 +13,7 @@ import Login from './routes/login';
 import Register from './routes/register';
 import Error from './routes/error';
 import Nav from './components/navbar';
+import Contact from './routes/contact';
 
 
 
@@ -32,7 +33,12 @@ const router = createBrowserRouter([{
 {
   path: "/navbar",
   element: <Nav/>,
-},])
+},
+{
+  path: "/contact",
+  element: <Contact/>,
+},
+])
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
