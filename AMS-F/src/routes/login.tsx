@@ -4,6 +4,7 @@ import joi from 'joi';
 import axios from 'axios';
 import cryptoJS from 'crypto-js';
 import { useNavigate } from 'react-router-dom';
+import { handleLoginResult } from '../util/errorMessage';
 
 const Login: React.FC = () => {
 
@@ -28,9 +29,9 @@ const Login: React.FC = () => {
     onError: (error: unknown) => {
       if (axios.isAxiosError(error)) {
           const errorMessage = error.response?.data?.message || 'An error occurred';
-          alert(errorMessage);
+          handleLoginResult(errorMessage);
       } else {
-          alert('An unexpected error occurred');
+        handleLoginResult('An unexpected error occurred');
       }
   },
     });
@@ -45,7 +46,7 @@ const Login: React.FC = () => {
           setPassword('');
        }else{
         const errorMessages = error.details.map(detail => detail.message).join('\n');
-        alert(errorMessages);
+        handleLoginResult(errorMessages);
        }}
 
       return (

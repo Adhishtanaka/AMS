@@ -12,6 +12,8 @@ import './index.css'
 import Login from './routes/login';
 import Register from './routes/register';
 import Error from './routes/error';
+import { ToastContainer } from 'react-toastify';
+
 
 
 const queryClient = new QueryClient()
@@ -32,6 +34,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
  <React.StrictMode>
     <QueryClientProvider client={queryClient}>
     <RouterProvider router={router} />
+    <ToastContainer />
     </QueryClientProvider>
   </React.StrictMode>,
 )
