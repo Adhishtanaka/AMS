@@ -12,6 +12,7 @@ import './index.css'
 import Login from './routes/login';
 import Register from './routes/register';
 import Error from './routes/error';
+import Admin from './routes/Admin';
 
 
 const queryClient = new QueryClient()
@@ -26,7 +27,12 @@ const router = createBrowserRouter([{
 {
   path: "/Register",
   element: <Register/>,
-},])
+},
+{
+  path: "/Admin",
+  element: <Admin/>,
+},
+])
 ReactDOM.createRoot(document.getElementById('root')!).render(
  
  <React.StrictMode>
