@@ -9,9 +9,9 @@ namespace AWS_B
             builder.Services.AddSingleton<Dbcon>();
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowReactApp",  builder => builder.WithOrigins("http://localhost:5173").AllowAnyMethod().AllowAnyHeader());
+                options.AddPolicy("AllowReactApp", builder => builder.WithOrigins("http://localhost:5173").AllowAnyMethod().AllowAnyHeader());
             });
-            
+
             var app = builder.Build();
             app.UseCors("AllowReactApp");
 
@@ -78,22 +78,54 @@ namespace AWS_B
                 }
             });
 
-
-
             app.MapGet("/api/validate-token", (HttpContext context) =>
             {
-
                 var token = context.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-
                 var isValid = User.ValidateToken(token);
-
                 return Results.Ok(isValid);
-
             });
+
+            app.MapPut("/api/Admin/BanUser", async (HttpContext httpContext, Dbcon dbcon) =>
+            {
+                var request = await httpContext.Request.ReadFromJsonAsync<AdminBanRequest>();
+                if (request == null || string.IsNullOrEmpty(request.Email))
+                {
+                    return Results.BadRequest(new { Message = "Invalid Ban request." });
+                }
+
+                // Determine if we are banning or unbanning the user
+                bool ban = request.Ban; // Add this field in the AdminBanRequest model
+
+                Admin admin = new Admin();
+                admin.Email = request.Email;
+                bool success = await admin.BanUser(dbcon, ban);
+                if (success)
+                {
+                    return Results.Ok(new { Message = ban ? "User Banned successfully" : "User Unbanned successfully" });
+                }
+                else
+                {
+                    return Results.BadRequest(new { Message = ban ? "User Ban failed." : "User Unban failed." });
+                }
+            });
+
+            app.MapGet("/api/Admin/ManageAllUsers", async (HttpContext httpContext, Dbcon dbcon) =>
+            {
+                try
+                {
+                    Admin admin = new Admin();
+                    var users = await admin.ManageAllUsers(dbcon);
+                    return Results.Ok(users);
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception (optional) and handle it as needed
+                    return Results.BadRequest(new { Message = ex.Message });
+                }
+            });
+
             app.Run();
-
-
         }
     }
 }
+
