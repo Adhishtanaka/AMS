@@ -6,6 +6,7 @@ import cryptoJS from 'crypto-js';
 import Navbar from '../components/navbar';
 import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
+import { handleLoginResult } from '../util/errorMessage';
 
 
 
@@ -32,9 +33,9 @@ const Login: React.FC = () => {
     onError: (error: unknown) => {
       if (axios.isAxiosError(error)) {
           const errorMessage = error.response?.data?.message || 'An error occurred';
-          alert(errorMessage);
+          handleLoginResult(errorMessage);
       } else {
-          alert('An unexpected error occurred');
+        handleLoginResult('An unexpected error occurred');
       }
   },
     });
@@ -49,7 +50,7 @@ const Login: React.FC = () => {
           setPassword('');
        }else{
         const errorMessages = error.details.map(detail => detail.message).join('\n');
-        alert(errorMessages);
+        handleLoginResult(errorMessages);
        }}
 
       return (

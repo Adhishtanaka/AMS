@@ -14,6 +14,8 @@ import Register from './routes/register';
 import Error from './routes/error';
 import Nav from './components/navbar';
 import Contact from './routes/contact';
+import { ToastContainer } from 'react-toastify';
+
 
 
 
@@ -46,6 +48,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
  <React.StrictMode>
     <QueryClientProvider client={queryClient}>
     <RouterProvider router={router} />
+    <ToastContainer />
     </QueryClientProvider>
   </React.StrictMode>,
   
