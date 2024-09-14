@@ -12,7 +12,10 @@ import './index.css'
 import Login from './routes/login';
 import Register from './routes/register';
 import Error from './routes/error';
+import Nav from './components/navbar';
+import Contact from './routes/contact';
 import { ToastContainer } from 'react-toastify';
+
 
 
 
@@ -28,7 +31,18 @@ const router = createBrowserRouter([{
 {
   path: "/Register",
   element: <Register/>,
-},])
+},
+{
+  path: "/navbar",
+  element: <Nav/>,
+},
+{
+  path: "/contact",
+  element: <Contact/>,
+},
+])
+
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
  
  <React.StrictMode>
@@ -37,4 +51,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <ToastContainer />
     </QueryClientProvider>
   </React.StrictMode>,
+  
 )
