@@ -23,29 +23,21 @@ const Register: React.FC = () => {
   const schema = joi.object({
     password: joi.string().min(8).messages({ 'string.min': 'Password must be at least 8 characters long' }),
     confirmPassword: joi.any().equal(joi.ref('password')).required().messages({ 'any.only': 'Passwords do not match' }),
-    dateOfBirth: joi.date()
-      .max('now')
-      .min(new Date(new Date().setFullYear(new Date().getFullYear() - 18)))
-      .messages({
-        'date.max': 'Date of Birth cannot be in the future',
-        'date.min': 'You must be at least 18 years old to register',
-
-      }),
     role: joi.string().valid('Buyer', 'Seller')
   })
 
   const mutation = useMutation({
-    mutationFn: (newUser: { name: string; email: string; password: string; address: string; role: string }) => {
+    mutationFn: (newUser: { name: string; email: string; password: string; address: string; role: string, telephone: string }) => {
       return axios.post('http://localhost:5195/api/register', newUser);
     }
   });
 
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
-    const { error } = schema.validate({ name, email, password, confirmPassword, phoneNumber, address, role }, { abortEarly: false });
+    const { error } = schema.validate({password, confirmPassword,  role }, { abortEarly: false });
     if (!error) {
       const hashedPassword = cryptoJS.SHA256(password).toString();
-      mutation.mutate({ name, email, password: hashedPassword, address, role });
+      mutation.mutate({ name, email, password: hashedPassword, address, role , telephone:phoneNumber });
       setName('');
       setEmail('');
       setPassword('');
@@ -56,7 +48,7 @@ const Register: React.FC = () => {
       navigate('/login');
     } else {
       const errorMessages = error.details.map(detail => detail.message).join('\n');
-      alert(errorMessages);
+      handleLoginResult(errorMessages);
     }
   };
   return (
@@ -156,6 +148,7 @@ const Register: React.FC = () => {
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">Role</label>
             <select
+              title='Select a role'
               name="role"
               value={role}
               required
