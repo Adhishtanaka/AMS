@@ -1,5 +1,9 @@
+### Define Variables
+@baseUrl = http://localhost:5000
+@jwtToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjhjMzQyMTQ5LWVmN2YtNDY1Zi05OWFmLWQ5MjAwMWMzMmU0NCIsImV4cCI6MTcyNDUyODMwNiwiaXNzIjoieW91cmRvbWFpbi5jb20iLCJhdWQiOiJ5b3VyZG9tYWluLmNvbSJ9.gRtfudc4p5yE455OgzcEwSh1a5en6CB5NlVEpejMDNo
+
 ### Login Request Correct
-POST http://localhost:5000/api/login
+POST {{baseUrl}}/api/login
 Content-Type: application/json
 
 {
@@ -8,32 +12,33 @@ Content-Type: application/json
 }
 
 ### Login Request Wrong
-POST http://localhost:5000/api/login
+POST {{baseUrl}}/api/login
 Content-Type: application/json
 
 {
-  "Email": "user@example.com",
+  "Email": "user1@example.com",
   "Password": "yourpassword"
 }
 
 ### Register a new user
-POST http://localhost:5000/api/register
+POST {{baseUrl}}/api/register
 Content-Type: application/json
 
 {
   "name": "John Doe",
-  "email": "john.doe@example.com",
+  "email": "john@example.com",
   "password": "SecureP@ssw0rd",
   "telephone": "123-456-7890",
   "address": "1234 Elm Street, Springfield, IL",
   "role":"Buyer"
 }
+
 ### Validate JWT Token
-GET http://localhost:5000/api/validate-token
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjhjMzQyMTQ5LWVmN2YtNDY1Zi05OWFmLWQ5MjAwMWMzMmU0NCIsImV4cCI6MTcyNDUyODMwNiwiaXNzIjoieW91cmRvbWFpbi5jb20iLCJhdWQiOiJ5b3VyZG9tYWluLmNvbSJ9.gRtfudc4p5yE455OgzcEwSh1a5en6CB5NlVEpejMDNo
+GET {{baseUrl}}/api/validate-token
+Authorization: Bearer {{jwtToken}}
 
 ### Test User Ban - Success Case
-PUT http://localhost:5000/api/Admin/BanUser
+PUT {{baseUrl}}/api/Admin/BanUser
 Content-Type: application/json
 
 {
@@ -41,7 +46,7 @@ Content-Type: application/json
 }
 
 ### Test User Ban - Missing Email
-PUT http://localhost:5000/api/Admin/BanUser
+PUT {{baseUrl}}/api/Admin/BanUser
 Content-Type: application/json
 
 {
@@ -49,11 +54,85 @@ Content-Type: application/json
 }
 
 ### Test User Ban - Null Request
-PUT http://localhost:5000/api/Admin/BanUser
+PUT {{baseUrl}}/api/Admin/BanUser
 Content-Type: application/json
 
 {}
+
 ### Get All Users
-GET http://localhost:5000/api/Admin/ManageAllUsers
+GET {{baseUrl}}/api/Admin/ManageAllUsers
 Accept: application/json
 
+### Get Cars by Seller ID
+GET {{baseUrl}}/api/seller/cars?sellerId=1
+Content-Type: application/json
+
+### Get Auctions by Seller ID
+GET {{baseUrl}}/api/seller/auctions?sellerId=1
+Content-Type: application/json
+
+### Add a New Car
+POST {{baseUrl}}/api/seller/cars
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+{
+  "ProductId": 0,
+  "PName": "New Car",
+  "PDescription": "Description of the new car",
+  "Price": 25000,
+  "UserId": 1,
+  "AuctionId": 0,
+  "CategoryId": 1,
+  "ImageUrl": "http://example.com/car.jpg"
+}
+
+### Delete a Car
+DELETE {{baseUrl}}/api/seller/cars?carId=1&sellerId=1
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+### Update a Car
+PUT {{baseUrl}}/api/seller/cars
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+{
+  "ProductId": 1,
+  "PName": "Updated Car",
+  "PDescription": "Updated description",
+  "Price": 27000,
+  "UserId": 1,
+  "AuctionId": 0,
+  "CategoryId": 1,
+  "ImageUrl": "http://example.com/updated_car.jpg"
+}
+
+### Create an Auction
+POST {{baseUrl}}/api/seller/auctions
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+{
+  "AuctionId": 0,
+  "ProductId": 1,
+  "StartDate": "2024-09-16T00:00:00Z",
+  "EndDate": "2024-09-30T00:00:00Z"
+}
+
+### Delete an Auction
+DELETE {{baseUrl}}/api/seller/auctions?auctionId=1&sellerId=1
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+### Update an Auction
+PUT {{baseUrl}}/api/seller/auctions
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+{
+  "AuctionId": 1,
+  "ProductId": 1,
+  "StartDate": "2024-09-20T00:00:00Z",
+  "EndDate": "2024-10-05T00:00:00Z"
+}

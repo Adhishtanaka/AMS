@@ -1,94 +1,97 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
+import ManageUsers from '../components/AdminManageUsers';
+import AdminDashboard from '../components/AdminDashboard';
 
-// Define the User type
-interface User {
-    email: string;
-    name: string;
-    role: string;
-    status: string;
-    isBanned: boolean;
-}
 
-// Define the component
-const AdminManageUsers: React.FC = () => {
-    const [users, setUsers] = useState<User[]>([]); // State to hold the list of users
-    const [loading, setLoading] = useState<boolean>(true); // State to manage the loading state
-    const [error, setError] = useState<string | null>(null); // State to manage errors
+const Admin: React.FC = () => {
+    const [selectedComponent, setSelectedComponent] = useState('Dashboard');
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    // Fetch users from the API when the component mounts
-    useEffect(() => {
-        fetchUsers();
-    }, []);
-
-    // Function to fetch the list of users
-    const fetchUsers = async () => {
-        try {
-            const response = await axios.get<User[]>('http://localhost:5000/api/Admin/ManageAllUsers');
-            const usersData = response.data.map(user => ({
-                ...user,
-                isBanned: user.status === 'Banned' // Convert status to boolean for isBanned
-            }));
-            setUsers(usersData);
-        } catch (error: any) {
-            setError(error.message || 'Failed to fetch users');
-        } finally {
-            setLoading(false);
+    const renderComponent = () => {
+        switch (selectedComponent) {
+            case 'Dashboard':
+                return <AdminDashboard />;
+            case 'Users':
+                return <ManageUsers />;
+            default:
+                return <AdminDashboard />;
         }
     };
 
-    // Function to handle banning or unbanning a user
-    const handleBanUnban = async (email: string, ban: boolean) => {
-        try {
-            const response = await axios.put('http://localhost:5000/api/Admin/BanUser', { Email: email, Ban: ban });
-            alert(response.data.Message || 'Operation successful');
-            fetchUsers(); // Refresh user list after ban/unban
-        } catch (error: any) {
-            alert(error.response?.data?.Message || 'Ban/Unban operation failed.');
-        }
+    const toggleSidebar = () => {
+        setIsSidebarOpen(!isSidebarOpen);
     };
-
-    // Function to view more details about a user
-    const handleViewDetails = (user: User) => {
-        // Implement the logic to view more details about the user
-        alert(`User details:\n\nEmail: ${user.email}\nName: ${user.name}\nStatus: ${user.isBanned ? 'Banned' : 'Active'}`);
-    };
-
-    if (loading) return <p>Loading users...</p>;
-    if (error) return <p>Error: {error}</p>;
 
     return (
-        <div>
-            <h1>Manage Users</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Email</th>
-                        <th>Name</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users.map((user) => (
-                        <tr key={user.email}>
-                            <td>{user.email}</td>
-                            <td>{user.name}</td>
-                            <td>{user.isBanned ? 'Banned' : 'Active'}</td>
-                            <td>
-                                <button
-                                    onClick={() => handleBanUnban(user.email, !user.isBanned)} // Toggle between ban and unban
-                                >
-                                    {user.isBanned ? 'Unban' : 'Ban'}
-                                </button>
-                                <button onClick={() => handleViewDetails(user)}>View More Details</button>
-                            </td>
-                        </tr>
+        <>
+        <div className="flex h-screen bg-gray-100">
+            {/* Sidebar */}
+            <div
+                className={`bg-white text-gray-800 w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform ${
+                    isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+                } md:relative md:translate-x-0 transition duration-200 ease-in-out z-20 shadow-lg`}
+            >
+                <h1 className="text-2xl font-semibold text-center">AMS .</h1>
+                <nav>
+                    {['Dashboard', 'Users'].map((item) => (
+                        <a
+                            key={item}
+                            href="#"
+                            className={`block py-2.5 px-4 rounded transition duration-200 ${
+                                selectedComponent === item ? 'bg-gray-200 text-gray-900' : 'hover:bg-gray-300'
+                            }`}
+                            onClick={() => {
+                                setSelectedComponent(item);
+                                setIsSidebarOpen(false);
+                            }}
+                        >
+                            {item}
+                        </a>
                     ))}
-                </tbody>
-            </table>
+                </nav>
+            </div>
+
+            {/* Main content */}
+            <div className="flex-1 flex flex-col overflow-hidden">
+                {/* Toggle button for mobile */}
+                <div className="bg-white p-4 shadow md:hidden">
+                    <button
+                        title='Toggle sidebar'
+                        onClick={toggleSidebar}
+                        className="text-gray-800 focus:outline-none focus:text-gray-600"
+                    >
+                        <svg 
+                            className="h-6 w-6" 
+                            fill="none" 
+                            viewBox="0 0 24 24" 
+                            stroke="currentColor"
+                        >
+                            <path 
+                                strokeLinecap="round" 
+                                strokeLinejoin="round" 
+                                strokeWidth={2} 
+                                d="M4 6h16M4 12h16M4 18h16" 
+                            />
+                        </svg>
+                    </button>
+                </div>
+
+                {/* Rendered component */}
+                <div className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
+                    {renderComponent()}
+                </div>
+            </div>
+
+            {/* Overlay for mobile */}
+            {isSidebarOpen && (
+                <div 
+                    className="fixed inset-0 z-10 bg-gray-900 opacity-50 md:hidden"
+                    onClick={() => setIsSidebarOpen(false)}
+                ></div>
+            )}
         </div>
+        </>
     );
 };
 
-export default AdminManageUsers;
+export default Admin;
