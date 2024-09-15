@@ -35,7 +35,7 @@ const router = createBrowserRouter([{
   path: "/Admin",
   element: <Admin/>,
 },
-])
+{
   path: "/navbar",
   element: <Nav/>,
 },
