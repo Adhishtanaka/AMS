@@ -12,6 +12,11 @@ import './index.css'
 import Login from './routes/login';
 import Register from './routes/register';
 import Error from './routes/error';
+import Admin from './routes/Admin';
+import Nav from './components/navbar';
+import Contact from './routes/contact';
+import { ToastContainer } from 'react-toastify';
+import { ThemeProvider } from "@material-tailwind/react";
 
 
 const queryClient = new QueryClient()
@@ -26,12 +31,30 @@ const router = createBrowserRouter([{
 {
   path: "/Register",
   element: <Register/>,
-},])
+},
+{
+  path: "/Admin",
+  element: <Admin/>,
+},
+{
+  path: "/navbar",
+  element: <Nav/>,
+},
+{
+  path: "/contact",
+  element: <Contact/>,
+},
+])
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
  
  <React.StrictMode>
     <QueryClientProvider client={queryClient}>
+    <ThemeProvider>
     <RouterProvider router={router} />
+    </ThemeProvider>
+    <ToastContainer />
     </QueryClientProvider>
   </React.StrictMode>,
+  
 )
