@@ -1,28 +1,44 @@
-namespace AWS_B.model 
+namespace AWS_B.model
 {
     public class Seller : User
     {
         public override string Role => "Seller";
 
-        private float seller_rating { get; set; }
-
-        public List<Car> carList { get; set; }
-
         public Seller()
         {
-            seller_rating = 0.0f;
-            carList = new List<Car>();
+
         }
 
-
-        public List<Car> GetAllCars()
+        public static async Task<List<Car>> GetCarsBySellerId(Dbcon dbcon, int userId)
         {
-            return carList;
-        }
+            List<Car> cars = new List<Car>();
 
-        public void AddCar(Car car)
-        {
-            carList.Add(car);
+            await dbcon.Connect();
+            string query = $"SELECT * FROM product WHERE userid = {userId}";
+
+
+            using (var reader = await dbcon.ExecuteQuery(query))
+            {
+                while (await reader.ReadAsync())
+                {
+
+                Car car = new(
+                        reader.GetInt32(0),                    
+                        reader.GetString(1),                    
+                        reader.GetString(2),                    
+                        reader.GetDecimal(3),                  
+                        reader.GetInt32(4),                     
+                        reader.GetInt32(5),                     
+                        reader.GetInt32(6),                     
+                        reader.GetString(7)                     
+                    );
+                      cars.Add(car);
+                }
+            }
+
+            dbcon.Disconnect();
+            return cars;
         }
     }
 }
+

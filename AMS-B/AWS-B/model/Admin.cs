@@ -3,7 +3,7 @@ namespace AWS_B.model
     public class AdminBanRequest
     {
         public required string Email { get; set; }
-        public bool Ban { get; set; } // true for banning, false for unbanning
+        public bool Ban { get; set; } 
     }
 
 
@@ -27,7 +27,6 @@ namespace AWS_B.model
             {
                 await dbcon.Connect();
 
-                // Query to retrieve all users from the database
                 string query = "SELECT email, name, role, status FROM user";
 
                 using (var reader = await dbcon.ExecuteQuery(query))
