@@ -16,7 +16,6 @@ import Admin from './routes/Admin';
 import Nav from './components/navbar';
 import Contact from './routes/contact';
 import { ToastContainer } from 'react-toastify';
-import { ThemeProvider } from "@material-tailwind/react";
 
 
 const queryClient = new QueryClient()
@@ -50,9 +49,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
  
  <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-    <ThemeProvider>
     <RouterProvider router={router} />
-    </ThemeProvider>
     <ToastContainer />
     </QueryClientProvider>
   </React.StrictMode>,
