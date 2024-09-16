@@ -6,9 +6,7 @@ import cryptoJS from 'crypto-js';
 import Navbar from '../components/navbar';
 import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
-import { handleLoginResult } from '../util/errorMessage';
-
-
+import { handleErrorResult } from '../util/errorMessage';
 
 const Login: React.FC = () => {
 
@@ -23,7 +21,7 @@ const Login: React.FC = () => {
 
     const mutation = useMutation({
         mutationFn: async (User: { email: string; password: string }) => {
-          const response = await axios.post('http://localhost:5195/api/login', User);
+          const response = await axios.post('http://localhost:5000/api/login', User);
           return response.data;
     },
     onSuccess: (data) => {
@@ -33,9 +31,9 @@ const Login: React.FC = () => {
     onError: (error: unknown) => {
       if (axios.isAxiosError(error)) {
           const errorMessage = error.response?.data?.message || 'An error occurred';
-          handleLoginResult(errorMessage);
+          handleErrorResult(errorMessage);
       } else {
-        handleLoginResult('An unexpected error occurred');
+        handleErrorResult('An unexpected error occurred');
       }
   },
     });
@@ -50,7 +48,7 @@ const Login: React.FC = () => {
           setPassword('');
        }else{
         const errorMessages = error.details.map(detail => detail.message).join('\n');
-        handleLoginResult(errorMessages);
+        handleErrorResult(errorMessages);
        }}
 
       return (
