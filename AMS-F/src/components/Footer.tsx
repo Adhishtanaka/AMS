@@ -66,7 +66,7 @@ const Footer: React.FC = () => {
    </div>
 
         {/* Bottom section with Newsletter Signup and Copyright */}
-        <div className="pt-5 text-center border-t border-gray-900">
+        <div className="pt-5 text-center border-t border-gray-200">
           
           <p className="text-sm text-gray-600">© 2024 Auction Management System. All rights reserved.</p>
         </div>

@@ -31,7 +31,7 @@ const Admin: React.FC = () => {
                     isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
                 } md:relative md:translate-x-0 transition duration-200 ease-in-out z-20 shadow-lg`}
             >
-                <h1 className="text-2xl font-semibold text-center">AMS .</h1>
+                <h1 className="text-2xl text-[#1D2945] font-semibold text-center">AMS .</h1>
                 <nav>
                     {['Dashboard', 'Users'].map((item) => (
                         <a
