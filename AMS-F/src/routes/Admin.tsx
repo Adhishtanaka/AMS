@@ -38,7 +38,7 @@ const Admin: React.FC = () => {
                             key={item}
                             href="#"
                             className={`block py-2.5 px-4 rounded transition duration-200 ${
-                                selectedComponent === item ? 'bg-gray-200 text-gray-900' : 'hover:bg-gray-300'
+                                selectedComponent === item ? 'bg-blue-50 text-gray-900' : 'hover:bg-gray-50'
                             }`}
                             onClick={() => {
                                 setSelectedComponent(item);
