@@ -3,7 +3,10 @@ import { useMutation } from '@tanstack/react-query';
 import joi from 'joi';
 import axios from 'axios';
 import cryptoJS from 'crypto-js';
+import Navbar from '../components/navbar';
+import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
+import { handleErrorResult } from '../util/errorMessage';
 
 const Login: React.FC = () => {
 
@@ -18,7 +21,7 @@ const Login: React.FC = () => {
 
     const mutation = useMutation({
         mutationFn: async (User: { email: string; password: string }) => {
-          const response = await axios.post('http://localhost:5195/api/login', User);
+          const response = await axios.post('http://localhost:5000/api/login', User);
           return response.data;
     },
     onSuccess: (data) => {
@@ -28,9 +31,9 @@ const Login: React.FC = () => {
     onError: (error: unknown) => {
       if (axios.isAxiosError(error)) {
           const errorMessage = error.response?.data?.message || 'An error occurred';
-          alert(errorMessage);
+          handleErrorResult(errorMessage);
       } else {
-          alert('An unexpected error occurred');
+        handleErrorResult('An unexpected error occurred');
       }
   },
     });
@@ -45,13 +48,15 @@ const Login: React.FC = () => {
           setPassword('');
        }else{
         const errorMessages = error.details.map(detail => detail.message).join('\n');
-        alert(errorMessages);
+        handleErrorResult(errorMessages);
        }}
 
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="py-12 px-12 bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className=" text-3xl font-semibold mb-6 text-center">Login</h2>
+        <>
+        <Navbar />
+        <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4 py-6">
+      <div className="w-full max-w-md p-8 px-12 py-12 bg-white rounded-lg shadow-lg">
+        <h2 className="mb-6 text-3xl font-semibold text-center ">Login</h2>
         <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-medium text-gray-600">
@@ -64,7 +69,7 @@ const Login: React.FC = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="Enter Your Email Addresss."
-              className="py-3 px-3 text-xs font-normal text-gray-100 mt-1 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#10a37e81]"
+              className="py-3 px-3 text-xs font-normal text-gray-700 mt-1 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#1D2945]"
             />
           </div>
           <div className="mb-6">
@@ -78,19 +83,34 @@ const Login: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               placeholder="Type Your Password."
-              className="py-3 px-3 text-xs font-normal text-gray-100 mt-1 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#10a37e81]"
+              className="py-3 px-3 text-xs font-normal text-gray-700 mt-1 p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#1D2945]"
             />
+          </div>
+          <div className='mb-4'>
+          <a href='' className="block text-sm font-medium text-[#1D2945]">
+              Forgot Password?
+            </a>
           </div>
           <button
             type="submit"
-            className="w-full bg-[#10a37f] text-white py-2 px-4 rounded-lg hover:bg-[#2d8f76] transition duration-200"
+            className="w-full bg-[#1D2945] text-white py-2 px-4 rounded-lg hover:bg-[#1D2945] transition duration-200 mb-4"
           >
             Login
           </button>
+          <div className=''>
+            <span className="block text-sm font-medium text-center text-gray-600">
+                Don't have an account?  <a href='./register' className='text-[#13244d] hover:text-[#516187]'> Sign up</a>
+            </span>
+          </div>
         </form>
       </div>
     </div>
+    <Footer />
+    </>
         );
       };
       
       export default Login;
+      
+
+      
