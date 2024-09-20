@@ -1,4 +1,4 @@
-namespace AWS_B.model
+﻿namespace AMS_B.Models
 {
     public class Car
     {
@@ -34,17 +34,17 @@ namespace AWS_B.model
                 while (await reader.ReadAsync())
                 {
 
-                Car car = new(
-                        reader.GetInt32(0),                    
-                        reader.GetString(1),                    
-                        reader.GetString(2),                    
-                        reader.GetDecimal(3),                  
-                        reader.GetInt32(4),                     
-                        reader.GetInt32(5),                     
-                        reader.GetInt32(6),                     
-                        reader.GetString(7)                     
-                    );
-                      cars.Add(car);
+                    Car car = new(
+                            reader.GetInt32(0),
+                            reader.GetString(1),
+                            reader.GetString(2),
+                            reader.GetDecimal(3),
+                            reader.GetInt32(4),
+                            reader.GetInt32(5),
+                            reader.GetInt32(6),
+                            reader.GetString(7)
+                        );
+                    cars.Add(car);
                 }
             }
 
@@ -62,14 +62,14 @@ namespace AWS_B.model
                 if (await reader.ReadAsync())
                 {
                     Car car = new(
-                        reader.GetInt32(0),                    
-                        reader.GetString(1),                    
-                        reader.GetString(2),                    
-                        reader.GetDecimal(3),                  
-                        reader.GetInt32(4),                     
-                        reader.GetInt32(5),                     
-                        reader.GetInt32(6),                     
-                        reader.GetString(7)                     
+                        reader.GetInt32(0),
+                        reader.GetString(1),
+                        reader.GetString(2),
+                        reader.GetDecimal(3),
+                        reader.GetInt32(4),
+                        reader.GetInt32(5),
+                        reader.GetInt32(6),
+                        reader.GetString(7)
                     );
                     dbcon.Disconnect();
                     return car;
@@ -96,23 +96,6 @@ namespace AWS_B.model
         {
             await dbcon.Connect();
             string query = $"DELETE FROM product WHERE productid = {carId}";
-
-            await dbcon.ExecuteNonQuery(query);
-            dbcon.Disconnect();
-        }
-
-        public static async Task UpdateCar(Dbcon dbcon, Car car)
-        {
-            await dbcon.Connect();
-            string query = $"UPDATE product SET " +
-                           $"pname = '{car.PName}', " +
-                           $"pdescription = '{car.PDescription}', " +
-                           $"price = {car.Price}, " +
-                           $"userid = {car.UserId}, " +
-                           $"aucid = {car.AuctionId}, " +
-                           $"catid = {car.CategoryId}, " +
-                           $"pimg = '{car.ImageUrl}' " +
-                           $"WHERE productid = {car.ProductId}";
 
             await dbcon.ExecuteNonQuery(query);
             dbcon.Disconnect();

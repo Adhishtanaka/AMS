@@ -1,5 +1,6 @@
-namespace AWS_B.model
+﻿namespace AMS_B.Models
 {
+
     public class Auction
     {
         public int AuctionId { get; set; }
@@ -27,14 +28,6 @@ namespace AWS_B.model
         public static async Task DeleteAuction(Dbcon dbcon, int auctionId)
         {
             string query = $"DELETE FROM auction WHERE aucid = {auctionId}";
-            await dbcon.Connect();
-            await dbcon.ExecuteNonQuery(query);
-            dbcon.Disconnect();
-        }
-
-        public static async Task UpdateAuction(Dbcon dbcon, Auction auction)
-        {
-            string query = $"UPDATE auction SET productid = {auction.ProductId}, startdate = {auction.StartDate}, enddate = {auction.EndDate} WHERE aucid = {auction.AuctionId}";
             await dbcon.Connect();
             await dbcon.ExecuteNonQuery(query);
             dbcon.Disconnect();

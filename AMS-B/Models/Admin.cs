@@ -1,4 +1,4 @@
-namespace AWS_B.model
+﻿namespace AMS_B.Models
 {
     public class AdminBanRequest
     {
@@ -16,7 +16,7 @@ namespace AWS_B.model
         public required string Telephone { get; set; }
     }
 
-    public class Admin : User
+    public class Admin : Users
     {
         public override string Role => "Admin";
 
@@ -38,11 +38,11 @@ namespace AWS_B.model
                     {
                         var manageUser = new ManageUser
                         {
-                            Email = !reader.IsDBNull(0) ? reader.GetString(0) : string.Empty, 
-                            Name = !reader.IsDBNull(1) ? reader.GetString(1) : string.Empty, 
+                            Email = !reader.IsDBNull(0) ? reader.GetString(0) : string.Empty,
+                            Name = !reader.IsDBNull(1) ? reader.GetString(1) : string.Empty,
                             Role = !reader.IsDBNull(2) ? reader.GetString(2) : string.Empty,
-                            Status = !reader.IsDBNull(3) ? reader.GetString(3) : string.Empty, 
-                            Telephone = !reader.IsDBNull(4) ? reader.GetString(4) : string.Empty 
+                            Status = !reader.IsDBNull(3) ? reader.GetString(3) : string.Empty,
+                            Telephone = !reader.IsDBNull(4) ? reader.GetString(4) : string.Empty
                         };
                         users.Add(manageUser);
                     }

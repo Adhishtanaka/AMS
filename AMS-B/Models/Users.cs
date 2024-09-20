@@ -1,10 +1,11 @@
+﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
 
-namespace AWS_B.model
+namespace AMS_B.Models
 {
+
     public class UserLoginRequest
     {
         public required string Email { get; set; }
@@ -21,8 +22,8 @@ namespace AWS_B.model
         public required string Role { get; set; }
     }
 
-    public abstract class User
-    {
+    public abstract class Users {
+
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
@@ -62,15 +63,16 @@ namespace AWS_B.model
         public async Task<string?> Login(Dbcon dbcon)
         {
             await dbcon.Connect();
-            string query = $"SELECT * FROM user WHERE Email = '{Email}' AND Password = '{Password}'";
+            string query = $"SELECT userid, role FROM user WHERE Email = '{Email}' AND Password = '{Password}'";
             using var reader = await dbcon.ExecuteQuery(query);
-            bool isValidUser = reader.Read() && reader.GetInt32(0) > 0;
-
-            if (isValidUser)
+            if (reader.Read())
             {
+                int id = reader.GetInt32(0);   
+                string role = reader.GetString(1);  
                 dbcon.Disconnect();
-                return GenerateJwtToken(Email);
+                return GenerateJwtToken(id, Email, role);  
             }
+
             dbcon.Disconnect();
             return null;
         }
@@ -78,7 +80,7 @@ namespace AWS_B.model
         {
             await dbcon.Connect();
             string query = $"SELECT role FROM user WHERE Email='{Email}'";
-            string? role=null;
+            string? role = null;
             using var reader = await dbcon.ExecuteQuery(query);
             if (await reader.ReadAsync())
             {
@@ -86,13 +88,15 @@ namespace AWS_B.model
             }
             return role;
         }
-        private string GenerateJwtToken(string email)
+        private string GenerateJwtToken(int id, string email, string role)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("75ca9af8c0ff1fccb1b51eb721785a47b237782ac6533364873a96882fc51227"));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, email),
+                new Claim("id", id.ToString()), 
+                new Claim("role", role),         
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
             var token = new JwtSecurityToken(
@@ -105,34 +109,6 @@ namespace AWS_B.model
 
 
         }
-        public static bool ValidateToken(string token)
-    {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes("75ca9af8c0ff1fccb1b51eb721785a47b237782ac6533364873a96882fc51227");
-        
-        try
-        {
-            tokenHandler.ValidateToken(token, new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(key),
-                ValidateIssuer = true,
-                ValidIssuer = "yourdomain.com",
-                ValidateAudience = true,
-                ValidAudience = "yourdomain.com",
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero
-            }, out SecurityToken validatedToken);
-
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
-    }
 
     }
-
-
 }

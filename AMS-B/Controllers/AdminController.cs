@@ -1,10 +1,15 @@
-using AWS_B.model;
+﻿using AMS_B.Models;
+using Microsoft.AspNetCore.Mvc;
 
-namespace AWS_B
+
+namespace AMS_B.Controllers
 {
-    public static class AdminController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AdminController : ControllerBase
     {
-        public static async Task<IResult> BanUser(HttpContext httpContext, Dbcon dbcon)
+        [HttpPost("BanUser")]
+        public async Task<IResult> BanUser(HttpContext httpContext, Dbcon dbcon)
         {
             var request = await httpContext.Request.ReadFromJsonAsync<AdminBanRequest>();
             if (request == null || string.IsNullOrEmpty(request.Email))
@@ -26,13 +31,13 @@ namespace AWS_B
             }
         }
 
-        public static async Task<IResult> ManageAllUsers(HttpContext httpContext, Dbcon dbcon)
+        [HttpGet("ManageAllUsers")]
+        public async Task<IResult> ManageAllUsers(HttpContext httpContext, Dbcon dbcon)
         {
-
-                string nameFilter = httpContext.Request.Query["nameFilter"].ToString();
-                Admin admin = new Admin();
-                var users = await admin.ManageAllUsers(dbcon, nameFilter);
-                return Results.Ok(users);
+            string nameFilter = httpContext.Request.Query["nameFilter"].ToString();
+            Admin admin = new Admin();
+            var users = await admin.ManageAllUsers(dbcon, nameFilter);
+            return Results.Ok(users);
         }
     }
 }

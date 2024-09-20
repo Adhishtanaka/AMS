@@ -1,6 +1,6 @@
-namespace AWS_B.model
+﻿namespace AMS_B.Models
 {
-    public class Seller : User
+    public class Seller : Users
     {
         public override string Role => "Seller";
 

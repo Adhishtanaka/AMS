@@ -1,8 +1,9 @@
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using System.Data.Common;
 
-namespace AWS_B.model { 
-public class Dbcon
+namespace AMS_B.Models
+{
+    public class Dbcon
     {
         private MySqlConnection? conn;
 
@@ -34,10 +35,11 @@ public class Dbcon
             return (MySqlDataReader)reader;
         }
 
-         public async Task<int> ExecuteNonQuery(string query)
+        public async Task<int> ExecuteNonQuery(string query)
         {
             using var command = new MySqlCommand(query, conn);
             return await command.ExecuteNonQueryAsync();
         }
 
-}}
+    }
+}
