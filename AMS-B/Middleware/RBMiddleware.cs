@@ -12,7 +12,7 @@
         public async Task InvokeAsync(HttpContext context)
         {
             var userRoleClaim = context.User.Claims.FirstOrDefault(c => c.Type == "role")?.Value;
-            var path = context.Request.Path.Value;
+            var path = context.Request.Path.Value ?? string.Empty;
 
             if (path.StartsWith("/seller", StringComparison.OrdinalIgnoreCase) && userRoleClaim != "seller")
             {

@@ -8,6 +8,8 @@ namespace AMS_B.Controllers
     [ApiController]
     public class SellerController : ControllerBase
     {
+        private readonly string _imageFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "car-images");
+
         private int GetSellerId()
         {
             var claim = User.FindFirst("id");
@@ -51,14 +53,36 @@ namespace AMS_B.Controllers
         }
 
         [HttpPost("AddCar")]
-        public async Task<IActionResult> AddCar([FromBody] Car car, [FromServices] Dbcon dbcon)
+        public async Task<IActionResult> AddCar([FromForm] Car car, [FromForm] List<IFormFile> images, [FromServices] Dbcon dbcon)
         {
             int sellerId = GetSellerId();
             if (car == null || car.UserId != sellerId)
             {
                 return Forbid();
             }
+            if (!Directory.Exists(_imageFolder))
+            {
+                Directory.CreateDirectory(_imageFolder);
+            }
+            List<string> imageUrls = new List<string>();
 
+            foreach (var image in images)
+            {
+                if (image.Length > 0)
+                {
+                    string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+                    string filePath = Path.Combine(_imageFolder, uniqueFileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await image.CopyToAsync(stream);
+                    }
+                    string imageUrl = Path.Combine("car-images", uniqueFileName);
+                    imageUrls.Add(imageUrl);
+                }
+            }
+
+            car.ImageUrls = string.Join(",", imageUrls);
             await Car.AddCar(dbcon, car);
             return Ok(new { Message = "Car added successfully." });
         }

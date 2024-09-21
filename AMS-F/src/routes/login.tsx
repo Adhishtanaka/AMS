@@ -6,7 +6,7 @@ import cryptoJS from 'crypto-js';
 import Navbar from '../components/navbar';
 import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
-import { handleErrorResult } from '../util/errorMessage';
+import { handleErrorResult } from '../util/TostMessage';
 
 const Login: React.FC = () => {
 
@@ -21,7 +21,7 @@ const Login: React.FC = () => {
 
     const mutation = useMutation({
         mutationFn: async (User: { email: string; password: string }) => {
-          const response = await axios.post('http://localhost:5000/api/login', User);
+          const response = await axios.post('http://localhost:5000/api/auth/login', User);
           return response.data;
     },
     onSuccess: (data) => {

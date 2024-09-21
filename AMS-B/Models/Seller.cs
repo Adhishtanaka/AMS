@@ -29,8 +29,7 @@
                             reader.GetDecimal(3),
                             reader.GetInt32(4),
                             reader.GetInt32(5),
-                            reader.GetInt32(6),
-                            reader.GetString(7)
+                            reader.GetString(6)
                         );
                     cars.Add(car);
                 }

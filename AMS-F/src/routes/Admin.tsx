@@ -4,6 +4,7 @@ import AdminDashboard from '../components/AdminDashboard';
 
 
 const Admin: React.FC = () => {
+
     const [selectedComponent, setSelectedComponent] = useState('Dashboard');
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -16,6 +17,7 @@ const Admin: React.FC = () => {
             default:
                 return <AdminDashboard />;
         }
+    
     };
 
     const toggleSidebar = () => {

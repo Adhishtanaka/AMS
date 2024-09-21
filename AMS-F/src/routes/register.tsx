@@ -6,7 +6,7 @@ import cryptoJS from 'crypto-js';
 import { useNavigate } from 'react-router-dom';
 import Nav from '../components/navbar';
 import Footer from '../components/Footer';
-import { handleErrorResult } from '../util/errorMessage';
+import { handleErrorResult } from '../util/TostMessage';
 
 const Register: React.FC = () => {
 
@@ -28,7 +28,7 @@ const Register: React.FC = () => {
 
   const mutation = useMutation({
     mutationFn: (newUser: { name: string; email: string; password: string; address: string; role: string, telephone: string }) => {
-      return axios.post('http://localhost:5000/api/register', newUser);
+      return axios.post('http://localhost:5000/api/auth/register', newUser);
     }
   });
 

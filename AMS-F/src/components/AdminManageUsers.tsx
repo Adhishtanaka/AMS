@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { handleErrorResult, handleSuccessResult } from '../util/errorMessage';
+import { handleErrorResult, handleSuccessResult } from '../util/TostMessage';
 
 interface User {
   email: string;
