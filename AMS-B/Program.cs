@@ -23,9 +23,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    app.UseHttpsRedirection();
+}
 
-app.UseHttpsRedirection();
-app.UseMiddleware<RBMiddleware>();
+app.UseCors("AllowReactApp");
 app.UseAuthorization();
 app.MapControllers();
 

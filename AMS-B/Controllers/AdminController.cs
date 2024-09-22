@@ -1,43 +1,60 @@
 ﻿using AMS_B.Models;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace AMS_B.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase
     {
-        [HttpPost("BanUser")]
-        public async Task<IResult> BanUser(HttpContext httpContext, Dbcon dbcon)
+        private readonly Dbcon _dbcon;
+
+        public AdminController(Dbcon dbcon)
         {
-            var request = await httpContext.Request.ReadFromJsonAsync<AdminBanRequest>();
+            _dbcon = dbcon;
+        }
+
+        [HttpPut("BanUser")] 
+        public async Task<IActionResult> BanUser([FromBody] AdminBanRequest request)
+        {
             if (request == null || string.IsNullOrEmpty(request.Email))
             {
-                return Results.BadRequest(new { Message = "Invalid Ban request." });
+                return BadRequest(new { Message = "Invalid Ban request." });
             }
 
-            bool ban = request.Ban;
-            Admin admin = new Admin();
-            admin.Email = request.Email;
-            bool success = await admin.BanUser(dbcon, ban);
-            if (success)
+            try
             {
-                return Results.Ok(new { Message = ban ? "User Banned successfully" : "User Unbanned successfully" });
+                Admin admin = new Admin { Email = request.Email };
+                bool success = await admin.BanUser(_dbcon, request.Ban);
+
+                if (success)
+                {
+                    return Ok(new { Message = request.Ban ? "User Banned successfully" : "User Unbanned successfully" });
+                }
+                else
+                {
+                    return BadRequest(new { Message = request.Ban ? "User Ban failed." : "User Unban failed." });
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return Results.BadRequest(new { Message = ban ? "User Ban failed." : "User Unban failed." });
+                return StatusCode(500, new { Message = "An error occurred while processing the ban request.", Error = ex.Message });
             }
         }
 
         [HttpGet("ManageAllUsers")]
-        public async Task<IResult> ManageAllUsers(HttpContext httpContext, Dbcon dbcon)
+        public async Task<IActionResult> ManageAllUsers([FromQuery] string nameFilter = "")
         {
-            string nameFilter = httpContext.Request.Query["nameFilter"].ToString();
-            Admin admin = new Admin();
-            var users = await admin.ManageAllUsers(dbcon, nameFilter);
-            return Results.Ok(users);
+            try
+            {
+                Admin admin = new Admin();
+                var users = await admin.ManageAllUsers(_dbcon, nameFilter);
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An error occurred while retrieving users.", Error = ex.Message });
+            }
         }
     }
 }
