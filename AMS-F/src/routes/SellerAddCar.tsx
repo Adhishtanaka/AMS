@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import api from '../util/api';
 
 const SellerAddCar = () => {
   const [pName, setPName] = useState('');
@@ -27,7 +27,7 @@ const SellerAddCar = () => {
     });
 
     try {
-      await axios.post('http://localhost:5000/api/Seller/AddCar', formData, {
+      await api.post('http://localhost:5000/api/Seller/AddCar', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

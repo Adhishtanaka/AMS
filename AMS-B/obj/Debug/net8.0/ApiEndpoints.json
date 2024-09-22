@@ -52,6 +52,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "AMS_B.Controllers.PublicController",
+    "Method": "GetCarById",
+    "RelativePath": "api/Public/GetCarById",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "carId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AMS_B.Controllers.SellerController",
     "Method": "AddCar",
     "RelativePath": "api/Seller/AddCar",
@@ -60,18 +76,33 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "ProductId",
+        "Name": "Id",
         "Type": "System.Int32",
         "IsRequired": false
       },
       {
-        "Name": "PName",
+        "Name": "CarDescription",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "PDescription",
+        "Name": "Img",
         "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "ManufacturerId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PerformanceClassId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "YearId",
+        "Type": "System.Int32",
         "IsRequired": false
       },
       {
@@ -80,13 +111,13 @@
         "IsRequired": false
       },
       {
-        "Name": "UserId",
+        "Name": "CarTypeId",
         "Type": "System.Int32",
         "IsRequired": false
       },
       {
-        "Name": "ImageUrls",
-        "Type": "System.String",
+        "Name": "SellerId",
+        "Type": "System.Int32",
         "IsRequired": false
       },
       {

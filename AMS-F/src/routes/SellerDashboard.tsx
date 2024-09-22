@@ -3,6 +3,7 @@ import SellerDashboardC from '../components/SellersDashboardC';
 import SellerCars from '../components/SellerCars';
 import SellerAuction from '../components/SellerAuction';
 import SellerHistory from '../components/SellerHistory';
+import Footer from '../components/Footer';
 
 const SellerDashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard'); 
@@ -59,6 +60,7 @@ const SellerDashboard = () => {
           {renderActiveTabContent()} 
         </div>
       </main>
+      <Footer />
     </div>
   );
 };

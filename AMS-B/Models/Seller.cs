@@ -4,32 +4,30 @@
     {
         public override string Role => "Seller";
 
-        public Seller()
-        {
+        public Seller() { }
 
-        }
-
-        public static async Task<List<Car>> GetCarsBySellerId(Dbcon dbcon, int userId)
+        public static async Task<List<Car>> GetCarsBySellerId(Dbcon dbcon, int sellerId)
         {
             List<Car> cars = new List<Car>();
 
             await dbcon.Connect();
-            string query = $"SELECT * FROM product WHERE userid = {userId}";
-
+            string query = $"SELECT * FROM car WHERE seller_id = {sellerId}";
 
             using (var reader = await dbcon.ExecuteQuery(query))
             {
                 while (await reader.ReadAsync())
                 {
-
                     Car car = new(
-                            reader.GetInt32(0),
-                            reader.GetString(1),
-                            reader.GetString(2),
-                            reader.GetDecimal(3),
-                            reader.GetInt32(4),
-                            reader.GetString(5)
-                        );
+                        reader.GetInt32(0),
+                        reader.GetString(1),
+                        reader.GetString(2),
+                        reader.GetInt32(3),
+                        reader.GetInt32(4),
+                        reader.GetInt32(5),
+                        reader.GetDecimal(6),
+                        reader.GetInt32(7),
+                        sellerId
+                    );
                     cars.Add(car);
                 }
             }
@@ -42,7 +40,7 @@
         {
             await dbcon.Connect();
 
-            string productQuery = $"SELECT productid FROM product WHERE userid = {sellerId}";
+            string productQuery = $"SELECT id FROM car WHERE seller_id = {sellerId}";
             List<int> productIds = new List<int>();
 
             using (var productReader = await dbcon.ExecuteQuery(productQuery))
@@ -59,7 +57,7 @@
                 return new List<Auction>();
             }
 
-            string auctionQuery = $"SELECT * FROM auction WHERE productid IN ({string.Join(",", productIds)})";
+            string auctionQuery = $"SELECT * FROM auction WHERE car_id IN ({string.Join(",", productIds)})";
             List<Auction> auctions = new List<Auction>();
 
             using (var auctionReader = await dbcon.ExecuteQuery(auctionQuery))
@@ -70,7 +68,8 @@
                         auctionReader.GetInt32(0),
                         auctionReader.GetInt32(1),
                         auctionReader.GetDateTime(2),
-                        auctionReader.GetDateTime(3)
+                        auctionReader.GetDateTime(3),
+                        auctionReader.GetString(4)
                     );
                     auctions.Add(auction);
                 }
@@ -79,9 +78,5 @@
             dbcon.Disconnect();
             return auctions;
         }
-
-
-
     }
 }
-

@@ -103,7 +103,7 @@ namespace AMS_B.Models
                 issuer: "yourdomain.com",
                 audience: "yourdomain.com",
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(30),
+                expires: DateTime.Now.AddMinutes(1440),
                 signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
 

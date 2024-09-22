@@ -1,25 +1,25 @@
 ﻿namespace AMS_B.Models
 {
-
     public class Auction
     {
         public int AuctionId { get; set; }
         public int ProductId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public string Status { get; set; } 
 
-        public Auction(int auctionId, int productId, DateTime startDate, DateTime endDate)
+        public Auction(int auctionId, int productId, DateTime startDate, DateTime endDate, string status)
         {
             AuctionId = auctionId;
             ProductId = productId;
             StartDate = startDate;
             EndDate = endDate;
+            Status = status; 
         }
 
-
-        public static async Task createAuction(Dbcon dbcon, Auction auction)
+        public static async Task CreateAuction(Dbcon dbcon, Auction auction)
         {
-            string query = $"INSERT INTO auction (productid, startdate, enddate) VALUES ({auction.ProductId}, {auction.StartDate}, {auction.EndDate})";
+            string query = $"INSERT INTO auction (productid, startdate, enddate, status) VALUES ({auction.ProductId}, '{auction.StartDate:yyyy-MM-dd HH:mm:ss}', '{auction.EndDate:yyyy-MM-dd HH:mm:ss}', '{auction.Status}')";
             await dbcon.Connect();
             await dbcon.ExecuteNonQuery(query);
             dbcon.Disconnect();
@@ -47,7 +47,8 @@
                         reader.GetInt32(0),
                         reader.GetInt32(1),
                         reader.GetDateTime(2),
-                        reader.GetDateTime(3)
+                        reader.GetDateTime(3),
+                        reader.GetString(4) // Get Status
                     );
                     auctions.Add(auction);
                 }
@@ -70,17 +71,15 @@
                         reader.GetInt32(0),
                         reader.GetInt32(1),
                         reader.GetDateTime(2),
-                        reader.GetDateTime(3)
+                        reader.GetDateTime(3),
+                        reader.GetString(4) 
                     );
                     dbcon.Disconnect();
                     return auction;
                 }
-
             }
             dbcon.Disconnect();
             return null;
         }
-
-
     }
 }

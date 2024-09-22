@@ -1,9 +1,12 @@
 ﻿using AMS_B.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 
 namespace AMS_B.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class SellerController : ControllerBase
@@ -12,9 +15,16 @@ namespace AMS_B.Controllers
 
         private int GetSellerId()
         {
-            var claim = User.FindFirst("id");
-            return claim != null ? int.Parse(claim.Value) : 0;
+            var idClaim = User.FindFirst("id");
+            if (idClaim == null)
+            {
+                idClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            }
+
+            return idClaim != null ? int.Parse(idClaim.Value) : 0;  
         }
+
+
 
         [HttpGet("GetCarsBySellerId")]
         public async Task<IActionResult> GetCarsBySellerId([FromServices] Dbcon dbcon)
@@ -56,7 +66,7 @@ namespace AMS_B.Controllers
         public async Task<IActionResult> AddCar([FromForm] Car car, [FromForm] List<IFormFile> images, [FromServices] Dbcon dbcon)
         {
             int sellerId = GetSellerId();
-            if (car == null || car.UserId != sellerId)
+            if (car == null || car.SellerId != sellerId)
             {
                 return Forbid();
             }
@@ -82,7 +92,7 @@ namespace AMS_B.Controllers
                 }
             }
 
-            car.ImageUrls = string.Join(",", imageUrls);
+            car.Img = string.Join(",", imageUrls);
             await Car.AddCar(dbcon, car);
             return Ok(new { Message = "Car added successfully." });
         }
@@ -97,7 +107,7 @@ namespace AMS_B.Controllers
             }
 
             var car = await Car.GetCar(dbcon, carId);
-            if (car == null || car.UserId != sellerId)
+            if (car == null || car.SellerId != sellerId)
             {
                 return Forbid();
             }
@@ -116,12 +126,12 @@ namespace AMS_B.Controllers
             }
 
             var car = await Car.GetCar(dbcon, auction.ProductId);
-            if (car == null || car.UserId != sellerId)
+            if (car == null || car.SellerId != sellerId)
             {
                 return Forbid();
             }
 
-            await Auction.createAuction(dbcon, auction);
+            await Auction.CreateAuction(dbcon, auction);
             return Ok(new { Message = "Auction created successfully." });
         }
 
@@ -141,7 +151,7 @@ namespace AMS_B.Controllers
             }
 
             var car = await Car.GetCar(dbcon, auction.ProductId);
-            if (car == null || car.UserId != sellerId)
+            if (car == null || car.SellerId != sellerId)
             {
                 return Forbid();
             }

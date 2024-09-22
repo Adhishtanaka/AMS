@@ -107,3 +107,6 @@ C:\Users\kulas\OneDrive\Documents\GitHub\AMS\AMS-B\obj\Debug\net8.0\refint\AMS-B
 C:\Users\kulas\OneDrive\Documents\GitHub\AMS\AMS-B\obj\Debug\net8.0\AMS-B.pdb
 C:\Users\kulas\OneDrive\Documents\GitHub\AMS\AMS-B\obj\Debug\net8.0\AMS-B.genruntimeconfig.cache
 C:\Users\kulas\OneDrive\Documents\GitHub\AMS\AMS-B\obj\Debug\net8.0\ref\AMS-B.dll
+C:\Users\kulas\OneDrive\Documents\GitHub\AMS\AMS-B\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\kulas\OneDrive\Documents\GitHub\AMS\AMS-B\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\kulas\OneDrive\Documents\GitHub\AMS\AMS-B\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll

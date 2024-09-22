@@ -6,11 +6,15 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 interface Car {
-  productId: number;
-  pName: string;
-  pDescription: string;
+  id: number;
+  carDescription: string;
+  img: string; 
+  manufacturerId: number;
+  performanceClassId: number;
+  yearId: number;
   price: number;
-  imageUrls: string;
+  carTypeId: number;
+  sellerId: number;
 }
 
 const SellerCarDetail = () => {
@@ -23,7 +27,7 @@ const SellerCarDetail = () => {
 
   const fetchCarDetails = async () => {
     try {
-      const response = await axios.get<Car>(`http://localhost:5000/api/Seller/GetCarById?carId=${carId}`);
+      const response = await axios.get<Car>(`http://localhost:5000/api/Public/GetCarById?carId=${carId}`);
       setCar(response.data);
     } catch (error) {
       console.error('Error fetching car details:', error);
@@ -34,7 +38,7 @@ const SellerCarDetail = () => {
     return <div>Loading car details...</div>;
   }
 
-  const imageUrls = car.imageUrls.split(',');
+  const imageUrls = car.img.includes(',') ? car.img.split(',') : [car.img];
 
   const sliderSettings = {
     dots: true,
@@ -46,15 +50,15 @@ const SellerCarDetail = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">{car.pName}</h1>
+      <h1 className="text-2xl font-bold mb-4">Car ID: {car.id}</h1>
       <Slider {...sliderSettings}>
         {imageUrls.map((url, index) => (
           <div key={index}>
-            <img src={`http://localhost:5000/${url}`} alt={`Car image ${index + 1}`} className="w-full" />
+            <img src={`http://localhost:5000/${url.trim()}`} alt={`Car image ${index + 1}`} className="w-full" />
           </div>
         ))}
       </Slider>
-      <p className="mt-4">{car.pDescription}</p>
+      <p className="mt-4">{car.carDescription}</p>
       <p className="mt-2 text-xl font-semibold">${car.price}</p>
     </div>
   );
