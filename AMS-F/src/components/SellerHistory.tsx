@@ -80,32 +80,32 @@ if (loading) {
 }
 
 return (
-  <div className="container mx-auto px-4">
+  <div className="container mx-auto px-4 mb-48">
     {auctions.length === 0 ? (
       <div>No History found for this seller.</div>
     ) : (
-      <table className="min-w-full bg-white border border-gray-200">
-        <thead>
+      <table className="min-w-full table-auto border-collapse bg-white shadow-md rounded-lg overflow-hidden">
+        <thead className="bg-blue-50">
           <tr>
-            <th className="py-2 px-4 border-b">Car</th>
-            <th className="py-2 px-4 border-b">Last Bid</th>
-            <th className="py-2 px-4 border-b">Start Date</th>
-            <th className="py-2 px-4 border-b">End Date</th>
-            <th className="py-2 px-4 border-b">Status</th>
+            <th className="px-4 py-2 border text-left font-bold text-[#1D2945]">Car</th>
+            <th className="px-4 py-2 border text-left font-bold text-[#1D2945]">Last Bid</th>
+            <th className="px-4 py-2 border text-left font-bold text-[#1D2945]">Start Date</th>
+            <th className="px-4 py-2 border text-left font-bold text-[#1D2945]">End Date</th>
+            <th className="px-4 py-2 border text-left font-bold text-[#1D2945]">Status</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="divide-y divide-gray-200">
           {auctions.map((auction) => (
             <tr key={auction.auctionId}>
-              <td className="py-2 px-4 border-b">
+              <td className="px-4 py-1 border">
                 <Link to={`auction-details/${auction.auctionId}`} className="text-blue-500 hover:underline">
                   {auction.carTitle}
                 </Link>
               </td>
-              <td className="py-2 px-4 border-b">${auction.current_Price}</td>
-              <td className="py-2 px-4 border-b">{new Date(auction.startDate).toLocaleString()}</td>
-              <td className="py-2 px-4 border-b">{new Date(auction.endDate).toLocaleString()}</td>
-              <td className="py-2 px-4 border-b">{auction.status}</td>
+              <td className="px-4 py-1 border">${auction.current_Price}</td>
+              <td className="px-4 py-1 border">{new Date(auction.startDate).toLocaleString()}</td>
+              <td className="px-4 py-1 border">{new Date(auction.endDate).toLocaleString()}</td>
+              <td className="px-4 py-1 border">{auction.status}</td>
               
             </tr>
           ))}
