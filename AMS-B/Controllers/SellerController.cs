@@ -155,7 +155,7 @@ namespace AMS_B.Controllers
             {
                 return Forbid();
             }
-
+            
             await Auction.DeleteAuction(dbcon, auctionId);
             return Ok(new { Message = "Auction deleted successfully." });
         }

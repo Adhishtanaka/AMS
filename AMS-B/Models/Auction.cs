@@ -6,20 +6,23 @@
         public int ProductId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+
+        public decimal Current_Price { get; set; }
         public string Status { get; set; } 
 
-        public Auction(int auctionId, int productId, DateTime startDate, DateTime endDate, string status)
+        public Auction(int auctionId, int productId, DateTime startDate, DateTime endDate,decimal current_Price, string status)
         {
             AuctionId = auctionId;
             ProductId = productId;
             StartDate = startDate;
             EndDate = endDate;
+            Current_Price = current_Price;
             Status = status; 
         }
 
         public static async Task CreateAuction(Dbcon dbcon, Auction auction)
         {
-            string query = $"INSERT INTO auction (productid, startdate, enddate, status) VALUES ({auction.ProductId}, '{auction.StartDate:yyyy-MM-dd HH:mm:ss}', '{auction.EndDate:yyyy-MM-dd HH:mm:ss}', '{auction.Status}')";
+            string query = $"INSERT INTO auction (car_id, startdate, enddate,current_price, status) VALUES ({auction.ProductId}, '{auction.StartDate:yyyy-MM-dd HH:mm:ss}', '{auction.EndDate:yyyy-MM-dd HH:mm:ss}', '{auction.Current_Price}', '{auction.Status}')";
             await dbcon.Connect();
             await dbcon.ExecuteNonQuery(query);
             dbcon.Disconnect();
@@ -48,7 +51,8 @@
                         reader.GetInt32(1),
                         reader.GetDateTime(2),
                         reader.GetDateTime(3),
-                        reader.GetString(4) // Get Status
+                        reader.GetDecimal(4),
+                        reader.GetString(5) 
                     );
                     auctions.Add(auction);
                 }
@@ -72,7 +76,8 @@
                         reader.GetInt32(1),
                         reader.GetDateTime(2),
                         reader.GetDateTime(3),
-                        reader.GetString(4) 
+                        reader.GetDecimal(4),
+                        reader.GetString(5)
                     );
                     dbcon.Disconnect();
                     return auction;

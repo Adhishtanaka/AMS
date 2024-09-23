@@ -3,6 +3,8 @@
     public class Car
     {
         public int Id { get; set; }
+
+        public string CarTitle { get; set; }
         public string CarDescription { get; set; }
         public string Img { get; set; }
         public int ManufacturerId { get; set; }
@@ -12,9 +14,10 @@
         public int CarTypeId { get; set; }
         public int SellerId { get; set; }
 
-        public Car(int id, string carDescription, string img, int manufacturerId, int performanceClassId, int yearId, decimal price, int carTypeId, int sellerId)
+        public Car(int id, string carTitle,string carDescription, string img, int manufacturerId, int performanceClassId, int yearId, decimal price, int carTypeId, int sellerId)
         {
             Id = id;
+            CarTitle = carTitle;
             CarDescription = carDescription;
             Img = img;
             ManufacturerId = manufacturerId;
@@ -39,12 +42,13 @@
                         reader.GetInt32(0),
                         reader.GetString(1),
                         reader.GetString(2),
-                        reader.GetInt32(3),
+                        reader.GetString(3),
                         reader.GetInt32(4),
                         reader.GetInt32(5),
-                        reader.GetDecimal(6),
-                        reader.GetInt32(7),
-                        reader.GetInt32(8)
+                        reader.GetInt32(6),
+                        reader.GetDecimal(7),
+                        reader.GetInt32(8),
+                        reader.GetInt32(9)
                     );
                     cars.Add(car);
                 }
@@ -67,12 +71,13 @@
                         reader.GetInt32(0),
                         reader.GetString(1),
                         reader.GetString(2),
-                        reader.GetInt32(3),  
-                        reader.GetInt32(4),  
+                        reader.GetString(3),
+                        reader.GetInt32(4),
                         reader.GetInt32(5),
-                        reader.GetDecimal(6),
-                        reader.GetInt32(7),  
-                        reader.GetInt32(8)   
+                        reader.GetInt32(6),
+                        reader.GetDecimal(7),
+                        reader.GetInt32(8),
+                        reader.GetInt32(9)
                     );
                     dbcon.Disconnect();
                     return car;
@@ -86,8 +91,8 @@
         public static async Task AddCar(Dbcon dbcon, Car car)
         {
             await dbcon.Connect();
-            string query = $"INSERT INTO car (car_description, img, manufacturer_id, performance_class_id, year_id, price, car_type_id, seller_id) " +
-                           $"VALUES ('{car.CarDescription}', '{car.Img}', {car.ManufacturerId}, {car.PerformanceClassId}, {car.YearId}, {car.Price}, {car.CarTypeId}, {car.SellerId})";
+            string query = $"INSERT INTO car (car_title,car_description, img, manufacturer_id, performance_class_id, year_id, price, car_type_id, seller_id) " +
+                           $"VALUES ('{car.CarTitle}','{car.CarDescription}', '{car.Img}', {car.ManufacturerId}, {car.PerformanceClassId}, {car.YearId}, {car.Price}, {car.CarTypeId}, {car.SellerId})";
 
             await dbcon.ExecuteNonQuery(query);
             dbcon.Disconnect();

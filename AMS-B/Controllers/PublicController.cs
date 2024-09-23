@@ -25,5 +25,22 @@ namespace AMS_B.Controllers
             return Ok(car);
         }
 
+        [HttpGet("GetAuctionById")]
+        public async Task<IActionResult> GetAuctionById([FromQuery] int auctionId, [FromServices] Dbcon dbcon)
+        {
+            if (auctionId <= 0)
+            {
+                return BadRequest(new { Message = "Invalid auction ID." });
+            }
+
+            var auction = await Auction.GetAuctionById(dbcon, auctionId);
+            if (auction == null)
+            {
+                return NotFound(new { Message = "Auction not found." });
+            }
+
+            return Ok(auction);
+        }
+
     }
 }

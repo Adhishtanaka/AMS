@@ -19,6 +19,8 @@ import { ToastContainer } from 'react-toastify';
 import SellerDashboard from './routes/SellerDashboard';
 import SellerAddCar from './routes/SellerAddCar';
 import SellerCarDetail from './routes/SellerCarDetails';
+import SellerAddAuction from './routes/SellerAddAuction';
+import SellerAuctionDetails from './routes/SellerAuctionDetails';
 
 
 const queryClient = new QueryClient()
@@ -58,9 +60,18 @@ const router = createBrowserRouter([{
   path: "/seller/add-car",
   element: <SellerAddCar/>,
 },{
-  path: "/car-details/:carId", 
+  path: "/seller/car-details/:carId", 
   element: <SellerCarDetail />,
 },
+{
+  path: "/seller/create-auction",
+  element: <SellerAddAuction/>,
+},
+{
+  path: "/seller/auction-details/:auctionId",
+  element: <SellerAuctionDetails/>,
+}
+
 ])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
