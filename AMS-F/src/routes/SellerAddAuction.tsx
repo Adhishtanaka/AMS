@@ -26,11 +26,15 @@ const AddAuction: React.FC = () => {
         }
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          const errorMessage = error.response?.data?.message || 'An error occurred';
-          handleErrorResult(errorMessage);
-        } else {
+          if (error.response?.status === 409) {
+              handleErrorResult('An active auction already exists for this car.');
+          } else {
+              const errorMessage = error.response?.data?.message || 'An error occurred';
+              handleErrorResult(errorMessage);
+          }
+      } else {
           handleErrorResult('An unexpected error occurred');
-        }
+      }
       }
     };
     fetchCars();

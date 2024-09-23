@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { handleErrorResult } from '../util/TostMessage';
@@ -108,8 +108,8 @@ const SellerAuction = () => {
         <table className="min-w-full bg-white border border-gray-200">
           <thead>
             <tr>
-              <th className="py-2 px-4 border-b">Car</th>
-              <th className="py-2 px-4 border-b">Current Bid</th>
+              <th className="py-2 px-4 border-b">Auction Item</th>
+              <th className="py-2 px-4 border-b">Last Bid</th>
               <th className="py-2 px-4 border-b">Start Date</th>
               <th className="py-2 px-4 border-b">End Date</th>
               <th className="py-2 px-4 border-b">Status</th>

@@ -87,8 +87,8 @@ return (
       <table className="min-w-full bg-white border border-gray-200">
         <thead>
           <tr>
-            <th className="py-2 px-4 border-b">Car</th>
-            <th className="py-2 px-4 border-b">Last Bid</th>
+            <th className="py-2 px-4 border-b">Auction Item</th>
+            <th className="py-2 px-4 border-b">Final Bid</th>
             <th className="py-2 px-4 border-b">Start Date</th>
             <th className="py-2 px-4 border-b">End Date</th>
             <th className="py-2 px-4 border-b">Status</th>
