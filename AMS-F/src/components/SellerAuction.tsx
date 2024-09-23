@@ -95,9 +95,9 @@ const SellerAuction = () => {
   }
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-4 mb-48">
       <button
-        className="mb-4 bg-blue-300 p-1 rounded"
+        className="mb-6 text-gray-600 bg-blue-50 border border-gray-300 hover:border-gray-300 hover:bg-blue-100 font-semibold p-1 px-2 rounded"
         onClick={() => navigate('/seller/create-auction')}
       >
         Create Auction
@@ -105,41 +105,41 @@ const SellerAuction = () => {
       {auctions.length === 0 ? (
         <div>No auctions found for this seller.</div>
       ) : (
-        <table className="min-w-full bg-white border border-gray-200">
-          <thead>
-            <tr>
-              <th className="py-2 px-4 border-b">Car</th>
-              <th className="py-2 px-4 border-b">Current Bid</th>
-              <th className="py-2 px-4 border-b">Start Date</th>
-              <th className="py-2 px-4 border-b">End Date</th>
-              <th className="py-2 px-4 border-b">Status</th>
-              <th className="py-2 px-4 border-b">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {auctions.map((auction) => (
-              <tr key={auction.auctionId}>
-                <td className="py-2 px-4 border-b">
-                  <Link to={`auction-details/${auction.auctionId}`} className="text-blue-500 hover:underline">
-                    {auction.carTitle}
-                  </Link>
-                </td>
-                <td className="py-2 px-4 border-b">${auction.current_Price}</td>
-                <td className="py-2 px-4 border-b">{new Date(auction.startDate).toLocaleString()}</td>
-                <td className="py-2 px-4 border-b">{new Date(auction.endDate).toLocaleString()}</td>
-                <td className="py-2 px-4 border-b">{auction.status}</td>
-                <td className="py-2 px-4 border-b">
-                  <button
-                    className="text-red-500 hover:text-red-700"
-                    onClick={() => deleteAuction(auction.auctionId)}
-                  >
-                    Delete
-                  </button>
-                </td>
+      <table className="min-w-full table-auto border-collapse bg-white shadow-md rounded-lg overflow-hidden">
+            <thead className="bg-blue-50">
+              <tr>
+                <th className="px-4 py-2 border text-left font-bold text-[#1D2945]">Car</th>
+                <th className="px-4 py-2 border text-left font-bold text-[#1D2945]">Current Bid</th>
+                <th className="px-4 py-2 border text-left font-bold text-[#1D2945]">Start Date</th>
+                <th className="px-4 py-2 border text-left font-bold text-[#1D2945]">End Date</th>
+                <th className="px-4 py-2 border text-left font-bold text-[#1D2945]">Status</th>
+                <th className="px-4 py-2 border text-left font-bold text-[#1D2945]">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {auctions.map((auction) => (
+                <tr key={auction.auctionId}>
+                  <td className="px-4 py-1 border">
+                    <Link to={`auction-details/${auction.auctionId}`} className="text-blue-500 hover:underline">
+                      {auction.carTitle}
+                    </Link>
+                  </td>
+                  <td className="px-4 py-1 border">${auction.current_Price}</td>
+                  <td className="px-4 py-1 border">{new Date(auction.startDate).toLocaleString()}</td>
+                  <td className="px-4 py-1 border">{new Date(auction.endDate).toLocaleString()}</td>
+                  <td className="px-4 py-1 border">{auction.status}</td>
+                  <td className="px-4 py-1 border">
+                    <button
+                      className="text-red-500 hover:text-red-700"
+                      onClick={() => deleteAuction(auction.auctionId)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+      </table>
       )}
     </div>
   );
