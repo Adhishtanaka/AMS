@@ -63,9 +63,9 @@ const SellerCars = () => {
   }
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-4 mb-48">
       <button
-        className="mb-4 bg-blue-300 p-1 rounded"
+        className="mb-6 text-gray-600 bg-blue-50 border border-gray-300 hover:border-gray-300 hover:bg-blue-100 font-semibold p-1 px-2 rounded"
         onClick={() => navigate('/seller/add-car')}
       >
         Add Car
@@ -73,35 +73,37 @@ const SellerCars = () => {
       {cars.length === 0 ? (
         <div>No cars found for this seller.</div>
       ) : (
-        <table className="min-w-full bg-white border border-gray-200">
-          <thead>
-            <tr> 
-              <th className="py-2 px-4 border-b">Car Title</th>
-              <th className="py-2 px-4 border-b">Manufacturer ID</th>
-              <th className="py-2 px-4 border-b">Year ID</th>
-              <th className="py-2 px-4 border-b">Price</th>
-              <th className="py-2 px-4 border-b">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {cars.map((car) => (
-              <tr key={car.id}>
-                <td className="py-2 px-4 border-b"><Link to={`car-details/${car.id}`} className="text-blue-500 hover:underline">{car.carTitle} </Link></td>
-                <td className="py-2 px-4 border-b">{car.manufacturerId}</td>
-                <td className="py-2 px-4 border-b">{car.yearId}</td>
-                <td className="py-2 px-4 border-b">${car.price}</td>
-                <td className="py-2 px-4 border-b">
-                  <button
-                    className="text-red-500 hover:text-red-700"
-                    onClick={() => deleteCar(car.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <table className="min-w-full table-auto border-collapse bg-white shadow-md rounded-lg overflow-hidden">
+  <thead className="bg-blue-50">
+    <tr>
+      <th className="px-4 py-2 border text-left font-bold text-[#1D2945]">Car Title</th>
+      <th className="px-4 py-2 border text-left font-bold text-[#1D2945]">Manufacturer ID</th>
+      <th className="px-4 py-2 border text-left font-bold text-[#1D2945]">Year ID</th>
+      <th className="px-4 py-2 border text-left font-bold text-[#1D2945]">Price</th>
+      <th className="px-4 py-2 border text-left font-bold text-[#1D2945]">Actions</th>
+    </tr>
+  </thead>
+  <tbody className="divide-y divide-gray-200">
+    {cars.map((car) => (
+      <tr key={car.id}>
+        <td className="px-4 py-1 border">
+          <Link to={`car-details/${car.id}`} className="text-blue-500 hover:underline">{car.carTitle}</Link>
+        </td>
+        <td className="px-4 py-1 border">{car.manufacturerId}</td>
+        <td className="px-4 py-1 border">{car.yearId}</td>
+        <td className="px-4 py-1 border">${car.price}</td>
+        <td className="px-4 py-1 border">
+          <button
+            className="text-red-500 hover:text-red-700"
+            onClick={() => deleteCar(car.id)}
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
       )}
     </div>
   );
