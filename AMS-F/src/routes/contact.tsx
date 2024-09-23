@@ -52,15 +52,17 @@ const Contact: React.FC = () => {
     <>
     <Navbar/>
     <div className="max-w-5xl p-8 mx-auto">
-      <header className="mb-12">
+      <header className="mb-0">
         <h1 className="text-4xl font-bold">FAQs</h1>
       </header>
-      <div className="flex">
-        <p className="w-1/2 mt-4 text-gray-600">
-          Have questions? Here you'll find the answers most valued by our partners, along with access to step-by-step instructions and support.
-        </p>
-        <div className="md:w-1/3 md:pb-12">
-          <img src="/src/assets/contact.svg" alt="FAQ Illustration" className="w-full h-auto" />
+      <div className="flex flex-col sm:flex-row items-center gap-4">
+        <div className="text-content">
+          <p className="mt-4 text-gray-600">
+            Have questions? Here you'll find the answers most valued by our partners, along with access to step-by-step instructions and support.
+          </p>
+        </div>
+        <div className="flex flex-col items-center sm:order-last">
+          <img src="/src/assets/contact.svg" alt="FAQ Illustration" className="w-full h-80" />
         </div>
       </div>
       <div className="max-w-2xl p-8 mx-auto mb-10">
