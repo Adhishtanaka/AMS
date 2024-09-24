@@ -42,9 +42,9 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="mb-4 text-lg font-semibold text-slate-600">Payment Methods</h4>
             <div className="flex space-x-4">
-              <img src="./src/assets/visa.png" alt="Visa" className="w-8 h-8" />
-              <img src="./src/assets/mastercard.png" alt="MasterCard" className="w-8 h-8" />
-              <img src="./src/assets/paypal.png" alt="PayPal" className="w-8 h-8" />
+              <img src="/assets/visa.png" alt="Visa" className="w-8 h-8" />
+              <img src="/assets/mastercard.png" alt="MasterCard" className="w-8 h-8" />
+              <img src="/assets/paypal.png" alt="PayPal" className="w-8 h-8" />
             </div>
           </div>   
         
