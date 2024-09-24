@@ -1,4 +1,6 @@
-﻿namespace AMS_B.Models
+﻿using System.Reflection.PortableExecutable;
+
+namespace AMS_B.Models
 {
     public class Seller : Users
     {
@@ -21,11 +23,12 @@
                         reader.GetInt32(0),
                         reader.GetString(1),
                         reader.GetString(2),
-                        reader.GetInt32(3),
+                        reader.GetString(3),
                         reader.GetInt32(4),
                         reader.GetInt32(5),
-                        reader.GetDecimal(6),
-                        reader.GetInt32(7),
+                        reader.GetInt32(6),
+                        reader.GetDecimal(7),
+                        reader.GetInt32(8),
                         sellerId
                     );
                     cars.Add(car);
@@ -69,7 +72,8 @@
                         auctionReader.GetInt32(1),
                         auctionReader.GetDateTime(2),
                         auctionReader.GetDateTime(3),
-                        auctionReader.GetString(4)
+                        auctionReader.GetDecimal(4),
+                        auctionReader.GetString(5)
                     );
                     auctions.Add(auction);
                 }

@@ -1,13 +1,8 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query'
 import './index.css'
 import Login from './routes/login';
 import Register from './routes/register';
@@ -19,9 +14,9 @@ import { ToastContainer } from 'react-toastify';
 import SellerDashboard from './routes/SellerDashboard';
 import SellerAddCar from './routes/SellerAddCar';
 import SellerCarDetail from './routes/SellerCarDetails';
+import SellerAddAuction from './routes/SellerAddAuction';
+import SellerAuctionDetails from './routes/SellerAuctionDetails';
 
-
-const queryClient = new QueryClient()
 
 const router = createBrowserRouter([{
   path: "*",
@@ -58,18 +53,25 @@ const router = createBrowserRouter([{
   path: "/seller/add-car",
   element: <SellerAddCar/>,
 },{
-  path: "/car-details/:carId", 
+  path: "/seller/car-details/:carId", 
   element: <SellerCarDetail />,
 },
+{
+  path: "/seller/create-auction",
+  element: <SellerAddAuction/>,
+},
+{
+  path: "/seller/auction-details/:auctionId",
+  element: <SellerAuctionDetails/>,
+}
+
 ])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
- 
- <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
+
+    <>
     <RouterProvider router={router} />
     <ToastContainer />
-    </QueryClientProvider>
-  </React.StrictMode>,
+    </>
   
 )

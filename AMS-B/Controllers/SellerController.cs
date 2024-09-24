@@ -131,9 +131,16 @@ namespace AMS_B.Controllers
                 return Forbid();
             }
 
+            var existingAuction = await Auction.GetAllAuctions(dbcon);
+            if (existingAuction.Any(a => a.ProductId == auction.ProductId && a.Status == "Active"))
+            {
+                return Conflict(new { Message = "An active auction already exists for this car." });
+            }
+
             await Auction.CreateAuction(dbcon, auction);
             return Ok(new { Message = "Auction created successfully." });
         }
+
 
         [HttpDelete("DeleteAuction")]
         public async Task<IActionResult> DeleteAuction([FromQuery] int auctionId, [FromServices] Dbcon dbcon)
@@ -155,7 +162,7 @@ namespace AMS_B.Controllers
             {
                 return Forbid();
             }
-
+            
             await Auction.DeleteAuction(dbcon, auctionId);
             return Ok(new { Message = "Auction deleted successfully." });
         }

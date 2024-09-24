@@ -6,6 +6,7 @@ import api from '../util/api';
 
 interface Car {
   id: number;
+  carTitle: string;
   carDescription: string;
   manufacturerId: number;
   performanceClassId: number;
@@ -75,7 +76,7 @@ const SellerCars = () => {
         <table className="min-w-full bg-white border border-gray-200">
           <thead>
             <tr> 
-              <th className="py-2 px-4 border-b">Car Description</th>
+              <th className="py-2 px-4 border-b">Car Title</th>
               <th className="py-2 px-4 border-b">Manufacturer ID</th>
               <th className="py-2 px-4 border-b">Year ID</th>
               <th className="py-2 px-4 border-b">Price</th>
@@ -85,7 +86,7 @@ const SellerCars = () => {
           <tbody>
             {cars.map((car) => (
               <tr key={car.id}>
-                <td className="py-2 px-4 border-b"><Link to={`/car-details/${car.id}`} className="text-blue-500 hover:underline">{car.carDescription} </Link></td>
+                <td className="py-2 px-4 border-b"><Link to={`car-details/${car.id}`} className="text-blue-500 hover:underline">{car.carTitle} </Link></td>
                 <td className="py-2 px-4 border-b">{car.manufacturerId}</td>
                 <td className="py-2 px-4 border-b">{car.yearId}</td>
                 <td className="py-2 px-4 border-b">${car.price}</td>
