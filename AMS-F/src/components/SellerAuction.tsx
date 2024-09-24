@@ -97,7 +97,7 @@ const SellerAuction = () => {
   return (
     <div className="container mx-auto px-4 mb-48">
       <button
-        className="mb-6 text-gray-600 bg-blue-50 border border-gray-300 hover:border-gray-300 hover:bg-blue-100 font-semibold p-1 px-2 rounded"
+        className="mb-6 text-white bg-[#1D2945] hover:bg-[#3d517f] font-semibold p-1 px-2 rounded"
         onClick={() => navigate('/seller/create-auction')}
       >
         Create Auction

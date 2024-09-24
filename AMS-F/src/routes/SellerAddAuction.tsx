@@ -61,7 +61,7 @@ const AddAuction: React.FC = () => {
     <>
       {/* Navbar with spacing below */}
       <Navbar />
-      <div className="flex items-center justify-center min-h-screen px-4 py-6 bg-gray-100">
+      <div className="flex items-center justify-center min-h-screen px-4 py-6">
       <div className="w-full max-w-md p-8 px-12 py-12 bg-white rounded-lg shadow-lg">
         <h2 className="mb-6 font-bold text-center text-gray-900 sm:text-2xl">Create New Auction</h2>
         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
