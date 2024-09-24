@@ -8,10 +8,11 @@ namespace AMS_B.Controllers
     public class AdminController : ControllerBase
     {
         private readonly Dbcon _dbcon;
-
-        public AdminController(Dbcon dbcon)
+        private readonly CategoryManager _categoryManager;
+        public AdminController(Dbcon dbcon, CategoryManager categoryManager)
         {
             _dbcon = dbcon;
+            _categoryManager = categoryManager;
         }
 
         [HttpPut("BanUser")] 
@@ -56,5 +57,44 @@ namespace AMS_B.Controllers
                 return StatusCode(500, new { Message = "An error occurred while retrieving users.", Error = ex.Message });
             }
         }
+        [HttpPost("AddCarType")]
+        public async Task<IActionResult> AddCarType([FromBody] CarType carType)
+        {
+            if (carType == null || string.IsNullOrEmpty(carType.TypeName))
+            {
+                return BadRequest(new { message = "Car type is required." });
+            }
+
+            try
+            {
+                await _categoryManager.AddCarType(_dbcon, carType);
+                return Ok(new { message = "Car type added successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while adding the car type.", error = ex.Message });
+            }
+        }
+
+        [HttpPost("AddManufacturerWithModels")]
+        public async Task<IActionResult> AddManufacturerWithModels([FromBody] Manufacturer manufacturer)
+        {
+            if (manufacturer == null || string.IsNullOrEmpty(manufacturer.ManufacturerName) || manufacturer.Models == null || manufacturer.Models.Count == 0)
+            {
+                return BadRequest(new { message = "Manufacturer and its models are required." });
+            }
+
+            try
+            {
+                await _categoryManager.AddManufacturerWithModels(_dbcon, manufacturer);
+                return Ok(new { message = "Manufacturer and models added successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while adding the manufacturer and models.", error = ex.Message });
+            }
+        }
+
+
     }
 }

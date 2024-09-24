@@ -25,5 +25,44 @@ namespace AMS_B.Controllers
             return Ok(car);
         }
 
+
+        private readonly CategoryManager _categoryManager;
+        private readonly Dbcon _dbcon;
+
+        public PublicController(CategoryManager categoryManager, Dbcon dbcon)
+        {
+            
+            _categoryManager = categoryManager;
+            _dbcon = dbcon;
+        }
+
+        [HttpGet("Cartype")]
+        public async Task<IActionResult> GetCarType()
+        {
+            try
+            {
+                var carTypes = await _categoryManager.GetCarTypes(_dbcon);
+                return Ok(carTypes);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while retrieving car types.", error = ex.Message });
+            }
+        }
+
+        [HttpGet("ManufacturersWithModels")]
+        public async Task<IActionResult> GetManufacturersWithModels()
+        {
+            try
+            {
+                var manufacturersWithModels = await _categoryManager.GetManufacturersWithModels(_dbcon);
+                return Ok(manufacturersWithModels);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while retrieving manufacturers and their models.", error = ex.Message });
+            }
+        }
+
     }
 }
