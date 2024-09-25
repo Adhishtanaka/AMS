@@ -39,42 +39,42 @@ const SellerAddCar = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-      <div className="w-full max-w-lg bg-white p-6 rounded-lg shadow-md">
-        <h1 className="text-2xl font-semibold text-center mb-6">Add a New Car</h1>
+    <div className="flex items-center justify-center min-h-screen px-4 py-6">
+      <div className="w-full max-w-md p-8 px-12 py-12 bg-white rounded-lg shadow-lg">
+      <h2 className="mb-6 font-bold text-center text-gray-900 sm:text-2xl">Add a New Car</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-gray-700 mb-1">Car Name</label>
+          <div  className='text-gray-700 '>
+            <label className= "block mb-2 text-sm font-medium text-gray-500">Car Name</label>
             <input
               type="text"
               value={pName}
               onChange={(e) => setPName(e.target.value)}
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
               required
+              className="block w-full py-2 pl-3 pr-5 mt-1 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-[#263657] focus:border-[#2d3c67] sm:text-sm"
             />
           </div>
           <div>
-            <label className="block text-gray-700 mb-1">Description</label>
+            <label className="block mb-2 text-sm font-medium text-gray-500">Description</label>
             <textarea
               value={pDescription}
               onChange={(e) => setPDescription(e.target.value)}
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
+              className="block w-full py-2 pl-3 pr-5 mt-1 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-[#263657] focus:border-[#2d3c67] sm:text-sm"
               rows={3}
               required
             ></textarea>
           </div>
           <div>
-            <label className="block text-gray-700 mb-1">Price</label>
+            <label className="block mb-2 text-sm font-medium text-gray-500">Price</label>
             <input
               type="number"
               value={price}
               onChange={(e) => setPrice(parseFloat(e.target.value))}
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
+              className="block w-full py-2 pl-3 pr-5 mt-1 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-[#263657] focus:border-[#2d3c67] sm:text-sm"
               required
             />
           </div>
           <div>
-            <label className="block text-gray-700 mb-1">Car Images</label>
+            <label className="block mb-2 text-sm font-medium text-gray-500">Car Images</label>
             <input
               type="file"
               multiple
@@ -89,14 +89,14 @@ const SellerAddCar = () => {
                   key={index}
                   src={URL.createObjectURL(image)}
                   alt={`Preview ${index + 1}`}
-                  className="w-full h-auto rounded border"
+                  className="w-full h-auto border rounded"
                 />
               ))}
             </div>
           )}
           <button
             type="submit"
-            className="w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"
+            className="flex justify-center w-full px-4 py-2 text-sm font-medium text-white transition duration-150 ease-in-out border border-transparent rounded-md shadow-sm bg-[#1D2945] hover:bg-[#243357]"
           >
             Add Car
           </button>

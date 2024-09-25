@@ -60,13 +60,13 @@ const SellerAuctionDetails = () => {
   return (
     <>
       <Navbar />
-      <div className="container mx-auto p-4">
-        <div className="bg-white shadow-lg rounded-lg overflow-hidden max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6">
+      <div className="container flex items-center justify-center min-h-screen p-4 mx-auto">
+        <div className="max-w-xl p-6 mx-auto overflow-hidden bg-white rounded-lg shadow-lg"> {/* Reduced max width to max-w-xl */}
+          <div className="grid grid-cols-1 gap-4">
             <div className="flex flex-col justify-between">
               <div>
-                <h1 className="text-3xl font-bold mb-2 text-gray-800">{car.carTitle}</h1>
-                <p className="text-gray-600 mb-4">{car.carDescription}</p>
+                <h1 className="mb-2 text-2xl font-bold text-gray-800">{car.carTitle}</h1> {/* Adjusted text size */}
+                <p className="mb-4 text-gray-600">{car.carDescription}</p>
                 <p className="mb-2">
                   <strong>Auction Start Date:</strong>{' '}
                   <span className="text-gray-800">{new Date(auction.startDate).toLocaleString()}</span>
@@ -91,7 +91,7 @@ const SellerAuctionDetails = () => {
                 </p>
               </div>
               <div className="mt-4">
-                <a href={`/seller/car-details/${car.id}`} className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
+                <a href={`/seller/car-details/${car.id}`} className="inline-block px-4 py-2 font-semibold text-white transition duration-200 bg-[#1D2945] rounded-lg hover:bg-[#243357]">
                   View Car Details
                 </a>
               </div>
