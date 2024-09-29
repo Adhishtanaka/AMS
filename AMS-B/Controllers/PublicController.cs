@@ -65,7 +65,7 @@ namespace AMS_B.Controllers
             }
         }
 
-            }}
+            
         [HttpGet("GetAuctionById")]
         public async Task<IActionResult> GetAuctionById([FromQuery] int auctionId, [FromServices] Dbcon dbcon)
         {
