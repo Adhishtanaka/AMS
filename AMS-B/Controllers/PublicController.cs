@@ -61,6 +61,10 @@ namespace AMS_B.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = "An error occurred while retrieving manufacturers and their models.", error = ex.Message });
+
+            }
+        }
+
             }}
         [HttpGet("GetAuctionById")]
         public async Task<IActionResult> GetAuctionById([FromQuery] int auctionId, [FromServices] Dbcon dbcon)
