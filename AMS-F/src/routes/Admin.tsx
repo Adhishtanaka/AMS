@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ManageUsers from '../components/AdminManageUsers';
 import AdminDashboard from '../components/AdminDashboard';
+import CategoryManager from '../components/AdminCategoryManager';
 
 
 const Admin: React.FC = () => {
@@ -14,8 +15,11 @@ const Admin: React.FC = () => {
                 return <AdminDashboard />;
             case 'Users':
                 return <ManageUsers />;
+            case 'CategoryManager':
+                return <CategoryManager/>;
             default:
                 return <AdminDashboard />;
+            
         }
     
     };
@@ -35,7 +39,7 @@ const Admin: React.FC = () => {
             >
                 <h1 className="text-2xl text-[#1D2945] font-semibold text-center">AMS .</h1>
                 <nav>
-                    {['Dashboard', 'Users'].map((item) => (
+                    {['Dashboard', 'Users','CategoryManager'].map((item) => (
                         <a
                             key={item}
                             href="#"
