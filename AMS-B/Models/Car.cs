@@ -3,24 +3,27 @@
     public class Car
     {
         public int Id { get; set; }
-
         public string CarTitle { get; set; }
         public string CarDescription { get; set; }
-        public string Img { get; set; }
-        public int ManufacturerId { get; set; }
+        public string? Img { get; set; }
+        public int ModelId { get; set; }
         public int PerformanceClassId { get; set; }
         public int YearId { get; set; }
         public decimal Price { get; set; }
         public int CarTypeId { get; set; }
         public int SellerId { get; set; }
 
-        public Car(int id, string carTitle,string carDescription, string img, int manufacturerId, int performanceClassId, int yearId, decimal price, int carTypeId, int sellerId)
+        public Car()
+        {
+        }
+
+        public Car(int id, string carTitle, string carDescription, string img, int modelId, int performanceClassId, int yearId, decimal price, int carTypeId, int sellerId)
         {
             Id = id;
             CarTitle = carTitle;
             CarDescription = carDescription;
             Img = img;
-            ManufacturerId = manufacturerId;
+            ModelId = modelId;
             PerformanceClassId = performanceClassId;
             YearId = yearId;
             Price = price;
@@ -91,8 +94,8 @@
         public static async Task AddCar(Dbcon dbcon, Car car)
         {
             await dbcon.Connect();
-            string query = $"INSERT INTO car (car_title,car_description, img, manufacturer_id, performance_class_id, year_id, price, car_type_id, seller_id) " +
-                           $"VALUES ('{car.CarTitle}','{car.CarDescription}', '{car.Img}', {car.ManufacturerId}, {car.PerformanceClassId}, {car.YearId}, {car.Price}, {car.CarTypeId}, {car.SellerId})";
+            string query = $"INSERT INTO car (car_title,car_description, img, model_id, performance_class_id, year_id, price, car_type_id, seller_id) " +
+                           $"VALUES ('{car.CarTitle}','{car.CarDescription}', '{car.Img}', {car.ModelId}, {car.PerformanceClassId}, {car.YearId}, {car.Price}, {car.CarTypeId}, {car.SellerId})";
 
             await dbcon.ExecuteNonQuery(query);
             dbcon.Disconnect();

@@ -8,6 +8,13 @@ namespace AMS_B.Controllers
     [ApiController]
     public class PublicController : ControllerBase
     {
+        private readonly Dbcon _dbcon;
+
+        public PublicController(Dbcon dbcon)
+        {
+            _dbcon = dbcon;
+        }
+
         [HttpGet("GetCarById")]
         public async Task<IActionResult> GetCarById([FromQuery] int carId, [FromServices] Dbcon dbcon)
         {
@@ -26,22 +33,12 @@ namespace AMS_B.Controllers
         }
 
 
-        private readonly CategoryManager _categoryManager;
-        private readonly Dbcon _dbcon;
-
-        public PublicController(CategoryManager categoryManager, Dbcon dbcon)
-        {
-            
-            _categoryManager = categoryManager;
-            _dbcon = dbcon;
-        }
-
-        [HttpGet("Cartype")]
-        public async Task<IActionResult> GetCarType()
+        [HttpGet("GetAllCarTypes")]
+        public async Task<IActionResult> GetAllCarTypes()
         {
             try
             {
-                var carTypes = await _categoryManager.GetCarTypes(_dbcon);
+                var carTypes = await CategoryManager.GetCarTypes(_dbcon);
                 return Ok(carTypes);
             }
             catch (Exception ex)
@@ -50,22 +47,64 @@ namespace AMS_B.Controllers
             }
         }
 
-        [HttpGet("ManufacturersWithModels")]
-        public async Task<IActionResult> GetManufacturersWithModels()
+        [HttpGet("GetAllManufacturers")]
+        public async Task<IActionResult> GetAllManufacturers()
         {
             try
             {
-                var manufacturersWithModels = await _categoryManager.GetManufacturersWithModels(_dbcon);
-                return Ok(manufacturersWithModels);
+                var manufacturers = await CategoryManager.GetManufacturers(_dbcon);
+                return Ok(manufacturers);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "An error occurred while retrieving manufacturers and their models.", error = ex.Message });
-
+                return StatusCode(500, new { message = "An error occurred while retrieving manufacturers.", error = ex.Message });
             }
         }
 
-            }}
+        [HttpGet("GetAllModels")]
+        public async Task<IActionResult> GetAllModels()
+        {
+            try
+            {
+                var models = await CategoryManager.GetModels(_dbcon);
+                return Ok(models);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while retrieving models.", error = ex.Message });
+            }
+        }
+
+        [HttpGet("GetAllCarYears")]
+        public async Task<IActionResult> GetAllCarYears()
+        {
+            try
+            {
+                var carYears = await CategoryManager.GetCarYear(_dbcon);
+                return Ok(carYears);
+            }
+            catch (Exception ex)
+            {
+                
+                return StatusCode(500, new { message = "An error occurred while retrieving car years.", error = ex.Message });
+            }
+        }
+
+        [HttpGet("GetAllCarPC")]
+        public async Task<IActionResult> GetAllPC()
+        {
+            try
+            {
+                var carPC = await CategoryManager.GetPerformenceClass(_dbcon);
+                return Ok(carPC);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, new { message = "An error occurred while retrieving car years.", error = ex.Message });
+            }
+        }
+
         [HttpGet("GetAuctionById")]
         public async Task<IActionResult> GetAuctionById([FromQuery] int auctionId, [FromServices] Dbcon dbcon)
         {
