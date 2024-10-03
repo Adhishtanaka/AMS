@@ -8,7 +8,8 @@ interface Car {
   id: number;
   carTitle: string;
   carDescription: string;
-  manufacturerId: number;
+  img: string; 
+  modelId: number;
   performanceClassId: number;
   yearId: number;
   price: number;
@@ -77,7 +78,7 @@ const SellerCars = () => {
           <thead>
             <tr> 
               <th className="py-2 px-4 border-b">Car Title</th>
-              <th className="py-2 px-4 border-b">Manufacturer ID</th>
+              <th className="py-2 px-4 border-b">Model ID</th>
               <th className="py-2 px-4 border-b">Year ID</th>
               <th className="py-2 px-4 border-b">Price</th>
               <th className="py-2 px-4 border-b">Actions</th>
@@ -87,7 +88,7 @@ const SellerCars = () => {
             {cars.map((car) => (
               <tr key={car.id}>
                 <td className="py-2 px-4 border-b"><Link to={`car-details/${car.id}`} className="text-blue-500 hover:underline">{car.carTitle} </Link></td>
-                <td className="py-2 px-4 border-b">{car.manufacturerId}</td>
+                <td className="py-2 px-4 border-b">{car.modelId}</td>
                 <td className="py-2 px-4 border-b">{car.yearId}</td>
                 <td className="py-2 px-4 border-b">${car.price}</td>
                 <td className="py-2 px-4 border-b">

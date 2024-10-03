@@ -1,109 +1,260 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { handleErrorResult, handleSuccessResult } from '../util/TostMessage';
 import api from '../util/api';
 
-const SellerAddCar = () => {
-  const [pName, setPName] = useState('');
-  const [pDescription, setPDescription] = useState('');
-  const [price, setPrice] = useState<number>(0);
-  const [images, setImages] = useState<File[]>([]);
-  const navigate = useNavigate();
+interface CarData {
+  carTitle: string;
+  carDescription: string;
+  modelId: string;
+  performanceClassId: string;
+  yearId: string;
+  price: string;
+  carTypeId: string;
+}
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setImages([...images, ...Array.from(e.target.files)]);
+interface Model {
+  modelId: number;
+  modelName: string;
+}
+
+interface PerformanceClass {
+  id: number;
+  className: string;
+}
+
+interface Year {
+  id: number;
+  year: string;
+}
+
+interface CarType {
+  id: number;
+  typeName: string;
+}
+
+const AddCarForm: React.FC = () => {
+  const [carData, setCarData] = useState<CarData>({
+    carTitle: '',
+    carDescription: '',
+    modelId: '',
+    performanceClassId: '',
+    yearId: '',
+    price: '',
+    carTypeId: '',
+  });
+  const [images, setImages] = useState<File[]>([]);
+  const [models, setModels] = useState<Model[]>([]);
+  const [performanceClasses, setPerformanceClasses] = useState<PerformanceClass[]>([]);
+  const [years, setYears] = useState<Year[]>([]);
+  const [carTypes, setCarTypes] = useState<CarType[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    fetchSelectOptions();
+  }, []);
+
+  const fetchSelectOptions = async (): Promise<void> => {
+    setLoading(true);
+    try {
+      const modelsRes = await api.get<Model[]>('/Public/GetAllModels');
+      setModels(modelsRes.data);
+
+      const yearsRes = await api.get<Year[]>('/Public/GetAllCarYears');
+      setYears(yearsRes.data);
+
+      const carTypesRes = await api.get<CarType[]>('/Public/GetAllCarTypes');
+      setCarTypes(carTypesRes.data);
+
+      const carPCRes = await api.get<PerformanceClass[]>('/Public/GetAllCarPC');
+      setPerformanceClasses(carPCRes.data);
+    } catch (err) {
+      handleErrorResult('Failed to fetch select options');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void => {
+    const { name, value } = e.target;
+    setCarData({ ...carData, [name]: value });
+  };
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    if (e.target.files) {
+      setImages(Array.from(e.target.files));
+    }
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
+    setLoading(true);
+
     const formData = new FormData();
-    formData.append('pName', pName);
-    formData.append('pDescription', pDescription);
-    formData.append('price', price.toString());
+    
+    Object.keys(carData).forEach(key => {
+      formData.append(key, carData[key as keyof CarData]);
+    });
 
     images.forEach((image) => {
       formData.append('images', image);
     });
 
     try {
-      await api.post('http://localhost:5000/api/Seller/AddCar', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      navigate('/'); 
-    } catch (error) {
-      console.error('Error adding car:', error);
+      await api.post('/Seller/AddCar', formData);
+      handleSuccessResult('Car added successfully');
+    } catch (err) {
+      handleErrorResult('Failed to add car');
+    } finally {
+      setLoading(false);
     }
   };
 
+  if (loading) {
+    return <div className="text-center py-4">Loading...</div>;
+  }
+
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-      <div className="w-full max-w-lg bg-white p-6 rounded-lg shadow-md">
-        <h1 className="text-2xl font-semibold text-center mb-6">Add a New Car</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-gray-700 mb-1">Car Name</label>
-            <input
-              type="text"
-              value={pName}
-              onChange={(e) => setPName(e.target.value)}
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 mb-1">Description</label>
-            <textarea
-              value={pDescription}
-              onChange={(e) => setPDescription(e.target.value)}
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
-              rows={3}
-              required
-            ></textarea>
-          </div>
-          <div>
-            <label className="block text-gray-700 mb-1">Price</label>
-            <input
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(parseFloat(e.target.value))}
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 mb-1">Car Images</label>
-            <input
-              type="file"
-              multiple
-              onChange={handleImageChange}
-              className="w-full"
-            />
-          </div>
-          {images.length > 0 && (
-            <div className="grid grid-cols-2 gap-2 mb-4">
-              {images.map((image, index) => (
-                <img
-                  key={index}
-                  src={URL.createObjectURL(image)}
-                  alt={`Preview ${index + 1}`}
-                  className="w-full h-auto rounded border"
-                />
-              ))}
-            </div>
-          )}
-          <button
-            type="submit"
-            className="w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"
-          >
-            Add Car
-          </button>
-        </form>
+    <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">
+      <div>
+        <label htmlFor="carTitle" className="block text-sm font-medium text-gray-700">Car Title</label>
+        <input
+          id="carTitle"
+          name="carTitle"
+          type="text"
+          value={carData.carTitle}
+          onChange={handleInputChange}
+          required
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        />
       </div>
-    </div>
+
+      <div>
+        <label htmlFor="carDescription" className="block text-sm font-medium text-gray-700">Car Description</label>
+        <textarea
+          id="carDescription"
+          name="carDescription"
+          value={carData.carDescription}
+          onChange={handleInputChange}
+          required
+          rows={3}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="modelId" className="block text-sm font-medium text-gray-700">Model</label>
+        <select
+          id="modelId"
+          name="modelId"
+          value={carData.modelId}
+          onChange={handleInputChange}
+          required
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        >
+          <option value="">Select a model</option>
+          {models.map((model) => (
+            <option key={model.modelId} value={model.modelId.toString()}>
+              {model.modelName}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="performanceClassId" className="block text-sm font-medium text-gray-700">Performance Class</label>
+        <select
+          id="performanceClassId"
+          name="performanceClassId"
+          value={carData.performanceClassId}
+          onChange={handleInputChange}
+          required
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        >
+          <option value="">Select a performance class</option>
+          {performanceClasses.map((pc) => (
+            <option key={pc.id} value={pc.id.toString()}>
+              {pc.className}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="yearId" className="block text-sm font-medium text-gray-700">Year</label>
+        <select
+          id="yearId"
+          name="yearId"
+          value={carData.yearId}
+          onChange={handleInputChange}
+          required
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        >
+          <option value="">Select a year</option>
+          {years.map((year) => (
+            <option key={year.id} value={year.id.toString()}>
+              {year.year}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="carTypeId" className="block text-sm font-medium text-gray-700">Car Type</label>
+        <select
+          id="carTypeId"
+          name="carTypeId"
+          value={carData.carTypeId}
+          onChange={handleInputChange}
+          required
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        >
+          <option value="">Select a car type</option>
+          {carTypes.map((type) => (
+            <option key={type.id} value={type.id.toString()}>
+              {type.typeName}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+      <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price</label>
+        <input
+          id="price"
+          name="price"
+          type="number"
+          value={carData.price}
+          onChange={handleInputChange}
+          required
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="images" className="block text-sm font-medium text-gray-700">Images</label>
+        <input
+          id="images"
+          name="images"
+          type="file"
+          onChange={handleImageChange}
+          multiple
+          accept="image/*"
+          className="mt-1 block w-full text-sm text-slate-500
+            file:mr-4 file:py-2 file:px-4
+            file:rounded-full file:border-0
+            file:text-sm file:font-semibold
+            file:bg-violet-50 file:text-violet-700
+            hover:file:bg-violet-100"
+        />
+      </div>
+      <button
+        type="submit"
+        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      >
+        Add Car
+      </button>
+    </form>
   );
 };
 
-export default SellerAddCar;
+export default AddCarForm;

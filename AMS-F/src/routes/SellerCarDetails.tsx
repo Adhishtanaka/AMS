@@ -11,7 +11,7 @@ interface Car {
   carTitle: string;
   carDescription: string;
   img: string; 
-  manufacturerId: number;
+  modelId: number;
   performanceClassId: number;
   yearId: number;
   price: number;
