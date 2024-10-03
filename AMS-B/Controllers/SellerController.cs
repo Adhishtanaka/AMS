@@ -1,6 +1,7 @@
 ﻿using AMS_B.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MySqlX.XDevAPI;
 using System.Security.Claims;
 
 
@@ -63,6 +64,7 @@ namespace AMS_B.Controllers
         }
 
         [HttpPost("AddCar")]
+        [Consumes("multipart/form-data")]
         public async Task<IActionResult> AddCar([FromForm] Car car, [FromForm] List<IFormFile> images, [FromServices] Dbcon dbcon)
         {
             int sellerId = GetSellerId();
@@ -70,10 +72,12 @@ namespace AMS_B.Controllers
             {
                 return Forbid();
             }
+
             if (!Directory.Exists(_imageFolder))
             {
                 Directory.CreateDirectory(_imageFolder);
             }
+
             List<string> imageUrls = new List<string>();
 
             foreach (var image in images)

@@ -1,7 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Data.Common;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+
 
 namespace AMS_B.Models
 {

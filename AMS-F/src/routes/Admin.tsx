@@ -15,7 +15,7 @@ const Admin: React.FC = () => {
                 return <AdminDashboard />;
             case 'Users':
                 return <ManageUsers />;
-            case 'CategoryManager':
+            case 'Categories':
                 return <CategoryManager/>;
             default:
                 return <AdminDashboard />;
@@ -39,7 +39,7 @@ const Admin: React.FC = () => {
             >
                 <h1 className="text-2xl text-[#1D2945] font-semibold text-center">AMS .</h1>
                 <nav>
-                    {['Dashboard', 'Users','CategoryManager'].map((item) => (
+                    {['Dashboard', 'Users','Categories'].map((item) => (
                         <a
                             key={item}
                             href="#"
