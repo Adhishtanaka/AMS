@@ -8,11 +8,10 @@ namespace AMS_B.Controllers
     public class AdminController : ControllerBase
     {
         private readonly Dbcon _dbcon;
-        private readonly CategoryManager _categoryManager;
-        public AdminController(Dbcon dbcon, CategoryManager categoryManager)
+        
+        public AdminController(Dbcon dbcon)
         {
             _dbcon = dbcon;
-            _categoryManager = categoryManager;
         }
 
         [HttpPut("BanUser")] 
@@ -67,7 +66,7 @@ namespace AMS_B.Controllers
 
             try
             {
-                await _categoryManager.AddCarType(_dbcon, carType);
+                await CategoryManager.AddCarType(_dbcon, carType);
                 return Ok(new { message = "Car type added successfully." });
             }
             catch (Exception ex)
@@ -76,25 +75,47 @@ namespace AMS_B.Controllers
             }
         }
 
-        [HttpPost("AddManufacturerWithModels")]
-        public async Task<IActionResult> AddManufacturerWithModels([FromBody] Manufacturer manufacturer)
+        [HttpPost("AddCarYear")]
+        public async Task<IActionResult> AddCarYear([FromBody] CarYear carYear)
         {
-            if (manufacturer == null || string.IsNullOrEmpty(manufacturer.ManufacturerName) || manufacturer.Models == null || manufacturer.Models.Count == 0)
-            {
-                return BadRequest(new { message = "Manufacturer and its models are required." });
-            }
-
             try
             {
-                await _categoryManager.AddManufacturerWithModels(_dbcon, manufacturer);
-                return Ok(new { message = "Manufacturer and models added successfully." });
+                await CategoryManager.AddYear(_dbcon, carYear);
+                return Ok(new { message = "Car year added successfully." });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "An error occurred while adding the manufacturer and models.", error = ex.Message });
+                return StatusCode(500, new { message = "An error occurred while adding the car year.", error = ex.Message });
             }
         }
 
+        [HttpPost("AddManufacturer")]
+        public async Task<IActionResult> AddManufacturer([FromBody] Manufacturer manufacturer)
+        {
+            try
+            {
+                await CategoryManager.AddManufacturer(_dbcon, manufacturer);
+                return Ok(new { message = "Manufacturer added successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while adding the manufacturer.", error = ex.Message });
+            }
+        }
+
+        [HttpPost("AddModel")]
+        public async Task<IActionResult> AddModel([FromBody] Model model)
+        {
+            try
+            {
+                await CategoryManager.AddModel(_dbcon, model);
+                return Ok(new { message = "Model added successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while adding the model.", error = ex.Message });
+            }
+        }
 
     }
 }

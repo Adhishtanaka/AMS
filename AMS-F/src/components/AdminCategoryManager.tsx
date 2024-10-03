@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { handleErrorResult } from '../util/TostMessage';
+import api from '../util/api';
 
 interface CarType {
   id: number;
@@ -9,164 +11,362 @@ interface CarType {
 interface Manufacturer {
   id: number;
   manufacturerName: string;
-  models: string[];
+}
+
+interface Model {
+  modelId: number;
+  modelName: string;
+  manufacturerId: number;
+  manufacturerName: string;
+}
+
+interface CarYear {
+  id: number;
+  year: string;
 }
 
 const CategoryManager: React.FC = () => {
   const [carTypes, setCarTypes] = useState<CarType[]>([]);
-  const [newCarType, setNewCarType] = useState('');
   const [manufacturers, setManufacturers] = useState<Manufacturer[]>([]);
-  const [newManufacturerName, setNewManufacturerName] = useState('');
-  const [newModels, setNewModels] = useState<string[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const [models, setModels] = useState<Model[]>([]);
+  const [carYears, setCarYears] = useState<CarYear[]>([]);
 
-  // Fetch car types and manufacturers on component mount
+  const [newCarType, setNewCarType] = useState('');
+  const [newManufacturer, setNewManufacturer] = useState('');
+  const [newModel, setNewModel] = useState('');
+  const [selectedManufacturerId, setSelectedManufacturerId] = useState<number | ''>('');
+  const [newYear, setNewYear] = useState('');
+
+  const [activeTab, setActiveTab] = useState<'carTypes' | 'manufacturers' | 'models' | 'years'>('carTypes');
+
   useEffect(() => {
-    fetchCarTypes();
-    fetchManufacturersWithModels();
+    fetchCategories();
   }, []);
 
-  const fetchCarTypes = async () => {
+  const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/Public/Cartype');
-      setCarTypes(response.data);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Error fetching car types');
+      const carTypesRes = await axios.get('http://localhost:5000/api/Public/GetAllCarTypes');
+      setCarTypes(carTypesRes.data);
+
+      const manufacturersRes = await axios.get('http://localhost:5000/api/Public/GetAllManufacturers');
+      setManufacturers(manufacturersRes.data);
+
+      const modelsRes = await axios.get('http://localhost:5000/api/Public/GetAllModels');
+      setModels(modelsRes.data);
+
+      const yearsRes = await axios.get('http://localhost:5000/api/Public/GetAllCarYears');
+      setCarYears(yearsRes.data);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.message || 'An error occurred';
+        handleErrorResult(errorMessage);
+      } else {
+        handleErrorResult('An unexpected error occurred');
+      }
     }
   };
 
-  const fetchManufacturersWithModels = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/api/Public/ManufacturersWithModels');
-      setManufacturers(response.data);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Error fetching manufacturers with models');
-    }
-  };
-
-  // Function to add a new car type
   const handleAddCarType = async () => {
     if (newCarType.trim() === '') {
-      setError('Car type name cannot be empty');
+      handleErrorResult('Car type name cannot be empty');
       return;
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/Admin/AddCarType', {
+      await api.post('http://localhost:5000/api/Admin/AddCarType', {
         typeName: newCarType,
       });
-      setCarTypes([...carTypes, response.data]);
       setNewCarType('');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Error adding car type');
+      await fetchCategories();
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.message || 'An error occurred';
+        handleErrorResult(errorMessage);
+      } else {
+        handleErrorResult('An unexpected error occurred');
+      }
     }
   };
 
-  // Function to add a new manufacturer with models
-  const handleAddManufacturerWithModels = async () => {
-    if (newManufacturerName.trim() === '' || newModels.length === 0) {
-      setError('Manufacturer name and at least one model are required');
+  const handleAddManufacturer = async () => {
+    if (newManufacturer.trim() === '') {
+      handleErrorResult('Manufacturer name cannot be empty');
       return;
     }
-  
-    // Log the data being sent to the API
-    console.log({
-      manufacturerName: newManufacturerName,
-      models: newModels,
-    });
-  
+
     try {
-      const response = await axios.post('http://localhost:5000/api/Admin/AddManufacturerWithModels', {
-        manufacturerName: newManufacturerName,
-        models: newModels,
+      await api.post('http://localhost:5000/api/Admin/AddManufacturer', {
+        manufacturerName: newManufacturer,
       });
-  
-      // Check if the response contains the expected data
-      console.log('API Response:', response.data);
-  
-      setManufacturers([...manufacturers, response.data]);
-      setNewManufacturerName('');
-      setNewModels([]);
-    } catch (err: any) {
-      console.error('Error response:', err.response?.data || err.message);
-      setError(err.response?.data?.message || 'Error adding manufacturer and models');
+      setNewManufacturer('');
+      await fetchCategories();
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.message || 'An error occurred';
+        handleErrorResult(errorMessage);
+      } else {
+        handleErrorResult('An unexpected error occurred');
+      }
     }
   };
-  
+
+  const handleAddModel = async () => {
+    if (newModel.trim() === '' || selectedManufacturerId === '') {
+      handleErrorResult('Model name and manufacturer are required');
+      return;
+    }
+
+    try {
+      await api.post('http://localhost:5000/api/Admin/AddModel', {
+        modelName: newModel,
+        manufacturerId: selectedManufacturerId,
+      });
+      setNewModel('');
+      setSelectedManufacturerId('');
+      await fetchCategories();
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.message || 'An error occurred';
+        handleErrorResult(errorMessage);
+      } else {
+        handleErrorResult('An unexpected error occurred');
+      }
+    }
+  };
+
+  const handleAddYear = async () => {
+    if (newYear.trim() === '') {
+      handleErrorResult('Year cannot be empty');
+      return;
+    }
+
+    try {
+      await api.post('http://localhost:5000/api/Admin/AddCarYear', {
+        year: newYear,
+      });
+      setNewYear('');
+      await fetchCategories();
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.message || 'An error occurred';
+        handleErrorResult(errorMessage);
+      } else {
+        handleErrorResult('An unexpected error occurred');
+      }
+    }
+  };
+
+  const handleDelete = async (endpoint: string, id: number) => {
+    try {
+      await api.delete(`http://localhost:5000/api/Admin/${endpoint}/${id}`);
+      await fetchCategories();
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.message || 'An error occurred';
+        handleErrorResult(errorMessage);
+      } else {
+        handleErrorResult('An unexpected error occurred');
+      }
+    }
+  };
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'carTypes':
+        return (
+          <>
+            <TableComponent
+              title="Car Types"
+              data={carTypes}
+              headers={['typeName']}
+              onDelete={(id: number) => handleDelete('DeleteCarType', id)}
+            />
+            <div className="flex items-center space-x-4">
+              <input
+                type="text"
+                placeholder="New car type"
+                value={newCarType}
+                onChange={(e) => setNewCarType(e.target.value)}
+                className="flex-grow p-2 border rounded-lg"
+              />
+              <button
+                onClick={handleAddCarType}
+                className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Add
+              </button>
+            </div>
+          </>
+        );
+      case 'manufacturers':
+        return (
+          <>
+            <TableComponent
+              title="Manufacturers"
+              data={manufacturers}
+              headers={['manufacturerName']}
+              onDelete={(id: number) => handleDelete('DeleteManufacturer', id)}
+            />
+            <div className="flex items-center space-x-4">
+              <input
+                type="text"
+                placeholder="New manufacturer"
+                value={newManufacturer}
+                onChange={(e) => setNewManufacturer(e.target.value)}
+                className="flex-grow p-2 border rounded-lg"
+              />
+              <button
+                onClick={handleAddManufacturer}
+                className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
+              >
+                Add
+              </button>
+            </div>
+          </>
+        );
+      case 'models':
+        return (
+          <>
+            <TableComponent
+              title="Models"
+              data={models}
+              headers={['modelName', 'manufacturerName']}
+              onDelete={(id: number) => handleDelete('DeleteModel', id)}
+            />
+            <div className="flex flex-col space-y-2">
+              <select
+                value={selectedManufacturerId}
+                onChange={(e) => setSelectedManufacturerId(Number(e.target.value))}
+                className="p-2 border rounded-lg"
+              >
+                <option value="">Select Manufacturer</option>
+                {manufacturers.map((manufacturer) => (
+                  <option key={manufacturer.id} value={manufacturer.id}>
+                    {manufacturer.manufacturerName}
+                  </option>
+                ))}
+              </select>
+              <div className="flex items-center space-x-4">
+                <input
+                  type="text"
+                  placeholder="New model"
+                  value={newModel}
+                  onChange={(e) => setNewModel(e.target.value)}
+                  className="flex-grow p-2 border rounded-lg"
+                />
+                <button
+                  onClick={handleAddModel}
+                  className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                >
+                  Add
+                </button>
+              </div>
+            </div>
+          </>
+        );
+      case 'years':
+        return (
+          <>
+            <TableComponent
+              title="Years"
+              data={carYears}
+              headers={['year']}
+              onDelete={(id: number) => handleDelete('DeleteCarYear', id)}
+            />
+            <div className="flex items-center space-x-4">
+              <input
+                type="text"
+                placeholder="New year"
+                value={newYear}
+                onChange={(e) => setNewYear(e.target.value)}
+                className="flex-grow p-2 border rounded-lg"
+              />
+              <button
+                onClick={handleAddYear}
+                className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
+              >
+                Add
+              </button>
+            </div>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
+  const TableComponent = ({ title, data, headers, onDelete }: any) => (
+    <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+      <h3 className="text-xl font-semibold mb-4">{title}</h3>
+      <table className="min-w-full table-auto border-collapse border">
+        <thead>
+          <tr>
+            {headers.map((header: string, index: number) => (
+              <th key={index} className="px-4 py-2 bg-gray-200 text-left border">{header}</th>
+            ))}
+            <th className="px-4 py-2 bg-gray-200 border">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((item: any, idx: number) => (
+            <tr key={item.id || item.modelId} className={idx % 2 === 0 ? 'bg-gray-50' : ''}>
+              {headers.map((header: string, index: number) => (
+                <td key={index} className="border px-4 py-2">{item[header]}</td>
+              ))}
+              <td className="border px-4 py-2">
+                <button
+                  onClick={() => onDelete(item.id || item.modelId)}
+                  className="text-red-600 hover:text-red-800"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+
   return (
-    <div>
-      <h2 className="text-2xl font-semibold mb-4">Category Manager</h2>
+    <div className="container mx-auto p-8">
+      <h2 className="text-3xl font-semibold mb-8">Categories</h2>
 
-      {error && <p className="text-red-500">{error}</p>}
-
-      {/* Add Car Type */}
-      <div className="mb-6">
-        <h3 className="text-lg font-semibold">Add New Car Type</h3>
-        <input
-          type="text"
-          placeholder="New car type"
-          value={newCarType}
-          onChange={(e) => setNewCarType(e.target.value)}
-          className="p-2 border border-gray-300 rounded"
-        />
+      {/* Tabs */}
+      <div className="flex space-x-4 mb-8">
         <button
-          onClick={handleAddCarType}
-          className="ml-2 p-2 bg-blue-500 text-white rounded"
+          onClick={() => setActiveTab('carTypes')}
+          className={`p-2 ${activeTab === 'carTypes' ? 'bg-blue-600 text-white' : 'bg-gray-300'} rounded-lg`}
         >
-          Add Car Type
+          Car Types
+        </button>
+        <button
+          onClick={() => setActiveTab('manufacturers')}
+          className={`p-2 ${activeTab === 'manufacturers' ? 'bg-blue-600 text-white' : 'bg-gray-300'} rounded-lg`}
+        >
+          Manufacturers
+        </button>
+        <button
+          onClick={() => setActiveTab('models')}
+          className={`p-2 ${activeTab === 'models' ? 'bg-blue-600 text-white' : 'bg-gray-300'} rounded-lg`}
+        >
+          Models
+        </button>
+        <button
+          onClick={() => setActiveTab('years')}
+          className={`p-2 ${activeTab === 'years' ? 'bg-blue-600 text-white' : 'bg-gray-300'} rounded-lg`}
+        >
+          Years
         </button>
       </div>
 
-      {/* Display Car Types */}
-      <h3 className="text-lg font-semibold">Car Types</h3>
-      <ul className="mb-6 space-y-4">
-        {carTypes.map((carType) => (
-          <li key={carType.id}>{carType.typeName}</li>
-        ))}
-      </ul>
-
-      {/* Add Manufacturer with Models */}
-      <div className="mb-6">
-        <h3 className="text-lg font-semibold">Add New Manufacturer with Models</h3>
-        <input
-          type="text"
-          placeholder="Manufacturer name"
-          value={newManufacturerName}
-          onChange={(e) => setNewManufacturerName(e.target.value)}
-          className="p-2 border border-gray-300 rounded"
-        />
-        <input
-          type="text"
-          placeholder="Enter models (comma-separated)"
-          value={newModels.join(', ')}
-          onChange={(e) => setNewModels(e.target.value.split(',').map(model => model.trim()))}
-          className="p-2 border border-gray-300 rounded mt-2"
-        />
-        <button
-          onClick={handleAddManufacturerWithModels}
-          className="ml-2 p-2 bg-green-500 text-white rounded"
-        >
-          Add Manufacturer with Models
-        </button>
+      {/* Tab Content */}
+      <div>
+        {renderTabContent()}
       </div>
-
-      {/* Display Manufacturers with Models */}
-      <h3 className="text-lg font-semibold">Manufacturers and Models</h3>
-     <ul className="space-y-4">
-  {manufacturers.map((manufacturer) => (
-    <li key={manufacturer.id}>
-      <strong>{manufacturer.manufacturerName}</strong>
-      <ul className="ml-4 list-disc">
-        {manufacturer.models.map((model, index) => (
-          <li key={index}>{model}</li> 
-        ))}
-      </ul>
-    </li>
-  ))}
-</ul>
-
     </div>
   );
 };
 
 export default CategoryManager;
+
