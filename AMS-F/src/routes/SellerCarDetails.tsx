@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Slider from 'react-slick';
@@ -10,7 +10,7 @@ interface Car {
   id: number;
   carTitle: string;
   carDescription: string;
-  img: string; 
+  img: string;
   modelId: number;
   performanceClassId: number;
   yearId: number;
@@ -19,7 +19,7 @@ interface Car {
   sellerId: number;
 }
 
-const SellerCarDetail = () => {
+const SellerCarDetail: React.FC = () => {
   const { carId } = useParams<{ carId: string }>();
   const [car, setCar] = useState<Car | null>(null);
 
@@ -29,15 +29,18 @@ const SellerCarDetail = () => {
 
   const fetchCarDetails = async () => {
     try {
+      console.log(`Fetching car details for ID: ${carId}`);
       const response = await axios.get<Car>(`http://localhost:5000/api/Public/GetCarById?carId=${carId}`);
+      console.log('Car details fetched successfully:', response.data);
       setCar(response.data);
     } catch (error) {
+      console.error('Error fetching car details:', error);
       if (axios.isAxiosError(error)) {
         const errorMessage = error.response?.data?.message || 'An error occurred';
         handleErrorResult(errorMessage);
-    } else {
-      handleErrorResult('An unexpected error occurred');
-    }
+      } else {
+        handleErrorResult('An unexpected error occurred');
+      }
     }
   };
 
@@ -45,7 +48,7 @@ const SellerCarDetail = () => {
     return <div>Loading car details...</div>;
   }
 
-  const imageUrls = car.img.includes(',') ? car.img.split(',') : [car.img];
+  const imageUrls = car.img.split(',').map(url => `http://localhost:5000/car-images/${url.trim()}`);
 
   const sliderSettings = {
     dots: true,
@@ -61,12 +64,16 @@ const SellerCarDetail = () => {
       <Slider {...sliderSettings}>
         {imageUrls.map((url, index) => (
           <div key={index}>
-            <img src={`http://localhost:5000/${url.trim()}`} alt={`Car image ${index + 1}`} className="w-full" />
+            <img
+              src={url}
+              alt={`Car image ${index + 1}`}
+              className="w-full h-64 object-cover"
+            />
           </div>
         ))}
       </Slider>
       <p className="mt-4">{car.carDescription}</p>
-      <p className="mt-2 text-xl font-semibold">${car.price}</p>
+      <p className="mt-2 text-xl font-semibold">${car.price.toLocaleString()}</p>
     </div>
   );
 };

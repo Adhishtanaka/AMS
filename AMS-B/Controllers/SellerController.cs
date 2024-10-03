@@ -68,35 +68,35 @@ namespace AMS_B.Controllers
         public async Task<IActionResult> AddCar([FromForm] Car car, [FromForm] List<IFormFile> images, [FromServices] Dbcon dbcon)
         {
             int sellerId = GetSellerId();
-            if (car == null || car.SellerId != sellerId)
+            if (sellerId <= 0)
             {
-                return Forbid();
+                return BadRequest(new { Message = "Invalid seller ID." });
             }
 
-            if (!Directory.Exists(_imageFolder))
+            string carImagesFolder = Path.Combine(_imageFolder, "car-images");
+            if (!Directory.Exists(carImagesFolder))
             {
-                Directory.CreateDirectory(_imageFolder);
+                Directory.CreateDirectory(carImagesFolder);
             }
 
             List<string> imageUrls = new List<string>();
-
             foreach (var image in images)
             {
                 if (image.Length > 0)
                 {
                     string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-                    string filePath = Path.Combine(_imageFolder, uniqueFileName);
-
+                    string filePath = Path.Combine(carImagesFolder, uniqueFileName);
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         await image.CopyToAsync(stream);
                     }
-                    string imageUrl = Path.Combine("car-images", uniqueFileName);
+                    string imageUrl = $"car-images/{uniqueFileName}";
                     imageUrls.Add(imageUrl);
                 }
             }
 
             car.Img = string.Join(",", imageUrls);
+            car.SellerId = sellerId;
             await Car.AddCar(dbcon, car);
             return Ok(new { Message = "Car added successfully." });
         }

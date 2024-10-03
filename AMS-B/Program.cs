@@ -50,7 +50,7 @@ else
 {
     app.UseHttpsRedirection();
 }
-
+app.UseStaticFiles();
 app.UseCors("AllowReactApp");
 app.UseAuthentication();
 app.UseAuthorization();
