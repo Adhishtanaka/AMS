@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React,{ useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { handleErrorResult } from '../util/TostMessage';
@@ -18,8 +18,8 @@ interface Car {
   id: number;
   carTitle: string;
   carDescription: string;
-  img: string;
-  manufacturerId: number;
+  img: string; 
+  modelId: number;
   performanceClassId: number;
   yearId: number;
   price: number;

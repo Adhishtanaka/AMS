@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { handleErrorResult } from '../util/TostMessage';
@@ -8,7 +8,8 @@ interface Car {
   id: number;
   carTitle: string;
   carDescription: string;
-  manufacturerId: number;
+  img: string;
+  modelId: number;
   performanceClassId: number;
   yearId: number;
   price: number;
@@ -16,20 +17,45 @@ interface Car {
   sellerId: number;
 }
 
-const SellerCars = () => {
+interface Model {
+  modelId: number;
+  modelName: string;
+  manufacturerId: number;
+  manufacturerName: string;
+}
+
+interface CarYear {
+  id: number;
+  year: number;
+}
+
+const SellerCars: React.FC = () => {
   const [cars, setCars] = useState<Car[]>([]);
+  const [models, setModels] = useState<Model[]>([]);
+  const [years, setYears] = useState<CarYear[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchCars();
+    fetchData();
   }, []);
 
-  const fetchCars = async () => {
+  const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await api.get<Car[]>('http://localhost:5000/api/Seller/GetCarsBySellerId');
-      setCars(response.data);
+      
+      // Fetch cars
+      const carsResponse = await api.get<Car[]>('http://localhost:5000/api/Seller/GetCarsBySellerId');
+      setCars(carsResponse.data);
+      
+      // Fetch models
+      const modelsResponse = await api.get<Model[]>('http://localhost:5000/api/Public/GetAllModels');
+      setModels(modelsResponse.data);
+      
+      // Fetch years
+      const yearsResponse = await api.get<CarYear[]>('http://localhost:5000/api/Public/GetAllCarYears');
+      setYears(yearsResponse.data);
+      
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const errorMessage = error.response?.data?.message || 'An error occurred';
@@ -46,7 +72,7 @@ const SellerCars = () => {
     if (window.confirm('Are you sure you want to delete this car?')) {
       try {
         await api.delete(`http://localhost:5000/api/Seller/DeleteCar?carId=${carId}`);
-        fetchCars();
+        fetchData();
       } catch (error) {
         if (axios.isAxiosError(error)) {
           const errorMessage = error.response?.data?.message || 'An error occurred';
@@ -56,6 +82,16 @@ const SellerCars = () => {
         }
       }
     }
+  };
+
+  const getModelName = (modelId: number) => {
+    const model = models.find(m => m.modelId === modelId);
+    return model ? model.modelName : 'Unknown';
+  };
+
+  const getYearValue = (yearId: number) => {
+    const year = years.find(y => y.id === yearId);
+    return year ? year.year : 'Unknown';
   };
 
   if (loading) {
@@ -75,10 +111,10 @@ const SellerCars = () => {
       ) : (
         <table className="min-w-full bg-white border border-gray-200">
           <thead>
-            <tr> 
+            <tr>
               <th className="py-2 px-4 border-b">Car Title</th>
-              <th className="py-2 px-4 border-b">Manufacturer ID</th>
-              <th className="py-2 px-4 border-b">Year ID</th>
+              <th className="py-2 px-4 border-b">Model</th>
+              <th className="py-2 px-4 border-b">Year</th>
               <th className="py-2 px-4 border-b">Price</th>
               <th className="py-2 px-4 border-b">Actions</th>
             </tr>
@@ -86,9 +122,13 @@ const SellerCars = () => {
           <tbody>
             {cars.map((car) => (
               <tr key={car.id}>
-                <td className="py-2 px-4 border-b"><Link to={`car-details/${car.id}`} className="text-blue-500 hover:underline">{car.carTitle} </Link></td>
-                <td className="py-2 px-4 border-b">{car.manufacturerId}</td>
-                <td className="py-2 px-4 border-b">{car.yearId}</td>
+                <td className="py-2 px-4 border-b">
+                  <Link to={`car-details/${car.id}`} className="text-blue-500 hover:underline">
+                    {car.carTitle}
+                  </Link>
+                </td>
+                <td className="py-2 px-4 border-b">{getModelName(car.modelId)}</td>
+                <td className="py-2 px-4 border-b">{getYearValue(car.yearId)}</td>
                 <td className="py-2 px-4 border-b">${car.price}</td>
                 <td className="py-2 px-4 border-b">
                   <button
