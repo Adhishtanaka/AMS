@@ -16,7 +16,7 @@ import SellerAddCar from './routes/SellerAddCar';
 import SellerCarDetail from './routes/SellerCarDetails';
 import SellerAddAuction from './routes/SellerAddAuction';
 import SellerAuctionDetails from './routes/SellerAuctionDetails';
-
+import AuctionPage from './routes/Auction'; // Import AuctionPage
 
 const router = createBrowserRouter([{
   path: "*",
@@ -63,7 +63,12 @@ const router = createBrowserRouter([{
 {
   path: "/seller/auction-details/:auctionId",
   element: <SellerAuctionDetails/>,
-}
+},
+{
+  path: '/Auction', // Add auction route
+  element: <AuctionPage />, // AuctionPage containing AuctionBidding
+},
+
 
 ])
 
