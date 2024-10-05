@@ -63,7 +63,9 @@ const router = createBrowserRouter([{
 {
   path: "/seller/auction-details/:auctionId",
   element: <SellerAuctionDetails/>,
-}
+},
+
+
 
 ])
 
