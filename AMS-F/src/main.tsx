@@ -16,9 +16,8 @@ import SellerAddCar from './routes/SellerAddCar';
 import SellerCarDetail from './routes/SellerCarDetails';
 import SellerAddAuction from './routes/SellerAddAuction';
 import SellerAuctionDetails from './routes/SellerAuctionDetails';
-import ActiveAuctions from './components/ActiveAuction';
-import PlaceBid from './components/PlaceBid';
-import BidHistory from './components/BidHistory';
+import AuctionList from './components/AuctionList';
+import AuctionDetails from './components/AuctionDetails';
 
 
 
@@ -70,17 +69,15 @@ const router = createBrowserRouter([{
   element: <SellerAuctionDetails/>,
 },
 {
-  path: "/active-auctions",
-  element: <ActiveAuctions />, // Route for ActiveAuctions
+  path: "/auctions-list/:auctionId",
+  element: <AuctionList />,
 },
 {
-  path: "/place-bid",
-  element: <PlaceBid />, // Route for PlaceBid
+  path: "/auction-details/:auctionId", // New route for AuctionDetails
+  element: <AuctionDetails />,
 },
-{
-  path: "/bid-history/:auctionId",
-  element: <BidHistory auctionId={0} />, // Route for BidHistory
-},
+
+
 
 
 ])
