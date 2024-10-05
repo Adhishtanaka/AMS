@@ -7,6 +7,8 @@ namespace AMS_B.Models
     {
         public int Id { get; set; }
         public required string TypeName { get; set; }
+
+
     }
 
     public class CarYear
@@ -283,6 +285,41 @@ namespace AMS_B.Models
                 dbcon.Disconnect();
             }
         }
+        public static async  Task DeleteCarType(Dbcon dbcon, string id)
+        {
+            try
+            {
+                await dbcon.Connect();
+
+                // Check if the car type exists
+                string checkCarTypeQuery = "SELECT COUNT(*) FROM car_type WHERE id = @typeid";
+                var parameters = new Dictionary<string, object>
+        {
+            { "@typeId", id } // Ensure the parameter name matches here
+        };
+
+                var carTypeCount = (long)await dbcon.ExecuteScalar(checkCarTypeQuery, parameters);
+
+                if (carTypeCount == 0)
+                {
+                    throw new Exception($"Car type '{id}' does not exist.");
+                }
+
+                // Delete the car type
+                string deleteCarTypeQuery = "DELETE FROM car_type WHERE id = @typeId"; // Use the same parameter here
+                await dbcon.ExecuteNonQuery(deleteCarTypeQuery, parameters);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw new Exception("An error occurred while deleting the car type.", ex);
+            }
+            finally
+            {
+                dbcon.Disconnect();
+            }
+        }
+
 
         public static async Task AddManufacturer(Dbcon dbcon, Manufacturer manufacturer)
         {
@@ -321,7 +358,7 @@ namespace AMS_B.Models
             try
             {
                 await dbcon.Connect();
-                // Now check if the model already exists for this manufacturer
+                //check if the model already exists for this manufacturer
                 string checkModelQuery = @"SELECT COUNT(*) FROM model WHERE model_name = @ModelName AND manufacturer_id = @ManufacturerId";
                 var parameters = new Dictionary<string, object>
             {
@@ -348,5 +385,6 @@ namespace AMS_B.Models
                 dbcon.Disconnect();
             }
         }
+        
     }
 }

@@ -9,12 +9,15 @@ namespace AMS_B.Controllers
     {
         private readonly Dbcon _dbcon;
         
+
+
         public AdminController(Dbcon dbcon)
         {
             _dbcon = dbcon;
+           
         }
 
-        [HttpPut("BanUser")] 
+        [HttpPut("BanUser")]
         public async Task<IActionResult> BanUser([FromBody] AdminBanRequest request)
         {
             if (request == null || string.IsNullOrEmpty(request.Email))
@@ -114,6 +117,25 @@ namespace AMS_B.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = "An error occurred while adding the model.", error = ex.Message });
+            }
+        }
+
+        [HttpDelete("DeleteCarType/{id}")]
+        public async Task<IActionResult> DeleteCarType(string id)
+        {
+
+            try
+            {
+                await CategoryManager.DeleteCarType(_dbcon, id);
+                return Ok(new { message = "Car type deleted successfully." });
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("does not exist"))
+                {
+                    return NotFound(new { message = ex.Message });
+                }
+                return StatusCode(500, new { message = "An error occurred while deleting the car type.", error = ex.Message });
             }
         }
 
