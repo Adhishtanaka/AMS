@@ -116,6 +116,61 @@ namespace AMS_B.Controllers
                 return StatusCode(500, new { message = "An error occurred while adding the model.", error = ex.Message });
             }
         }
+        [HttpDelete("DeleteCarType")]
+        public async Task<IActionResult> DeleteCarType([FromBody] int carTypeId)
+        {
+            if (carTypeId <= 0)
+            {
+                return BadRequest(new { message = "Car Id is Missing." });
+            }
+
+            try
+            {
+                await CategoryManager.DeleteCarType(_dbcon, carTypeId);
+                return Ok(new { message = "Car type deleted successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while deleting the car type.", error = ex.Message });
+            }
+        }
+
+        [HttpDelete("DeleteModel")]
+        public async Task<IActionResult> DeleteModel ([FromBody] int modelId)
+        {
+            if (modelId <= 0)
+            {
+                return BadRequest(new { message = "Car Id is Missing." });
+            }
+
+            try
+            {
+                await CategoryManager.DeleteModel(_dbcon, modelId);
+                return Ok(new { message = "model deleted successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while deleting the model .", error = ex.Message });
+            }
+        }
+        [HttpDelete("DeleteManufacturer")]
+        public async Task<IActionResult> DeleteManufacturer([FromBody] int ManufacturerId)
+        {
+            if (ManufacturerId <= 0)
+            {
+                return BadRequest(new { message = "Car Id is Missing." });
+            }
+
+            try
+            {
+                await CategoryManager.DeleteManufacturer(_dbcon, ManufacturerId);
+                return Ok(new { message = "Manufacturer deleted successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while deleting the Manufacturer .", error = ex.Message });
+            }
+        }
 
     }
 }

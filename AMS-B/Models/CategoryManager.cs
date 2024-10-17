@@ -348,5 +348,72 @@ namespace AMS_B.Models
                 dbcon.Disconnect();
             }
         }
+        public static async Task DeleteCarType(Dbcon dbcon, int id)
+        {
+            try
+            {
+                await dbcon.Connect();
+                string deleteCarTypeQuery = "DELETE FROM car_type WHERE id = @Id";
+                var parameters = new Dictionary<string, object>
+            {
+                { "@Id", id }
+            };
+
+                await dbcon.ExecuteNonQuery(deleteCarTypeQuery, parameters);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while deleting a car type.", ex);
+            }
+            finally
+            {
+                dbcon.Disconnect();
+            }
+        }
+
+        public static async Task DeleteManufacturer(Dbcon dbcon, int id)
+        {
+            try
+            {
+                await dbcon.Connect();
+                string deleteManufacturerQuery = "DELETE FROM manufacturer WHERE id = @Id";
+                var parameters = new Dictionary<string, object>
+            {
+                { "@Id", id }
+            };
+
+                await dbcon.ExecuteNonQuery(deleteManufacturerQuery, parameters);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while deleting a manufacturer.", ex);
+            }
+            finally
+            {
+                dbcon.Disconnect();
+            }
+        }
+        public static async Task DeleteModel(Dbcon dbcon, int id)
+        {
+            try
+            {
+                await dbcon.Connect();
+                string deleteModelQuery = "DELETE FROM model WHERE model_id = @Id";
+                var parameters = new Dictionary<string, object>
+            {
+                { "@Id", id }
+            };
+
+                await dbcon.ExecuteNonQuery(deleteModelQuery, parameters);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while deleting a model.", ex);
+            }
+            finally
+            {
+                dbcon.Disconnect();
+            }
+        }
     }
 }
