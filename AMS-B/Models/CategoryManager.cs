@@ -9,12 +9,6 @@ namespace AMS_B.Models
         public required string TypeName { get; set; }
     }
 
-    public class CarYear
-    {
-        public int Id { get; set; }
-        public required int Year { get; set; }
-    }
-
     public class Manufacturer
     {
         public int Id { get; set; }
@@ -73,43 +67,6 @@ namespace AMS_B.Models
 
             return carTypes;
         }
-
-        public static async Task<List<CarYear>> GetCarYear(Dbcon dbcon)
-        {
-            var carYears = new List<CarYear>();
-
-            try
-            {
-                await dbcon.Connect();
-                string queryCarYear = "SELECT * FROM `year`";
-
-                using (var reader = await dbcon.ExecuteQuery(queryCarYear))
-                {
-                    while (await reader.ReadAsync())
-                    {
-                        var carYear = new CarYear
-                        {
-                            Id = reader.GetInt32(0),
-                            Year = reader.GetInt32(1)
-                        };
-
-                        carYears.Add(carYear);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-            
-                throw new Exception("An error occurred while retrieving car years.", ex);
-            }
-            finally
-            {
-                dbcon.Disconnect();
-            }
-
-            return carYears;
-        }
-
 
         public static async Task<List<PerformanceClass>> GetPerformenceClass(Dbcon dbcon)
         {
@@ -245,38 +202,6 @@ namespace AMS_B.Models
             catch (Exception ex)
             {
                 throw new Exception("An error occurred while adding a car type.", ex);
-            }
-            finally
-            {
-                dbcon.Disconnect();
-            }
-        }
-
-        public static async Task AddYear(Dbcon dbcon, CarYear carYear)
-        {
-            try
-            {
-                await dbcon.Connect();
-
-                string checkYearQuery = @"SELECT COUNT(*) FROM year WHERE year = @Year";
-                var parameters = new Dictionary<string, object>
-            {
-                { "@Year", carYear.Year }
-            };
-
-                var yearCount = Convert.ToInt64(await dbcon.ExecuteScalar(checkYearQuery, parameters));
-
-                if (yearCount > 0)
-                {
-                    throw new Exception("Year already exists.");
-                }
-
-                string insertYearQuery = @"INSERT INTO year (year) VALUES (@Year)";
-                await dbcon.ExecuteNonQuery(insertYearQuery, parameters);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred while adding a year.", ex);
             }
             finally
             {
