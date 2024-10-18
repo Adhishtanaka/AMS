@@ -22,12 +22,6 @@ namespace AMS_B.Controllers
             return idClaim != null ? int.Parse(idClaim.Value) : 0;
         }
 
-        [HttpGet("GetActiveAuctions")]
-        public async Task<IActionResult> GetActiveAuctions([FromServices] Dbcon dbcon)
-        {
-            var auctions = await Buyer.GetActiveAuctions(dbcon);
-            return Ok(auctions);
-        }
 
         [HttpPost("PlaceBid")]
         public async Task<IActionResult> PlaceBid([FromBody] Bid bid, [FromServices] Dbcon dbcon)

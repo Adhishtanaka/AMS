@@ -16,9 +16,8 @@ import SellerAddCar from './routes/SellerAddCar';
 import SellerCarDetail from './routes/SellerCarDetails';
 import SellerAddAuction from './routes/SellerAddAuction';
 import SellerAuctionDetails from './routes/SellerAuctionDetails';
-import ActiveAuctions from './components/ActiveAuctions'; // Importing ActiveAuctions component
-import BidForm from './components/BidForm'; // Importing BidForm component
-import BidHistory from './components/BidHistory'; // Importing BidHistory component
+import BidHistory from './components/BidHistory'; 
+import All from './routes/allAuctions';
 
 const router = createBrowserRouter([
   {
@@ -66,16 +65,12 @@ const router = createBrowserRouter([
     element: <SellerAuctionDetails />,
   },
   {
-    path: "/buyer/active-auctions", // New route for displaying active auctions
-    element: <ActiveAuctions />,
-  },
-  {
-    path: "/buyer/auction/:auctionId/bid", // Route for placing bids
-    element: <BidForm />,
-  },
-  {
     path: "/buyer/auction/:auctionId/bid-history", // Route for viewing bid history
     element: <BidHistory />,
+  },
+  {
+    path: "/allAuctions",
+    element: <All />,
   },
 ]);
 

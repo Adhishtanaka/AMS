@@ -107,5 +107,19 @@ namespace AMS_B.Controllers
             return Ok(auction);
         }
 
+        [HttpGet("GetALLAuctionDetails")]
+        public async Task<IActionResult> GetALLAuction([FromServices] Dbcon dbcon)
+        {
+            
+
+            List<AuctionDto> auctions = await Auction.GetAllAuctionsDetails(dbcon);
+            if (auctions == null)
+            {
+                return NotFound(new { Message = "Auctions not found." });
+            }
+
+            return Ok(auctions);
+        }
+
     }
 }

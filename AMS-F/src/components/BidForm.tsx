@@ -1,40 +1,39 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import api from '../util/api';
+import { handleErrorResult, handleSuccessResult } from '../util/TostMessage';
 
 interface Bid {
   aucId: number;
-  userId?: number;
-  bidTime?: string;
-  amount: number;
+  current_amount: number;
 }
 
-const BidForm: React.FC = () => {
-  const { auctionId } = useParams<{ auctionId: string }>();
+interface BidFormProps {
+  bid: Bid;
+}
+
+const BidForm: React.FC<BidFormProps> = ({ bid }) => {
   const [amount, setAmount] = useState<number>(0);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleBid = async () => {
-    if (amount <= 0) {
-      alert('Please enter a valid bid amount.');
+    if (amount <= bid.current_amount) {
+      handleErrorResult('Please enter a valid bid amount.');
       return;
     }
 
-    setIsSubmitting(true);
+    setIsLoading(true);
 
     try {
-      const bid: Bid = {
-        aucId: parseInt(auctionId ?? '0', 10),
+      await api.post('/api/Buyer/PlaceBid', {
+        aucId: bid.aucId,
         amount: amount,
-      };
-
-      const response = await axios.post('/api/Buyer/PlaceBid', bid);
-      alert(response.data.Message);
+      });
+      handleSuccessResult("Bid placed successfully");
+      setAmount(0); // Reset the input after successful bid
     } catch (error) {
-      console.error('Error placing bid:', error);
-      alert('Failed to place bid. Please try again.');
+      handleErrorResult('Failed to place bid. Please try again.');
     } finally {
-      setIsSubmitting(false);
+      setIsLoading(false);
     }
   };
 
@@ -46,15 +45,15 @@ const BidForm: React.FC = () => {
         value={amount}
         onChange={(e) => setAmount(Number(e.target.value))}
         placeholder="Enter bid amount"
-        min="0"
+        min={bid.current_amount + 1} // Ensure the minimum is greater than current amount
         className="border p-2 rounded mb-4 w-full"
       />
       <button
         onClick={handleBid}
-        disabled={isSubmitting}
-        className="bg-blue-500 text-white p-2 rounded disabled:opacity-50"
+        disabled={amount <= bid.current_amount || isLoading} // Disable if invalid or loading
+        className={`bg-blue-500 text-white p-2 rounded ${isLoading ? 'opacity-50' : ''}`}
       >
-        {isSubmitting ? 'Placing Bid...' : 'Place Bid'}
+        {isLoading ? 'Placing Bid...' : 'Place Bid'}
       </button>
     </div>
   );

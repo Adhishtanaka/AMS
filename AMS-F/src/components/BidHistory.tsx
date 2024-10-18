@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import api from '../util/api';
 
 interface Bid {
   bidId: number;
@@ -18,7 +18,7 @@ const BidHistory: React.FC = () => {
   useEffect(() => {
     const fetchBidHistory = async () => {
       try {
-        const response = await axios.get(`/api/Buyer/GetBidHistory?auctionId=${auctionId}`);
+        const response = await api.get(`/api/Buyer/GetBidHistory?auctionId=${auctionId}`);
         if (Array.isArray(response.data)) {
           setBids(response.data);
         } else {

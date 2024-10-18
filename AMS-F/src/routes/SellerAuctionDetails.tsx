@@ -34,7 +34,7 @@ const SellerAuctionDetails = () => {
 
   useEffect(() => {
     fetchAuctionDetails();
-  }, [auctionId]);
+});
 
   const fetchAuctionDetails = async () => {
     try {
