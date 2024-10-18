@@ -12,7 +12,7 @@ namespace AMS_B.Models
         {
             await dbcon.Connect();
             string insertBidQuery = $@"
-                INSERT INTO bid (bidid,aucid, userid, bidtime, amount)
+                INSERT INTO bid (aucid, userid, bidtime, amount)
                 VALUES ({bid.AucId}, {bid.UserId}, '{bid.BidTime:yyyy-MM-dd HH:mm:ss}', {bid.Amount})";
             string updateAuctionQuery = $@"
                 UPDATE auction

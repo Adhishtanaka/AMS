@@ -24,11 +24,11 @@ const BidForm: React.FC<BidFormProps> = ({ bid }) => {
     setIsLoading(true);
 
     try {
-      await api.post('/api/Buyer/PlaceBid', {
+      await api.post('http://localhost:5000/api/Buyer/PlaceBid', {
         aucId: bid.aucId,
         amount: amount,
       });
-      handleSuccessResult("Bid placed successfully");
+      handleSuccessResult('Bid placed successfully');
       setAmount(0); // Reset the input after successful bid
     } catch (error) {
       handleErrorResult('Failed to place bid. Please try again.');
@@ -38,23 +38,35 @@ const BidForm: React.FC<BidFormProps> = ({ bid }) => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h3 className="text-2xl font-bold mb-4">Place a Bid</h3>
-      <input
-        type="number"
-        value={amount}
-        onChange={(e) => setAmount(Number(e.target.value))}
-        placeholder="Enter bid amount"
-        min={bid.current_amount + 1} // Ensure the minimum is greater than current amount
-        className="border p-2 rounded mb-4 w-full"
-      />
-      <button
-        onClick={handleBid}
-        disabled={amount <= bid.current_amount || isLoading} // Disable if invalid or loading
-        className={`bg-blue-500 text-white p-2 rounded ${isLoading ? 'opacity-50' : ''}`}
-      >
-        {isLoading ? 'Placing Bid...' : 'Place Bid'}
-      </button>
+    <div className="w-full">
+      <div className="bg-white shadow-lg rounded-lg p-6 border border-gray-200">
+        <div className="flex flex-col gap-4">
+          <input
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(Number(e.target.value))}
+            placeholder={`Enter bid amount (min $${(bid.current_amount + 1).toLocaleString()})`}
+            min={bid.current_amount + 1}
+            className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-[#1D2945] transition duration-300"
+          />
+          
+          <button
+            onClick={handleBid}
+            disabled={amount <= bid.current_amount || isLoading}
+            className={`w-full py-2 px-4 rounded-md text-white font-semibold ${
+              isLoading
+                ? 'bg-[#1D2945] opacity-75 cursor-not-allowed'
+                : 'bg-[#1D2945] hover:bg-opacity-90 transition duration-300'
+            }`}
+          >
+            {isLoading ? 'Placing Bid...' : 'Place Bid'}
+          </button>
+        </div>
+
+        {amount <= bid.current_amount && amount !== 0 && (
+          <p className="text-red-600 text-sm mt-2">Bid must be higher than the current amount.</p>
+        )}
+      </div>
     </div>
   );
 };
