@@ -116,9 +116,9 @@
                         Current_Price = reader.GetDecimal(3),
                         CarTitle = reader.GetString(4),
                         Img = reader.GetString(5),
-                        ModelName = reader.GetString(6),               // Read ModelName
-                        ManufacturerName = reader.GetString(7),       // Read ManufacturerName
-                        Year = reader.GetInt32(8)                      // Read Year
+                        ModelName = reader.GetString(6),               
+                        ManufacturerName = reader.GetString(7),    
+                        Year = reader.GetInt32(8)                     
                     };
 
                     auctions.Add(auction);
