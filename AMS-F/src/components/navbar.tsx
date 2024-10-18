@@ -10,7 +10,7 @@ const Navbar = () => {
 
   const Links =[
     {name:"Dashboard",link:"/"},
-    {name:"Auctions",link:"/"},
+    {name:"Auctions",link:"/auctions"},
     {name:"Contact",link:"/contact"},
   ];
 

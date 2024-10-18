@@ -8,9 +8,9 @@
         public decimal Current_Price { get; set; }
         public string CarTitle { get; set; }
         public string Img { get; set; }
-        public string ModelName { get; set; }          // Added ModelName
-        public string ManufacturerName { get; set; }  // Added ManufacturerName
-        public int Year { get; set; }                 // Added Year
+        public string ModelName { get; set; }         
+        public string ManufacturerName { get; set; }  
+        public int Year { get; set; }                
     }
 
 

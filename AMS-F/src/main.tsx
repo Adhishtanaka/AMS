@@ -17,7 +17,8 @@ import SellerCarDetail from './routes/SellerCarDetails';
 import SellerAddAuction from './routes/SellerAddAuction';
 import SellerAuctionDetails from './routes/SellerAuctionDetails';
 import BidHistory from './components/BidHistory'; 
-import All from './routes/allAuctions';
+import All from './routes/AllAuctions';
+import AuctionDetails from './routes/AuctionDetails';
 
 const router = createBrowserRouter([
   {
@@ -65,13 +66,17 @@ const router = createBrowserRouter([
     element: <SellerAuctionDetails />,
   },
   {
-    path: "/buyer/auction/:auctionId/bid-history", // Route for viewing bid history
+    path: "/buyer/auction/:auctionId/bid-history", 
     element: <BidHistory />,
   },
   {
-    path: "/allAuctions",
+    path: "/auctions",
     element: <All />,
-  },
+  },{
+    path: "/auction-details/:auctionId",
+    element: <AuctionDetails />,
+  }
+  
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
