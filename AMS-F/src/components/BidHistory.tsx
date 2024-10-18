@@ -13,12 +13,29 @@ interface Bid {
 const BidHistory: React.FC = () => {
   const { auctionId } = useParams<{ auctionId: string }>();
   const [bids, setBids] = useState<Bid[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    axios.get(`/api/Buyer/GetBidHistory?auctionId=${auctionId}`)
-      .then(response => setBids(response.data))
-      .catch(error => console.error('Error fetching bid history:', error));
+    const fetchBidHistory = async () => {
+      try {
+        const response = await axios.get(`/api/Buyer/GetBidHistory?auctionId=${auctionId}`);
+        if (Array.isArray(response.data)) {
+          setBids(response.data);
+        } else {
+          setError('Unexpected response format');
+        }
+      } catch (error) {
+        console.error('Error fetching bid history:', error);
+        setError('Failed to fetch bid history');
+      }
+    };
+
+    fetchBidHistory();
   }, [auctionId]);
+
+  if (error) {
+    return <div className="container mx-auto p-4 text-red-500">{error}</div>;
+  }
 
   return (
     <div className="container mx-auto p-4">

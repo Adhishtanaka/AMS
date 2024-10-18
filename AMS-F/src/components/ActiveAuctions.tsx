@@ -16,19 +16,29 @@ interface Auction {
 
 const ActiveAuctions: React.FC = () => {
   const [auctions, setAuctions] = useState<Auction[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchAuctions = async () => {
       try {
         const response = await axios.get('/api/Buyer/GetActiveAuctions');
-        setAuctions(response.data);
+        if (Array.isArray(response.data)) {
+          setAuctions(response.data);
+        } else {
+          setError('Unexpected response format');
+        }
       } catch (error) {
         console.error('Error fetching auctions:', error);
+        setError('Failed to fetch auctions');
       }
     };
 
     fetchAuctions();
   }, []);
+
+  if (error) {
+    return <div className="container mx-auto p-4 text-red-500">{error}</div>;
+  }
 
   return (
     <div className="container mx-auto p-4">
