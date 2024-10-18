@@ -8,9 +8,6 @@ namespace AMS_B.Models
         public bool Ban { get; set; }
     }
 
-
-
-
     public class ManageUser
     {
         public required string Email { get; set; }

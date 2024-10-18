@@ -11,7 +11,7 @@ interface Car {
   img: string;
   modelId: number;
   performanceClassId: number;
-  yearId: number;
+  year: number;
   price: number;
   carTypeId: number;
   sellerId: number;
@@ -24,15 +24,11 @@ interface Model {
   manufacturerName: string;
 }
 
-interface CarYear {
-  id: number;
-  year: number;
-}
+
 
 const SellerCars: React.FC = () => {
   const [cars, setCars] = useState<Car[]>([]);
   const [models, setModels] = useState<Model[]>([]);
-  const [years, setYears] = useState<CarYear[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
@@ -51,10 +47,6 @@ const SellerCars: React.FC = () => {
       // Fetch models
       const modelsResponse = await api.get<Model[]>('http://localhost:5000/api/Public/GetAllModels');
       setModels(modelsResponse.data);
-      
-      // Fetch years
-      const yearsResponse = await api.get<CarYear[]>('http://localhost:5000/api/Public/GetAllCarYears');
-      setYears(yearsResponse.data);
       
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -87,11 +79,6 @@ const SellerCars: React.FC = () => {
   const getModelName = (modelId: number) => {
     const model = models.find(m => m.modelId === modelId);
     return model ? model.modelName : 'Unknown';
-  };
-
-  const getYearValue = (yearId: number) => {
-    const year = years.find(y => y.id === yearId);
-    return year ? year.year : 'Unknown';
   };
 
   if (loading) {
@@ -128,7 +115,7 @@ const SellerCars: React.FC = () => {
                   </Link>
                 </td>
                 <td className="py-2 px-4 border-b">{getModelName(car.modelId)}</td>
-                <td className="py-2 px-4 border-b">{getYearValue(car.yearId)}</td>
+                <td className="py-2 px-4 border-b">{car.year}</td>
                 <td className="py-2 px-4 border-b">${car.price}</td>
                 <td className="py-2 px-4 border-b">
                   <button

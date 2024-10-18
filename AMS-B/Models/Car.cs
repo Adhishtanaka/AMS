@@ -8,7 +8,7 @@
         public string? Img { get; set; }
         public int ModelId { get; set; }
         public int PerformanceClassId { get; set; }
-        public int YearId { get; set; }
+        public int Year { get; set; }
         public decimal Price { get; set; }
         public int CarTypeId { get; set; }
         public int SellerId { get; set; }
@@ -17,7 +17,7 @@
         {
         }
 
-        public Car(int id, string carTitle, string carDescription, string img, int modelId, int performanceClassId, int yearId, decimal price, int carTypeId, int sellerId)
+        public Car(int id, string carTitle, string carDescription, string img, int modelId, int performanceClassId, int year, decimal price, int carTypeId, int sellerId)
         {
             Id = id;
             CarTitle = carTitle;
@@ -25,7 +25,7 @@
             Img = img;
             ModelId = modelId;
             PerformanceClassId = performanceClassId;
-            YearId = yearId;
+            Year = year;
             Price = price;
             CarTypeId = carTypeId;
             SellerId = sellerId;
@@ -94,8 +94,8 @@
         public static async Task AddCar(Dbcon dbcon, Car car)
         {
             await dbcon.Connect();
-            string query = $"INSERT INTO car (car_title,car_description, img, model_id, performance_class_id, year_id, price, car_type_id, seller_id) " +
-                           $"VALUES ('{car.CarTitle}','{car.CarDescription}', '{car.Img}', {car.ModelId}, {car.PerformanceClassId}, {car.YearId}, {car.Price}, {car.CarTypeId}, {car.SellerId})";
+            string query = $"INSERT INTO car (car_title,car_description, img, model_id, performance_class_id, year, price, car_type_id, seller_id) " +
+                           $"VALUES ('{car.CarTitle}','{car.CarDescription}', '{car.Img}', {car.ModelId}, {car.PerformanceClassId}, {car.Year}, {car.Price}, {car.CarTypeId}, {car.SellerId})";
 
             await dbcon.ExecuteNonQuery(query);
             dbcon.Disconnect();
