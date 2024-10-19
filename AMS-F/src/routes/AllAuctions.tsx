@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Navbar from "../components/navbar";
 import Footer from "../components/Footer";
+import { useNavigate } from "react-router-dom";
 
 interface AuctionDto {
   auctionId: number;
@@ -20,6 +21,7 @@ interface AuctionDto {
 
 const All = () => {
   const [auctions, setAuctions] = useState<AuctionDto[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAuctions = async () => {
@@ -116,7 +118,7 @@ const All = () => {
                     </div>
                   </div>
 
-                  <button className="mt-4 w-full bg-[#1D2945] text-white py-2 px-4 rounded-md text-sm font-semibold hover:bg-opacity-90 transition duration-300">
+                  <button onClick={() => navigate(`/auction-details/${auction.auctionId}`)} className="mt-4 w-full bg-[#1D2945] text-white py-2 px-4 rounded-md text-sm font-semibold hover:bg-opacity-90 transition duration-300">
                     Place Bid
                   </button>
                 </div>

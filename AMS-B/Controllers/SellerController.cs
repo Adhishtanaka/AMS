@@ -140,7 +140,7 @@ namespace AMS_B.Controllers
             {
                 return Conflict(new { Message = "An active auction already exists for this car." });
             }
-
+            auction.Current_Price = car.Price;
             await Auction.CreateAuction(dbcon, auction);
             return Ok(new { Message = "Auction created successfully." });
         }
