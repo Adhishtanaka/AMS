@@ -18,7 +18,7 @@ namespace AMS_B.Models
 
     public class DisplayTransaction
     {
-        public static async Task<List<TransactionDetails>> GetTransactionDetails(Dbcon db)
+        public static async Task<List<TransactionDetails>> GetTransactionDetails(Dbcon db, int? SellerID, string? Status)
         {
             var result = new List<TransactionDetails>();
             try
@@ -36,9 +36,35 @@ namespace AMS_B.Models
                         Transactions.TransactionDate
                     FROM Transactions
                     JOIN User AS Buyer ON Transactions.BuyerID = Buyer.UserID AND Buyer.Role = 'buyer'
-                    JOIN User AS Seller ON Transactions.SellerID = Seller.UserID AND Seller.Role = 'seller';";
+                    JOIN User AS Seller ON Transactions.SellerID = Seller.UserID AND Seller.Role = 'seller'
+                ";
 
-                using (var reader = await db.ExecuteQuery(query))
+                if (SellerID.HasValue || !string.IsNullOrEmpty(Status))
+                {
+                    query += " WHERE 1 = 1";
+
+                    if (SellerID.HasValue)
+                    {
+                        query += " AND Transactions.SellerID = @SellerID";
+                    }
+
+                    if (!string.IsNullOrEmpty(Status))
+                    {
+                        query += " AND Transactions.PaymentStatus = @Status";
+                    }
+                }
+
+                var parameters = new Dictionary<string, object>();
+                if (SellerID.HasValue)
+                {
+                    parameters.Add("@SellerID", SellerID.Value);
+                }
+                if (!string.IsNullOrEmpty(Status))
+                {
+                    parameters.Add("@Status", Status);
+                }
+
+                using (var reader = await db.ExecuteQuery(query, parameters))
                 {
                     while (reader.Read())
                     {
@@ -62,7 +88,6 @@ namespace AMS_B.Models
             {
                 throw new Exception("An error occurred while retrieving transaction details.", ex);
             }
-            
             catch (Exception ex)
             {
                 throw new Exception("An error occurred while retrieving transaction details.", ex);

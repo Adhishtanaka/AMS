@@ -76,6 +76,8 @@ namespace AMS_B.Controllers
             }
         }
 
+        
+
         [HttpPost("AddManufacturer")]
         public async Task<IActionResult> AddManufacturer([FromBody] Manufacturer manufacturer)
         {
@@ -159,23 +161,23 @@ namespace AMS_B.Controllers
             }
         }
 
-        [HttpGet("TransactionDetails")]
-        public async Task<IActionResult> DisplayTransactionDetails()
+        [HttpPut("TransactionDetails")]
+        public async Task<IActionResult> DisplayTransactionDetails([FromQuery] int? SellerId, [FromQuery] string? status)
         {
             try
             {
-                var transactionDetails = await DisplayTransaction.GetTransactionDetails(_dbcon);
+                
+                var transactionDetails = await DisplayTransaction.GetTransactionDetails(_dbcon, SellerId, string.IsNullOrEmpty(status) ? null : status);
+
                 return Ok(transactionDetails);
             }
             catch (Exception ex)
             {
-                // Log the full exception for debugging purposes (e.g., to a file or database)
                 Console.WriteLine($"Error: {ex}");
-
-                // Return a generic error message to the client, without exposing sensitive details
                 return StatusCode(500, new { Message = "An error occurred while retrieving transaction details.", Error = ex.Message });
             }
         }
+
 
 
 
