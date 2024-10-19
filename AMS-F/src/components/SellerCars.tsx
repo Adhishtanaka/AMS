@@ -86,9 +86,9 @@ const SellerCars: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container px-4 mx-auto">
       <button
-        className="mb-4 bg-blue-300 p-1 rounded"
+        className="p-1 mb-4 bg-blue-300 rounded"
         onClick={() => navigate('/seller/add-car')}
       >
         Add Car
@@ -99,25 +99,25 @@ const SellerCars: React.FC = () => {
         <table className="min-w-full bg-white border border-gray-200">
           <thead>
             <tr>
-              <th className="py-2 px-4 border-b">Car Title</th>
-              <th className="py-2 px-4 border-b">Model</th>
-              <th className="py-2 px-4 border-b">Year</th>
-              <th className="py-2 px-4 border-b">Price</th>
-              <th className="py-2 px-4 border-b">Actions</th>
+              <th className="px-4 py-2 border-b">Car Title</th>
+              <th className="px-4 py-2 border-b">Model</th>
+              <th className="px-4 py-2 border-b">Year</th>
+              <th className="px-4 py-2 border-b">Price</th>
+              <th className="px-4 py-2 border-b">Actions</th>
             </tr>
           </thead>
           <tbody>
             {cars.map((car) => (
               <tr key={car.id}>
-                <td className="py-2 px-4 border-b">
-                  <Link to={`car-details/${car.id}`} className="text-blue-500 hover:underline">
+                <td className="px-4 py-2 border-b">
+                  <Link to={`car-details/${car.id}`} className="text-blue-300 hover:underline">
                     {car.carTitle}
                   </Link>
                 </td>
-                <td className="py-2 px-4 border-b">{getModelName(car.modelId)}</td>
-                <td className="py-2 px-4 border-b">{car.year}</td>
-                <td className="py-2 px-4 border-b">${car.price}</td>
-                <td className="py-2 px-4 border-b">
+                <td className="px-4 py-2 border-b">{getModelName(car.modelId)}</td>
+                <td className="px-4 py-2 border-b">{car.year}</td>
+                <td className="px-4 py-2 border-b">${car.price}</td>
+                <td className="px-4 py-2 border-b">
                   <button
                     className="text-red-500 hover:text-red-700"
                     onClick={() => deleteCar(car.id)}
