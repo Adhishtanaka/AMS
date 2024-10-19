@@ -110,26 +110,26 @@ const CombinedAuctionCarDetails = () => {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       <div className="container mx-auto px-4 py-4 sm:py-8">
-        <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="max-w-7xl mx-auto mb-20 pb-5 bg-white rounded-xl shadow-lg overflow-hidden">
           {/* Header */}
           <div className="bg-gray-100 p-4 sm:p-6">
             <h1 className="text-2xl sm:text-3xl font-bold text-black mb-2">{car.carTitle}</h1>
             <div className="flex flex-wrap gap-2 sm:gap-4">
               <span className="text-black text-sm sm:text-base">Year: {car.year}</span>
-              <span
+              {/* <span
                 className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${
-                  isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                  isActive ? 'bg-gray-50  text-gray-800 border border-[#ADB4C4]' : 'bg-red-100 text-red-800'
                 }`}
               >
                 {auction.status}
-              </span>
-              <span className="px-2 sm:px-3 py-1 bg-blue-100 text-blue-800 text-xs sm:text-sm font-semibold rounded-full">
+              </span> */}
+              <span className="px-2 sm:px-3 py-1 border border-[#ADB4C4] bg-gray-50 text-gray-800 text-xs sm:text-sm font-semibold rounded-full">
                 {car.modelName}
               </span>
-              <span className="px-2 sm:px-3 py-1 bg-yellow-100 text-yellow-800 text-xs sm:text-sm font-semibold rounded-full">
+              <span className="px-2 sm:px-3 py-1 border border-[#ADB4C4] bg-gray-50 text-gray-800 text-xs sm:text-sm font-semibold rounded-full">
                 {car.performanceClassName}
               </span>
-              <span className="px-2 sm:px-3 py-1 bg-purple-100 text-purple-800 text-xs sm:text-sm font-semibold rounded-full">
+              <span className="px-2 sm:px-3 py-1 border border-[#ADB4C4] bg-gray-50 text-gray-800 text-xs sm:text-sm font-semibold rounded-full">
                 {car.carTypeName}
               </span>
             </div>
@@ -174,7 +174,7 @@ const CombinedAuctionCarDetails = () => {
                 <div className="grid grid-cols-2 gap-4 sm:gap-6">
                   <div>
                     <p className="text-gray-500 text-xs sm:text-sm">Current Bid</p>
-                    <p className="text-xl sm:text-2xl font-bold text-gray-800">
+                    <p className="text-lg font-bold text-gray-800">
                       ${auction.current_Price.toLocaleString()}
                     </p>
                   </div>

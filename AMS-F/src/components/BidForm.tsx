@@ -40,7 +40,7 @@ const BidForm: React.FC<BidFormProps> = ({ bid }) => {
   return (
     <div className="w-full">
       <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-lg">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-row gap-4">$
           <input
             type="number"
             value={amount}
