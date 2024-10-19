@@ -121,7 +121,7 @@ namespace AMS_B.Controllers
             return Ok(auctions);
         }
 
-        [HttpPut("TransactionDetails")]
+        [HttpGet("TransactionDetails")]
         public async Task<IActionResult> DisplayTransactionDetails([FromQuery] int? SellerId, [FromQuery] string? status)
         {
             try
