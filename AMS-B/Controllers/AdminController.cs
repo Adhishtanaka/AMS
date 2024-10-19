@@ -1,5 +1,6 @@
 ﻿using AMS_B.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Transactions;
 
 namespace AMS_B.Controllers
 {
@@ -171,6 +172,26 @@ namespace AMS_B.Controllers
                 return StatusCode(500, new { message = "An error occurred while deleting the Manufacturer .", error = ex.Message });
             }
         }
+
+        [HttpGet("TransactionDetails")]
+        public async Task<IActionResult> DisplayTransactionDetails()
+        {
+            try
+            {
+                var transactionDetails = await DisplayTransaction.GetTransactionDetails(_dbcon);
+                return Ok(transactionDetails);
+            }
+            catch (Exception ex)
+            {
+                // Log the full exception for debugging purposes (e.g., to a file or database)
+                Console.WriteLine($"Error: {ex}");
+
+                // Return a generic error message to the client, without exposing sensitive details
+                return StatusCode(500, new { Message = "An error occurred while retrieving transaction details.", Error = ex.Message });
+            }
+        }
+
+
 
     }
 }
