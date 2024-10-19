@@ -13,7 +13,7 @@ interface Car {
   img: string;
   modelId: number;
   performanceClassId: number;
-  yearId: number;
+  year: number;
   price: number;
   carTypeId: number;
   sellerId: number;

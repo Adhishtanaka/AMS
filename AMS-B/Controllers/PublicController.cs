@@ -75,21 +75,6 @@ namespace AMS_B.Controllers
             }
         }
 
-        [HttpGet("GetAllCarYears")]
-        public async Task<IActionResult> GetAllCarYears()
-        {
-            try
-            {
-                var carYears = await CategoryManager.GetCarYear(_dbcon);
-                return Ok(carYears);
-            }
-            catch (Exception ex)
-            {
-                
-                return StatusCode(500, new { message = "An error occurred while retrieving car years.", error = ex.Message });
-            }
-        }
-
         [HttpGet("GetAllCarPC")]
         public async Task<IActionResult> GetAllPC()
         {
@@ -101,7 +86,7 @@ namespace AMS_B.Controllers
             catch (Exception ex)
             {
 
-                return StatusCode(500, new { message = "An error occurred while retrieving car years.", error = ex.Message });
+                return StatusCode(500, new { message = "An error occurred while retrieving car Performence Class.", error = ex.Message });
             }
         }
 
@@ -120,6 +105,20 @@ namespace AMS_B.Controllers
             }
 
             return Ok(auction);
+        }
+
+        [HttpGet("GetALLAuctionDetails")]
+        public async Task<IActionResult> GetALLAuction([FromServices] Dbcon dbcon)
+        {
+            
+
+            List<AuctionDto> auctions = await Auction.GetAllAuctionsDetails(dbcon);
+            if (auctions == null)
+            {
+                return NotFound(new { Message = "Auctions not found." });
+            }
+
+            return Ok(auctions);
         }
 
     }

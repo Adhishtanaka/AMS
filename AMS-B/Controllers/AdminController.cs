@@ -76,20 +76,6 @@ namespace AMS_B.Controllers
             }
         }
 
-        [HttpPost("AddCarYear")]
-        public async Task<IActionResult> AddCarYear([FromBody] CarYear carYear)
-        {
-            try
-            {
-                await CategoryManager.AddYear(_dbcon, carYear);
-                return Ok(new { message = "Car year added successfully." });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "An error occurred while adding the car year.", error = ex.Message });
-            }
-        }
-
         [HttpPost("AddManufacturer")]
         public async Task<IActionResult> AddManufacturer([FromBody] Manufacturer manufacturer)
         {

@@ -1,4 +1,4 @@
-import React,{ useState } from 'react';
+import { useState } from 'react';
 import SellerDashboardC from '../components/SellersDashboardC';
 import SellerCars from '../components/SellerCars';
 import SellerAuction from '../components/SellerAuction';
@@ -40,7 +40,7 @@ const SellerDashboard = () => {
         <ul className="flex flex-wrap -mb-px text-sm font-medium text-center" role="tablist">
           {tabs.map(({ id, label }) => (
             <li key={id} className="me-2" role="presentation">
-              <button
+              <div
                 className={`inline-block px-4 py-3 rounded-lg ${
                   activeTab === id ? 'text-[#1D2945] bg-blue-50' : 'hover:text-gray-900 hover:bg-gray-100'
                 }`}
@@ -50,7 +50,7 @@ const SellerDashboard = () => {
                 aria-selected={activeTab === id}
               >
                 {label}
-              </button>
+              </div>
             </li>
           ))}
         </ul>

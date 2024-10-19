@@ -6,12 +6,6 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<Dbcon>();
-builder.Services.AddScoped<CategoryManager>(); 
-builder.Services.AddScoped<Admin>();
-
-
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<Dbcon>();

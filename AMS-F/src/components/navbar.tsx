@@ -1,4 +1,4 @@
-import React,{ useState } from 'react';
+import { useState } from 'react';
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
 
 const Navbar = () => {
@@ -10,7 +10,7 @@ const Navbar = () => {
 
   const Links =[
     {name:"Dashboard",link:"/"},
-    {name:"Auctions",link:"/"},
+    {name:"Auctions",link:"/auctions"},
     {name:"Contact",link:"/contact"},
   ];
 

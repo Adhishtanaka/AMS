@@ -20,24 +20,24 @@ interface Model {
   manufacturerName: string;
 }
 
-interface CarYear {
-  id: number;
-  year: string;
+interface TableComponentProps {
+  title: string;
+  data: any //eslint-disable-line
+  headers: string[];
+  onDelete: (id: number) => void;
 }
+
 
 const CategoryManager: React.FC = () => {
   const [carTypes, setCarTypes] = useState<CarType[]>([]);
   const [manufacturers, setManufacturers] = useState<Manufacturer[]>([]);
   const [models, setModels] = useState<Model[]>([]);
-  const [carYears, setCarYears] = useState<CarYear[]>([]);
-
   const [newCarType, setNewCarType] = useState('');
   const [newManufacturer, setNewManufacturer] = useState('');
   const [newModel, setNewModel] = useState('');
   const [selectedManufacturerId, setSelectedManufacturerId] = useState<number | ''>('');
-  const [newYear, setNewYear] = useState('');
 
-  const [activeTab, setActiveTab] = useState<'carTypes' | 'manufacturers' | 'models' | 'years'>('carTypes');
+  const [activeTab, setActiveTab] = useState<'carTypes' | 'manufacturers' | 'models'>('carTypes');
 
   useEffect(() => {
     fetchCategories();
@@ -54,8 +54,6 @@ const CategoryManager: React.FC = () => {
       const modelsRes = await axios.get('http://localhost:5000/api/Public/GetAllModels');
       setModels(modelsRes.data);
 
-      const yearsRes = await axios.get('http://localhost:5000/api/Public/GetAllCarYears');
-      setCarYears(yearsRes.data);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const errorMessage = error.response?.data?.message || 'An error occurred';
@@ -134,31 +132,16 @@ const CategoryManager: React.FC = () => {
     }
   };
 
-  const handleAddYear = async () => {
-    if (newYear.trim() === '') {
-      handleErrorResult('Year cannot be empty');
-      return;
-    }
-
-    try {
-      await api.post('http://localhost:5000/api/Admin/AddCarYear', {
-        year: newYear,
-      });
-      setNewYear('');
-      await fetchCategories();
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        const errorMessage = error.response?.data?.message || 'An error occurred';
-        handleErrorResult(errorMessage);
-      } else {
-        handleErrorResult('An unexpected error occurred');
-      }
-    }
-  };
 
   const handleDelete = async (endpoint: string, id: number) => {
     try {
-      await api.delete(`http://localhost:5000/api/Admin/${endpoint}/${id}`);
+      await api.delete(`http://localhost:5000/api/Admin/${endpoint}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: id,
+      });
+      
       await fetchCategories();
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -169,6 +152,7 @@ const CategoryManager: React.FC = () => {
       }
     }
   };
+  
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -264,38 +248,12 @@ const CategoryManager: React.FC = () => {
             </div>
           </>
         );
-      case 'years':
-        return (
-          <>
-            <TableComponent
-              title="Years"
-              data={carYears}
-              headers={['year']}
-              onDelete={(id: number) => handleDelete('DeleteCarYear', id)}
-            />
-            <div className="flex items-center space-x-4">
-              <input
-                type="text"
-                placeholder="New year"
-                value={newYear}
-                onChange={(e) => setNewYear(e.target.value)}
-                className="flex-grow p-2 border rounded-lg"
-              />
-              <button
-                onClick={handleAddYear}
-                className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
-              >
-                Add
-              </button>
-            </div>
-          </>
-        );
       default:
         return null;
     }
   };
 
-  const TableComponent = ({ title, data, headers, onDelete }: any) => (
+  const TableComponent:React.FC<TableComponentProps>  = ({ title, data, headers, onDelete }) => (
     <div className="bg-white p-6 rounded-lg shadow-md mb-6">
       <h3 className="text-xl font-semibold mb-4">{title}</h3>
       <table className="min-w-full table-auto border-collapse border">
@@ -308,7 +266,7 @@ const CategoryManager: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item: any, idx: number) => (
+          {data.map((item: any, idx: number) => ( // eslint-disable-line
             <tr key={item.id || item.modelId} className={idx % 2 === 0 ? 'bg-gray-50' : ''}>
               {headers.map((header: string, index: number) => (
                 <td key={index} className="border px-4 py-2">{item[header]}</td>
@@ -351,12 +309,6 @@ const CategoryManager: React.FC = () => {
           className={`p-2 ${activeTab === 'models' ? 'bg-blue-600 text-white' : 'bg-gray-300'} rounded-lg`}
         >
           Models
-        </button>
-        <button
-          onClick={() => setActiveTab('years')}
-          className={`p-2 ${activeTab === 'years' ? 'bg-blue-600 text-white' : 'bg-gray-300'} rounded-lg`}
-        >
-          Years
         </button>
       </div>
 
