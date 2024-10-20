@@ -190,6 +190,20 @@ namespace AMS_B.Controllers
                 return StatusCode(500, new { Message = "An error occurred while retrieving users.", Error = ex.Message });
             }
         }
+        [HttpGet("GetHigherFinalPriceAuctionsDetails")]
+        public async Task<IActionResult> HigherFinalPriceAuctionsDetails()
+        {
+            try
+            {
+
+                var dashboardDetails = await GetHigherFinalPriceAuctionsDetails.GetHigherFinalPriceAuctions(_dbcon);
+                return Ok(dashboardDetails);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An error occurred while retrieving users.", Error = ex.Message });
+            }
+        }
 
 
 

@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data.Common;
+using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 
 namespace AMS_B.Models
@@ -125,7 +126,105 @@ namespace AMS_B.Models
         }
     }
 
+public class GetHigherFinalPriceAuctionsDetails
+    {
+        public static async Task<List<HigherFinalPriceAuctionsDetails>> GetHigherFinalPriceAuctions(Dbcon dbcon)
+        {
+            var result = new List<HigherFinalPriceAuctionsDetails>();
+            try
+            {
+                await dbcon.Connect();
+                string query = @"
+            SELECT 
+                t.TransactionID,
+                c.car_title AS CarTitle,
+                CONCAT(m.name, ' ', md.model_name) AS CarModel,
+                y.year AS CarYear,
+                ct.type_name AS CarType,
+                pc.class_name AS PerformanceClass,
+                buyer.name AS BuyerName,
+                seller.name AS SellerName,
+                t.FinalPrice,
+                t.TransactionDate,
+                t.PaymentStatus
+            FROM 
+                transactions t
+            JOIN 
+                auction a ON t.AucID = a.aucid
+            JOIN 
+                car c ON a.car_id = c.id
+            JOIN 
+                user buyer ON t.BuyerID = buyer.userid
+            JOIN 
+                user seller ON t.SellerID = seller.userid
+            JOIN 
+                model md ON c.model_id = md.model_id
+            JOIN 
+                manufacturer m ON md.manufacturer_id = m.id
+            JOIN 
+                year y ON c.year_id = y.id
+            JOIN 
+                car_type ct ON c.car_type_id = ct.id
+            JOIN 
+                performance_class pc ON c.performance_class_id = pc.id
+            WHERE 
+                t.PaymentStatus = 'Completed'
+            ORDER BY 
+                t.FinalPrice DESC
+            LIMIT 100;";
 
+                using (var reader = await dbcon.ExecuteQuery(query))
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        var higherFinalPriceAuctions = new HigherFinalPriceAuctionsDetails
+                        {
+                            TransactionID = reader.GetInt32(reader.GetOrdinal("TransactionID")),
+                            CarTitle = reader.GetString(reader.GetOrdinal("CarTitle")),
+                            CarModel = reader.GetString(reader.GetOrdinal("CarModel")),
+                            CarYear = reader.GetInt32(reader.GetOrdinal("CarYear")),
+                            CarType = reader.GetString(reader.GetOrdinal("CarType")),
+                            PerformanceClass = reader.GetString(reader.GetOrdinal("PerformanceClass")),
+                            BuyerName = reader.GetString(reader.GetOrdinal("BuyerName")),
+                            SellerName = reader.GetString(reader.GetOrdinal("SellerName")),
+                            FinalPrice = reader.GetInt32(reader.GetOrdinal("FinalPrice")),
+                            TransactionDate = reader.GetDateTime(reader.GetOrdinal("TransactionDate")),
+                            PaymentStatus = reader.GetString(reader.GetOrdinal("PaymentStatus"))
+                        };
+                        result.Add(higherFinalPriceAuctions);
+                    }
+                }
+                return result;
+            }
+            catch (DbException e)
+            {
+                throw new Exception("An error occurred while retrieving higher final price auctions details from the DB.", e);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An unexpected error occurred: {ex.Message}", ex);
+            }
+            finally
+            {
+                 dbcon.Disconnect();
+            }
+        }
+    }
+
+    public class HigherFinalPriceAuctionsDetails
+    {
+        public required int TransactionID { get; set; }
+        public required string CarTitle { get; set; }
+        public required string CarModel { get; set; }
+        public required int CarYear { get; set; }
+        public required string CarType { get; set; }
+        public required string PerformanceClass { get; set; }
+        public required string BuyerName { get; set; }
+        public required string SellerName { get; set; }
+        public required int FinalPrice { get; set; }
+        public required DateTime TransactionDate { get; set; }
+        public required string PaymentStatus { get; set; }
+    }
     public class Admin : Users
     {
         public override string Role => "Admin";
