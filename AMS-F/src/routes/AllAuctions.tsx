@@ -14,9 +14,9 @@ interface AuctionDto {
   current_Price: number;
   carTitle: string;
   img: string;
-  modelName: string;           
-  manufacturerName: string;   
-  year: number;                
+  modelName: string;
+  manufacturerName: string;
+  year: number;
 }
 
 const All = () => {
@@ -49,6 +49,18 @@ const All = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <style>
+        {`
+          .slick-dots {
+            margin-bottom: 5px;
+          }
+
+          .slick-dots li {
+            margin: 0 -4px;
+          }
+
+        `}
+      </style>
       {/* Header */}
       <Navbar />
 
@@ -57,9 +69,11 @@ const All = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {auctions.map((auction) => {
             const imageUrls = auction.img
-              ? auction.img.split(",").map(
-                  (url) => `http://localhost:5000/car-images/${url.trim()}`
-                )
+              ? auction.img
+                  .split(",")
+                  .map(
+                    (url) => `http://localhost:5000/car-images/${url.trim()}`
+                  )
               : [];
 
             const daysLeft = Math.ceil(
@@ -82,10 +96,6 @@ const All = () => {
                             src={url}
                             alt={`${auction.carTitle} - View ${index + 1}`}
                             className="w-full h-full object-cover"
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              target.src = "/api/placeholder/400/320";
-                            }}
                           />
                         </div>
                       ))}
@@ -100,9 +110,10 @@ const All = () => {
                 {/* Card Content */}
                 <div className="p-4">
                   <h2 className="text-lg font-bold text-gray-800 mt-2 truncate">
-                    {auction.carTitle}
+                    {auction.manufacturerName} {auction.modelName}-{" "}
+                    {auction.year}
                   </h2>
-                  <p className="text-sm text-gray-600">{auction.manufacturerName}: {auction.modelName}- {auction.year}</p>
+                  <p className="text-base text-gray-600">{auction.carTitle}</p>
                   <div className="flex justify-between items-center mt-2">
                     <div>
                       <p className="text-xs text-gray-600">Current Bid</p>
@@ -112,13 +123,22 @@ const All = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-xs text-gray-600">Time Left</p>
-                      <p className={`text-sm font-bold ${daysLeft <= 3 ? 'text-red-600' : 'text-gray-800'}`}>
+                      <p
+                        className={`text-sm font-bold ${
+                          daysLeft <= 3 ? "text-red-600" : "text-gray-800"
+                        }`}
+                      >
                         {daysLeft} days
                       </p>
                     </div>
                   </div>
 
-                  <button onClick={() => navigate(`/auction-details/${auction.auctionId}`)} className="mt-4 w-full bg-[#1D2945] text-white py-2 px-4 rounded-md text-sm font-semibold hover:bg-opacity-90 transition duration-300">
+                  <button
+                    onClick={() =>
+                      navigate(`/auction-details/${auction.auctionId}`)
+                    }
+                    className="mt-4 w-full bg-[#1D2945] text-white py-2 px-4 rounded-md text-sm font-semibold hover:bg-opacity-90 transition duration-300"
+                  >
                     Place Bid
                   </button>
                 </div>

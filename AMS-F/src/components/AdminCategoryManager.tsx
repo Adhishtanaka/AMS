@@ -175,7 +175,7 @@ const CategoryManager: React.FC = () => {
               />
               <button
                 onClick={handleAddCarType}
-                className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                className="p-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700"
               >
                 Add
               </button>
@@ -201,7 +201,7 @@ const CategoryManager: React.FC = () => {
               />
               <button
                 onClick={handleAddManufacturer}
-                className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
+                className="p-2 text-white bg-blue-500 rounded-lg hover:bg-blue-700"
               >
                 Add
               </button>
@@ -240,7 +240,7 @@ const CategoryManager: React.FC = () => {
                 />
                 <button
                   onClick={handleAddModel}
-                  className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  className="p-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700"
                 >
                   Add
                 </button>
@@ -254,13 +254,13 @@ const CategoryManager: React.FC = () => {
   };
 
   const TableComponent:React.FC<TableComponentProps>  = ({ title, data, headers, onDelete }) => (
-    <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-      <h3 className="text-xl font-semibold mb-4">{title}</h3>
-      <table className="min-w-full table-auto border-collapse border">
+    <div className="p-6 mb-6 bg-white rounded-lg shadow-md">
+      <h3 className="mb-4 text-xl font-semibold">{title}</h3>
+      <table className="min-w-full border border-collapse table-auto">
         <thead>
           <tr>
             {headers.map((header: string, index: number) => (
-              <th key={index} className="px-4 py-2 bg-gray-200 text-left border">{header}</th>
+              <th key={index} className="px-4 py-2 text-left bg-gray-200 border">{header}</th>
             ))}
             <th className="px-4 py-2 bg-gray-200 border">Action</th>
           </tr>
@@ -269,9 +269,9 @@ const CategoryManager: React.FC = () => {
           {data.map((item: any, idx: number) => ( // eslint-disable-line
             <tr key={item.id || item.modelId} className={idx % 2 === 0 ? 'bg-gray-50' : ''}>
               {headers.map((header: string, index: number) => (
-                <td key={index} className="border px-4 py-2">{item[header]}</td>
+                <td key={index} className="px-4 py-2 border">{item[header]}</td>
               ))}
-              <td className="border px-4 py-2">
+              <td className="px-4 py-2 border">
                 <button
                   onClick={() => onDelete(item.id || item.modelId)}
                   className="text-red-600 hover:text-red-800"
@@ -287,11 +287,11 @@ const CategoryManager: React.FC = () => {
   );
 
   return (
-    <div className="container mx-auto p-8">
-      <h2 className="text-3xl font-semibold mb-8">Categories</h2>
+    <div className="container p-8 mx-auto">
+      <h2 className="mb-8 text-3xl font-semibold">Categories</h2>
 
       {/* Tabs */}
-      <div className="flex space-x-4 mb-8">
+      <div className="flex mb-8 space-x-4">
         <button
           onClick={() => setActiveTab('carTypes')}
           className={`p-2 ${activeTab === 'carTypes' ? 'bg-blue-600 text-white' : 'bg-gray-300'} rounded-lg`}

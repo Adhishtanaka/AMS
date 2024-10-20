@@ -39,8 +39,8 @@ const BidForm: React.FC<BidFormProps> = ({ bid }) => {
 
   return (
     <div className="w-full">
-      <div className="bg-white shadow-lg rounded-lg p-6 border border-gray-200">
-        <div className="flex flex-col gap-4">
+      <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-lg">
+        <div className="flex flex-row gap-4">$
           <input
             type="number"
             value={amount}
@@ -64,7 +64,7 @@ const BidForm: React.FC<BidFormProps> = ({ bid }) => {
         </div>
 
         {amount <= bid.current_amount && amount !== 0 && (
-          <p className="text-red-600 text-sm mt-2">Bid must be higher than the current amount.</p>
+          <p className="mt-2 text-sm text-red-600">Bid must be higher than the current amount.</p>
         )}
       </div>
     </div>
