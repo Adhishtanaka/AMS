@@ -1,4 +1,5 @@
 ﻿using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 namespace AMS_B.Models
 {
@@ -16,6 +17,58 @@ namespace AMS_B.Models
         public required string Status { get; set; }
         public required string Telephone { get; set; }
     }
+    public class RevenueDetails
+    {
+        public required DateOnly Month { get; set; }  
+        public required int Revenue { get; set; }
+    }
+
+    public class GetRevenueDetails
+    {
+        public static async Task<List<RevenueDetails>> GetRevenue(Dbcon dbcon)
+        {
+            var result = new List<RevenueDetails>();
+            try
+            {
+                await dbcon.Connect();
+                string query = @"
+                SELECT DATE_FORMAT(TransactionDate, '%Y-%m') AS Month, SUM(FinalPrice) AS TotalRevenue
+                FROM Transactions
+                WHERE PaymentStatus = 'Completed'
+                GROUP BY Month
+                ORDER BY Month";
+
+                using (var reader = await dbcon.ExecuteQuery(query))
+                {
+                    while (reader.Read())
+                    {
+                        var revenue = new RevenueDetails
+                        {
+                            
+                            Month = DateOnly.Parse(reader.GetString(0)),
+                            Revenue = reader.GetInt32(1)
+                        };
+                        result.Add(revenue);
+                    }
+                }
+                return result;
+            }
+            catch (SqlException e)
+            {
+               
+                throw new Exception("An error occurred while retrieving revenue details from the DB.", e);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An unexpected error occurred: {ex.Message}", ex); 
+            }
+            finally
+            {
+                dbcon.Disconnect();
+            }
+        }
+    }
+
 
     public class Admin : Users
     {

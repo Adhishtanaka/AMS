@@ -161,8 +161,20 @@ namespace AMS_B.Controllers
             }
         }
 
-        
-
+        [HttpGet("GetRevenue")]
+        public async Task<IActionResult> GetRevenue()
+        {
+            try
+            {
+                
+                var revenue = await GetRevenueDetails.GetRevenue(_dbcon);
+                return Ok(revenue);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An error occurred while retrieving users.", Error = ex.Message });
+            }
+        }
 
 
 
