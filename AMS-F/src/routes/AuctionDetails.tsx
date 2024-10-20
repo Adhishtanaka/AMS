@@ -103,8 +103,8 @@ const CombinedAuctionCarDetails = () => {
     ? car.img.split(',').map((url) => `http://localhost:5000/car-images/${url.trim()}`)
     : [];
 
-  const timeRemaining = new Date(auction.endDate).getTime() - new Date().getTime();
-  const isActive = timeRemaining > 0;
+  // const timeRemaining = new Date(auction.endDate).getTime() - new Date().getTime();
+  // const isActive = timeRemaining > 0;
 
   return (
     <div className="min-h-screen bg-gray-50">
