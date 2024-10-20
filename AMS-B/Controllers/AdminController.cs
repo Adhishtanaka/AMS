@@ -176,6 +176,21 @@ namespace AMS_B.Controllers
             }
         }
 
+        [HttpGet("GetDashboardDetails")]
+        public async Task<IActionResult> DashboardDetails()
+        {
+            try
+            {
+
+                var dashboardDetails = await GetDashboardDetails.GetDashboard(_dbcon);
+                return Ok(dashboardDetails);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An error occurred while retrieving users.", Error = ex.Message });
+            }
+        }
+
 
 
     }

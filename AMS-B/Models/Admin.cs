@@ -69,6 +69,62 @@ namespace AMS_B.Models
         }
     }
 
+    public class DashboardDetails
+    {
+        public required int TotalUsers { get; set; }
+        public required int TotalSellers { get; set; }
+        public required int TotalCopletedTransactions { get; set; }
+        public required int TotalFailedTransactions { get; set; }
+        public required int TotalRevenue { get; set; }
+    }
+    public class GetDashboardDetails
+    {
+        public static async Task<List<DashboardDetails>> GetDashboard(Dbcon dbcon)
+        {
+            var result = new List<DashboardDetails>();
+            try
+            {
+                await dbcon.Connect();
+                string query = @"
+                SELECT 
+                (SELECT COUNT(*) FROM user) AS TotalUsers,
+                (SELECT COUNT(*) FROM user WHERE role = 'Seller') AS TotalSellers,
+                (SELECT COUNT(*) FROM transactions WHERE PaymentStatus = 'Completed') AS TotalCompletedTransactions,
+                (SELECT COUNT(*) FROM transactions WHERE PaymentStatus = 'Failed') AS TotalFailedTransactions,
+                (SELECT SUM(FinalPrice) FROM transactions WHERE PaymentStatus = 'Completed') AS TotalRevenue";
+
+                using (var reader = await dbcon.ExecuteQuery(query))
+                {
+                    while (reader.Read())
+                    {
+                        var dashboardDetails = new DashboardDetails
+                        {
+                            TotalUsers = reader.GetInt32(0),
+                            TotalSellers = reader.GetInt32(1),
+                            TotalCopletedTransactions = reader.GetInt32(2),
+                            TotalFailedTransactions = reader.GetInt32(3),
+                            TotalRevenue = reader.GetInt32(4)
+                        };
+                        result.Add(dashboardDetails);
+                    }
+                }
+                return result;
+            }
+            catch (SqlException e)
+            {
+                throw new Exception("An error occurred while retrieving dashboard details from the DB.", e);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An unexpected error occurred: {ex.Message}", ex);
+            }
+            finally
+            {
+                dbcon.Disconnect();
+            }
+        }
+    }
+
 
     public class Admin : Users
     {
