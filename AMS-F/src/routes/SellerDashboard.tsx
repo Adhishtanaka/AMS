@@ -41,8 +41,8 @@ const SellerDashboard = () => {
           {tabs.map(({ id, label }) => (
             <li key={id} className="me-2" role="presentation">
               <div
-                className={`inline-block px-4 py-3 rounded-lg ${
-                  activeTab === id ? 'text-[#1D2945] bg-blue-50' : 'hover:text-gray-900 hover:bg-gray-100'
+                className={`inline-block px-4 py-2 cursor-pointer rounded-lg ${
+                  activeTab === id ? 'text-[#1D2945] bg-gray-100' : 'hover:text-gray-900 '
                 }`}
                 onClick={() => setActiveTab(id)}
                 role="tab"

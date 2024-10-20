@@ -1,6 +1,8 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { handleErrorResult, handleSuccessResult } from "../util/TostMessage";
 import api from "../util/api";
+import Navbar from "../components/navbar";
+import Footer from "../components/Footer";
 
 interface CarData {
   carTitle: string;
@@ -105,187 +107,177 @@ const AddCarForm: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="text-center py-4">Loading...</div>;
+    return <div className="py-4 text-center">Loading...</div>;
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">
-      <div>
-        <label
-          htmlFor="carTitle"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Car Title
-        </label>
-        <input
-          id="carTitle"
-          name="carTitle"
-          type="text"
-          value={carData.carTitle}
-          onChange={handleInputChange}
-          required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        />
-      </div>
-
-      <div>
-        <label
-          htmlFor="carDescription"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Car Description
-        </label>
-        <textarea
-          id="carDescription"
-          name="carDescription"
-          value={carData.carDescription}
-          onChange={handleInputChange}
-          required
-          rows={3}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        />
-      </div>
-
-      <div>
-        <label
-          htmlFor="modelId"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Model
-        </label>
-        <select
-          id="modelId"
-          name="modelId"
-          value={carData.modelId}
-          onChange={handleInputChange}
-          required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        >
-          <option value="">Select a model</option>
-          {models.map((model) => (
-            <option key={model.modelId} value={model.modelId.toString()}>
-              {model.modelName}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div>
-        <label
-          htmlFor="performanceClassId"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Performance Class
-        </label>
-        <select
-          id="performanceClassId"
-          name="performanceClassId"
-          value={carData.performanceClassId}
-          onChange={handleInputChange}
-          required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        >
-          <option value="">Select a performance class</option>
-          {performanceClasses.map((pc) => (
-            <option key={pc.id} value={pc.id.toString()}>
-              {pc.className}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div>
-        <label
-          htmlFor="yearId"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Year
-        </label>
-        <input
-          id="yearId"
-          name="yearId"
-          type="number"
-          min="1950"
-          max={new Date().getFullYear()}
-          step="1"
-          value={carData.year}
-          onChange={handleInputChange}
-          required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        />
-      </div>
-
-      <div>
-        <label
-          htmlFor="carTypeId"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Car Type
-        </label>
-        <select
-          id="carTypeId"
-          name="carTypeId"
-          value={carData.carTypeId}
-          onChange={handleInputChange}
-          required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        >
-          <option value="">Select a car type</option>
-          {carTypes.map((type) => (
-            <option key={type.id} value={type.id.toString()}>
-              {type.typeName}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div>
-        <label
-          htmlFor="price"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Price
-        </label>
-        <input
-          id="price"
-          name="price"
-          type="number"
-          value={carData.price}
-          onChange={handleInputChange}
-          required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        />
-      </div>
-
-      <div>
-        <label
-          htmlFor="images"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Images
-        </label>
-        <input
-          id="images"
-          name="images"
-          type="file"
-          onChange={handleImageChange}
-          multiple
-          accept="image/*"
-          className="mt-1 block w-full text-sm text-slate-500
-            file:mr-4 file:py-2 file:px-4
-            file:rounded-full file:border-0
-            file:text-sm file:font-semibold
-            file:bg-violet-50 file:text-violet-700
-            hover:file:bg-violet-100"
-        />
-      </div>
-      <button
-        type="submit"
-        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+   <> <Navbar />
+    <form onSubmit={handleSubmit} className="max-w-sm p-6 m-6 mx-auto space-y-5 bg-gray-100 rounded-lg shadow-lg">
+      <h1 className="mb-6 text-2xl font-bold text-gray-800 sm:text-2xl">Add A Car</h1>
+    <div>
+      <label
+        htmlFor="carTitle"
+        className="block text-sm font-semibold text-gray-800"
       >
-        Add Car
-      </button>
-    </form>
+        Car Title
+      </label>
+      <input
+        id="carTitle"
+        name="carTitle"
+        type="text"
+        value={carData.carTitle}
+        onChange={handleInputChange}
+        required
+        className=" block w-full rounded-md border border-gray-300 shadow-sm py-1 focus:border-[#838399] outline-none"
+
+
+      />
+    </div>
+  
+    <div>
+      <label
+        htmlFor="carDescription"
+        className="block text-sm font-semibold text-gray-800"
+      >
+        Car Description
+      </label>
+      <textarea
+        id="carDescription"
+        name="carDescription"
+        value={carData.carDescription}
+        onChange={handleInputChange}
+        required
+        rows={3}
+        className=" block w-full rounded-md border border-gray-300 shadow-sm py-1 focus:border-[#838399] outline-none"
+
+      />
+    </div>
+  
+    <div>
+      <label htmlFor="modelId" className="block text-sm font-semibold text-gray-800">
+        Model
+      </label>
+      <select
+        id="modelId"
+        name="modelId"
+        value={carData.modelId}
+        onChange={handleInputChange}
+        required
+        className=" block w-full rounded-md border border-gray-300 shadow-sm py-1 focus:border-[#838399] outline-none"
+
+      >
+        <option value="">Select a model</option>
+        {models.map((model) => (
+          <option key={model.modelId} value={model.modelId.toString()}>
+            {model.modelName}
+          </option>
+        ))}
+      </select>
+    </div>
+  
+    <div>
+      <label htmlFor="performanceClassId" className="block text-sm font-semibold text-gray-800">
+        Performance Class
+      </label>
+      <select
+        id="performanceClassId"
+        name="performanceClassId"
+        value={carData.performanceClassId}
+        onChange={handleInputChange}
+        required
+        className=" block w-full rounded-md border border-gray-300 shadow-sm py-1 focus:border-[#838399] outline-none"
+
+      >
+        <option value="">Select a performance class</option>
+        {performanceClasses.map((pc) => (
+          <option key={pc.id} value={pc.id.toString()}>
+            {pc.className}
+          </option>
+        ))}
+      </select>
+    </div>
+  
+    <div>
+      <label htmlFor="yearId" className="block text-sm font-semibold text-gray-800">
+        Year
+      </label>
+      <input
+        id="yearId"
+        name="yearId"
+        type="number"
+        min="1950"
+        max={new Date().getFullYear()}
+        step="1"
+        value={carData.year}
+        onChange={handleInputChange}
+        required
+        className=" block w-full rounded-md border border-gray-300 shadow-sm py-1 focus:border-[#838399] outline-none"
+
+      />
+    </div>
+  
+    <div>
+      <label htmlFor="carTypeId" className="block text-sm font-semibold text-gray-800">
+        Car Type
+      </label>
+      <select
+        id="carTypeId"
+        name="carTypeId"
+        value={carData.carTypeId}
+        onChange={handleInputChange}
+        required
+        className=" block w-full rounded-md border border-gray-300 shadow-sm py-1 focus:border-[#838399] outline-none"
+
+      >
+        <option value="">Select a car type</option>
+        {carTypes.map((type) => (
+          <option key={type.id} value={type.id.toString()}>
+            {type.typeName}
+          </option>
+        ))}
+      </select>
+    </div>
+  
+    <div>
+      <label htmlFor="price" className="block text-sm font-semibold text-gray-800">
+        Price
+      </label>
+      <input
+        id="price"
+        name="price"
+        type="number"
+        value={carData.price}
+        onChange={handleInputChange}
+        required
+        className=" block w-full rounded-md border border-gray-300 shadow-sm py-1 focus:border-[#838399] outline-none"
+
+      />
+    </div>
+  
+    <div>
+      <label htmlFor="images" className="block text-sm font-semibold text-gray-800">
+        Images
+      </label>
+      <input
+        id="images"
+        name="images"
+        type="file"
+        onChange={handleImageChange}
+        multiple
+        accept="image/*"
+        className="mt-2 block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#000080]/10 file:text-[#000080] hover:file:bg-[#000080]/20"
+      />
+    </div>
+  
+    <button
+      type="submit"
+      className="w-full py-1 px-4 mt-3 bg-[#222246] text-white rounded-md shadow-sm font-medium hover:bg-[#161646] focus:outline-none "
+    >
+      Add Car
+    </button>
+  </form>
+  < Footer />
+  </>
   );
 };
 

@@ -64,25 +64,25 @@ const SellerAuctionDetails = () => {
   }, [auctionId]); 
 
   if (isLoading) {
-    return <div className="text-center p-4">Loading auction details...</div>;
+    return <div className="p-4 text-center">Loading auction details...</div>;
   }
 
   if (!auction || !car) {
-    return <div className="text-center p-4">Auction not found</div>;
+    return <div className="p-4 text-center">Auction not found</div>;
   }
 
   return (
     <>
       <Navbar />
-      <div className="container mx-auto p-4">
-        <div className="bg-white shadow-lg rounded-lg overflow-hidden max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6">
+      <div className="container p-4 mx-auto">
+        <div className="max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-lg">
+          <div className="grid grid-cols-1 gap-4 p-6 md:grid-cols-2">
             <div className="flex flex-col justify-between">
               <div>
-                <h1 className="text-3xl font-bold mb-2 text-gray-800">
+                <h1 className="mb-2 text-3xl font-bold text-gray-800">
                   {car.carTitle}
                 </h1>
-                <p className="text-gray-600 mb-4">{car.carDescription}</p>
+                <p className="mb-4 text-gray-600">{car.carDescription}</p>
                 <p className="mb-2">
                   <strong>Auction Start Date:</strong>{' '}
                   <span className="text-gray-800">
@@ -121,7 +121,8 @@ const SellerAuctionDetails = () => {
               <div className="mt-4">
                 <a
                   href={`/seller/car-details/${car.id}`}
-                  className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
+                  className="w-full py-2 px-4 mt-3 bg-[#222246] text-white rounded-md shadow-sm font-medium hover:bg-[#161646] focus:outline-none "
+
                 >
                   View Car Details
                 </a>
