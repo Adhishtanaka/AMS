@@ -9,9 +9,10 @@ import { useNavigate } from "react-router-dom";
 
 interface AuctionDto {
   auctionId: number;
+  initialPrice:number;
   startDate: string;
   endDate: string;
-  current_Price: number;
+  currentPrice: number | null;
   carTitle: string;
   img: string;
   modelName: string;
@@ -116,9 +117,13 @@ const All = () => {
                   <p className="text-base text-gray-600">{auction.carTitle}</p>
                   <div className="flex justify-between items-center mt-2">
                     <div>
-                      <p className="text-xs text-gray-600">Current Bid</p>
+                      <p className="text-xs text-gray-600">{auction.currentPrice != null
+                          ? "Current Bid" 
+                          : "Initial Price"} </p>
                       <p className="text-lg font-bold text-[#1D2945]">
-                        ${auction.current_Price.toLocaleString()}
+                        ${auction.currentPrice != null
+                          ? auction.currentPrice.toLocaleString() 
+                          : auction.initialPrice.toLocaleString()} 
                       </p>
                     </div>
                     <div className="text-right">

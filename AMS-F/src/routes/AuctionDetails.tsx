@@ -9,13 +9,17 @@ import Navbar from '../components/navbar';
 import Footer from '../components/Footer';
 import BidForm from '../components/BidForm';
 
-interface Auction {
+interface AuctionDto {
   auctionId: number;
   productId: number;
   startDate: string;
   endDate: string;
-  current_Price: number;
-  status: string;
+  currentPrice: number | null;
+  carTitle: string;
+  img: string;
+  modelName: string;
+  manufacturerName: string;
+  year: number;
 }
 
 interface CarDTO {
@@ -34,7 +38,7 @@ interface CarDTO {
 
 const CombinedAuctionCarDetails = () => {
   const { auctionId } = useParams<{ auctionId: string }>();
-  const [auction, setAuction] = useState<Auction | null>(null);
+  const [auction, setAuction] = useState<AuctionDto | null>(null);
   const [car, setCar] = useState<CarDTO | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -42,7 +46,7 @@ const CombinedAuctionCarDetails = () => {
     const fetchDetails = async () => {
       try {
         setIsLoading(true);
-        const auctionResponse = await axios.get<Auction>(
+        const auctionResponse = await axios.get<AuctionDto>(
           `http://localhost:5000/api/Public/GetAuctionById?auctionId=${auctionId}`
         );
         setAuction(auctionResponse.data);
@@ -175,7 +179,9 @@ const CombinedAuctionCarDetails = () => {
                   <div>
                     <p className="text-gray-500 text-xs sm:text-sm">Current Bid</p>
                     <p className="text-lg font-bold text-gray-800">
-                      ${auction.current_Price.toLocaleString()}
+                    ${auction.currentPrice != null
+                          ? auction.currentPrice.toLocaleString() 
+                          : "N/A"} 
                     </p>
                   </div>
                   <div>
@@ -198,7 +204,7 @@ const CombinedAuctionCarDetails = () => {
               </div>
 
               <div className="mt-4">
-                <BidForm bid={{ aucId: auction.auctionId, current_amount: auction.current_Price }} />
+                <BidForm bid={{ aucId: auction.auctionId, current_amount: auction.currentPrice !== null ? auction.currentPrice : car.price  }} />
               </div>
             </div>
           </div>
