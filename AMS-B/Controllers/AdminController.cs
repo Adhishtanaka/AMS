@@ -1,5 +1,6 @@
 ﻿using AMS_B.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Transactions;
 
 namespace AMS_B.Controllers
 {
@@ -74,6 +75,8 @@ namespace AMS_B.Controllers
                 return StatusCode(500, new { message = "An error occurred while adding the car type.", error = ex.Message });
             }
         }
+
+        
 
         [HttpPost("AddManufacturer")]
         public async Task<IActionResult> AddManufacturer([FromBody] Manufacturer manufacturer)
@@ -157,6 +160,52 @@ namespace AMS_B.Controllers
                 return StatusCode(500, new { message = "An error occurred while deleting the Manufacturer .", error = ex.Message });
             }
         }
+
+        [HttpGet("GetRevenue")]
+        public async Task<IActionResult> GetRevenue()
+        {
+            try
+            {
+                
+                var revenue = await GetRevenueDetails.GetRevenue(_dbcon);
+                return Ok(revenue);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An error occurred while retrieving users.", Error = ex.Message });
+            }
+        }
+
+        [HttpGet("GetDashboardDetails")]
+        public async Task<IActionResult> DashboardDetails()
+        {
+            try
+            {
+
+                var dashboardDetails = await GetDashboardDetails.GetDashboard(_dbcon);
+                return Ok(dashboardDetails);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An error occurred while retrieving users.", Error = ex.Message });
+            }
+        }
+        [HttpGet("GetHigherFinalPriceAuctionsDetails")]
+        public async Task<IActionResult> HigherFinalPriceAuctionsDetails()
+        {
+            try
+            {
+
+                var dashboardDetails = await GetHigherFinalPriceAuctionsDetails.GetHigherFinalPriceAuctions(_dbcon);
+                return Ok(dashboardDetails);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An error occurred while retrieving users.", Error = ex.Message });
+            }
+        }
+
+
 
     }
 }

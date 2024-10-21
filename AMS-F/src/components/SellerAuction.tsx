@@ -4,14 +4,18 @@ import axios from 'axios';
 import { handleErrorResult } from '../util/TostMessage';
 import api from '../util/api';
 
-interface Auction {
+interface AuctionDto {
   auctionId: number;
   productId: number;
   startDate: string;
   endDate: string;
-  current_Price: number;
-  status: string;
-  carTitle?: string;
+  currentPrice: number | null;
+  carTitle: string;
+  img: string;
+  modelName: string;
+  manufacturerName: string;
+  year: number;
+  status: boolean;
 }
 
 interface Car {
@@ -28,7 +32,7 @@ interface Car {
 }
 
 const SellerAuction = () => {
-  const [auctions, setAuctions] = useState<Auction[]>([]);
+  const [auctions, setAuctions] = useState<AuctionDto[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
@@ -49,7 +53,7 @@ const SellerAuction = () => {
   const fetchAuctions = async () => {
     try {
       setLoading(true);
-      const response = await api.get<Auction[]>('http://localhost:5000/api/Seller/GetAuctionsBySellerId');
+      const response = await api.get<AuctionDto[]>('http://localhost:5000/api/Seller/GetAuctionsBySellerId');
       const auctionsWithCarTitles = await Promise.all(
         response.data.map(async (auction) => ({
           ...auction,
@@ -125,7 +129,7 @@ const SellerAuction = () => {
                     {auction.carTitle}
                   </Link>
                 </td>
-                <td className="px-4 py-1 border text-gray-800">${auction.current_Price}</td>
+                <td className="px-4 py-1 border text-gray-800">${auction.currentPrice !== null ? auction.currentPrice : 0}</td>
                 <td className="px-4 py-1 border text-gray-800">{new Date(auction.startDate).toLocaleString()}</td>
                 <td className="px-4 py-1 border text-gray-800">{new Date(auction.endDate).toLocaleString()}</td>
                 <td className="px-4 py-1 border text-gray-800">{auction.status}</td>

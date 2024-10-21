@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using Org.BouncyCastle.Bcpg;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -88,6 +89,56 @@ namespace AMS_B.Models
             }
             return role;
         }
+
+        public static async Task<string?> checkjobRolebyId(Dbcon dbcon, int id)
+        {
+            await dbcon.Connect();
+            string query = $"SELECT role FROM user WHERE userid='{id}'";
+            string? role = null;
+            using var reader = await dbcon.ExecuteQuery(query);
+            if (await reader.ReadAsync())
+            {
+                role = reader["role"]?.ToString();
+            }
+            return role;
+        }
+
+        public static async Task<Users?> GetUser(Dbcon dbcon, int id)
+        {
+            string? role = await checkjobRolebyId(dbcon, id);
+
+            if (role == null) return null;
+
+            await dbcon.Connect();
+            string query = $"SELECT name, email, password, tp, address FROM user WHERE userid='{id}'";
+            using var reader = await dbcon.ExecuteQuery(query);
+
+            if (await reader.ReadAsync())
+            {
+                Users user = role switch
+                {
+                    "Admin" => new Admin(),
+                    "Buyer" => new Buyer(),
+                    "Seller" => new Seller()
+                };
+
+                if (user == null) return null;
+
+                user.Name = reader["name"].ToString() ?? string.Empty;
+                user.Email = reader["email"].ToString() ?? string.Empty;
+                user.Password = "";
+                user.Telephone = reader["tp"].ToString() ?? string.Empty;
+                user.Address = reader["address"].ToString() ?? string.Empty;
+
+                dbcon.Disconnect();
+                return user;
+            }
+
+            dbcon.Disconnect();
+            return null;
+        }
+
+
         private string GenerateJwtToken(int id, string email, string role)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("75ca9af8c0ff1fccb1b51eb721785a47b237782ac6533364873a96882fc51227"));

@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<Dbcon>();
+builder.Services.AddScoped<Dbcon>();
 
 builder.Services.AddCors(options =>
 {
@@ -49,5 +49,4 @@ app.UseCors("AllowReactApp");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
 app.Run();
