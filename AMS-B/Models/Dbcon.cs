@@ -1,38 +1,50 @@
 ﻿using MySql.Data.MySqlClient;
-using System.Data.Common;
 
 
 namespace AMS_B.Models
 {
-    public class Dbcon
+    public class Dbcon : IDisposable
     {
         private MySqlConnection? conn;
+        private bool disposed = false;
+        private readonly string connectionString;
 
         public Dbcon()
         {
-            conn = null;
+            connectionString = "Server=localhost;Port=3306;Database=ecomdb;Uid=root;Pwd=root;";
         }
 
-        // Connect to the database
+        private async Task EnsureConnectionOpen()
+        {
+            if (conn == null)
+            {
+                conn = new MySqlConnection(connectionString);
+            }
+
+            if (conn.State != System.Data.ConnectionState.Open)
+            {
+                await conn.OpenAsync();
+            }
+        }
+
         public async Task Connect()
         {
-            string connectionString = "Server=localhost;Port=3306;Database=ecomdb;Uid=root;Pwd=root;";
-            conn = new MySqlConnection(connectionString);
-            await conn.OpenAsync();
+            await EnsureConnectionOpen();
         }
 
-        // Disconnect the database
-        public void Disconnect()
+        public async Task Disconnect()
         {
-            conn?.Close();
+            if (conn != null && conn.State == System.Data.ConnectionState.Open)
+            {
+                await conn.CloseAsync();
+            }
         }
 
-        // Execute a SELECT query and return a data reader
         public async Task<MySqlDataReader> ExecuteQuery(string query, Dictionary<string, object>? parameters = null)
         {
-            MySqlCommand cmd = new(query, conn);
+            await EnsureConnectionOpen();
 
-            // If parameters are provided, add them to the command
+            using var cmd = new MySqlCommand(query, conn);
             if (parameters != null)
             {
                 foreach (var param in parameters)
@@ -41,16 +53,15 @@ namespace AMS_B.Models
                 }
             }
 
-            DbDataReader reader = await cmd.ExecuteReaderAsync();
-            return (MySqlDataReader)reader;
+            // CommandBehavior.CloseConnection will automatically close the connection when the reader is closed
+            return (MySqlDataReader)await cmd.ExecuteReaderAsync(System.Data.CommandBehavior.CloseConnection);
         }
 
-        // Execute a non-query (INSERT, UPDATE, DELETE) and return the number of affected rows
         public async Task<int> ExecuteNonQuery(string query, Dictionary<string, object>? parameters = null)
         {
-            using var command = new MySqlCommand(query, conn);
+            await EnsureConnectionOpen();
 
-            // If parameters are provided, add them to the command
+            using var command = new MySqlCommand(query, conn);
             if (parameters != null)
             {
                 foreach (var param in parameters)
@@ -59,15 +70,16 @@ namespace AMS_B.Models
                 }
             }
 
-            return await command.ExecuteNonQueryAsync();
+            var result = await command.ExecuteNonQueryAsync();
+            await Disconnect();
+            return result;
         }
 
-        // Execute a scalar query and return a single value (useful for retrieving auto-generated IDs)
         public async Task<object> ExecuteScalar(string query, Dictionary<string, object>? parameters = null)
         {
-            using var command = new MySqlCommand(query, conn);
+            await EnsureConnectionOpen();
 
-            // If parameters are provided, add them to the command
+            using var command = new MySqlCommand(query, conn);
             if (parameters != null)
             {
                 foreach (var param in parameters)
@@ -76,7 +88,32 @@ namespace AMS_B.Models
                 }
             }
 
-            return await command.ExecuteScalarAsync();
+            var result = await command.ExecuteScalarAsync();
+            await Disconnect();
+            return result ?? DBNull.Value;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    conn?.Dispose();
+                }
+                disposed = true;
+            }
+        }
+
+        ~Dbcon()
+        {
+            Dispose(false);
         }
     }
 }
