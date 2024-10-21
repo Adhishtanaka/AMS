@@ -1,89 +1,152 @@
-import React from "react";
-import { useState } from 'react';
-import Navbar from "../components/navbar";
-import Footer from "../components/Footer";
+import React, { useState } from 'react';
+import Navbar from '../components/navbar';
+import Footer from '../components/Footer';
 
-
-interface FAQItem {
-  question: string;
-  answer: string;
+interface ContactFormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  subject: string;
+  message: string;
 }
 
-const faqData: FAQItem[] = [
-  {
-    question: 'Do I have to log in to bid?',
-    answer: 'Yes, you will need to create an account and log in to place bids.',
-  },
-  {
-    question: 'How do I submit a bid?',
-    answer: 'First, you must be logged in with an activated account in order to bid. Do not have an account? sign-up is quick and free!',
-  },
-  {
-    question: 'Is there any cost to place a bid on an item?',
-    answer: 'Nope! There is never a cost to place a bid on an item. You are,however,responsible for following-through on any items won.',
-  },
-  {
-    question: 'What happens if I win an auction?',
-    answer:'If you win an auction, you will receive an email confirmation, and the item will be marked as sold to you. Follow the instructions in the email to complete the payment and arrange for shipping.',
-  },
-  {
-   question: 'Can I retract a bid once it is placed?',
-   answer:'No, bids cannot be retracted once placed. Please make sure you are committed to purchasing the item before placing a bid.',
-  },
-  {
-    question:'How do I pay for an item I won?',
-    answer:'After winning an auction, you can complete the payment through our secure payment gateway using options like Visa, Mastercard, or PayPal.',
-  },
-  {
-    question:'Is my payment information secure?',
-    answer:'Yes, all transactions are secured with encryption, and we process payments through trusted gateways. Your payment details are not stored on our system.',
-  },
-];
-
 const Contact: React.FC = () => {
+  const [formData, setFormData] = useState<ContactFormData>({
+    firstName: '',
+    lastName: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
 
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState('');
 
-  const toggleFAQ = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setSubmitMessage('Thank you for your message. We will get back to you soon!');
+      setFormData({ firstName: '', lastName: '', email: '', subject: '', message: '' });
+    } catch (error) {
+      setSubmitMessage('There was an error sending your message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <>
-    <Navbar/>
-    <div className="max-w-5xl p-8 mx-auto">
-      <header className="mb-12">
-        <h1 className="text-4xl font-bold">FAQs</h1>
-      </header>
-      <div className="flex">
-        <p className="w-1/2 mt-4 text-gray-600">
-          Have questions? Here you'll find the answers most valued by our partners, along with access to step-by-step instructions and support.
-        </p>
-        <div className="md:w-1/3 md:pb-12">
-          <img src="/src/assets/contact.svg" alt="FAQ Illustration" className="w-full h-auto" />
+      <Navbar />
+      <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gray-50">
+        <div className="flex flex-col w-full max-w-6xl gap-10 lg:flex-row">
+          {/* Left Column: Image */}
+          <div className="flex items-center justify-center w-full lg:w-6/12">
+            <img
+              src="/images/cc.jpg"
+              alt="Contact Us Illustration"
+              className="object-contain w-full h-auto max-w-md rounded-lg shadow-md" // Updated to use object-contain and max-w-md
+            />
+          </div>
+
+          {/* Right Column: Contact Form */}
+          <div className="w-full p-6 bg-white rounded-lg shadow-lg lg:w-6/12">
+            <h2 className="mb-6 text-3xl font-bold text-center">Contact Us</h2>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="flex flex-col gap-4 sm:flex-row">
+                <div className="w-full sm:w-1/2">
+                  <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none"
+                  />
+                </div>
+                <div className="w-full sm:w-1/2">
+                  <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none"
+
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  required
+                  rows={4}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full px-4 py-2 text-white bg-[#2b2b68] rounded-md"
+              >
+                {isSubmitting ? 'Sending...' : 'Send Message'}
+              </button>
+
+              {submitMessage && (
+                <div
+                  className={`mt-4 p-4 rounded-md ${
+                    submitMessage.includes('error')
+                      ? 'bg-red-100 text-red-700'
+                      : 'bg-green-100 text-green-700'
+                  }`}
+                >
+                  {submitMessage}
+                </div>
+              )}
+            </form>
+          </div>
         </div>
       </div>
-      <div className="max-w-2xl p-8 mx-auto mb-10">
-      <div className="space-y-4">
-        {faqData.map((faq, index) => (
-          <div key={index} className="pb-4 border-b border-gray-200">
-            <button
-              className="flex items-center justify-between w-full py-2 text-lg font-medium text-left text-gray-800"
-              onClick={() => toggleFAQ(index)}
-            >
-              {faq.question}
-              <span>{openIndex === index ? '-' : '+'}</span>
-            </button>
-            {openIndex === index && (
-              <p className="mt-2 text-gray-600">{faq.answer}</p>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-      
-    </div>
-    <Footer />
+      <Footer />
     </>
   );
 };
