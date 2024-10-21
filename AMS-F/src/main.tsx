@@ -19,7 +19,7 @@ import SellerAuctionDetails from './routes/SellerAuctionDetails';
 import BidHistory from './components/BidHistory'; 
 import All from './routes/AllAuctions';
 import AuctionDetails from './routes/AuctionDetails';
-
+import Home from './components/Home';
 const router = createBrowserRouter([
   {
     path: "*",
@@ -44,6 +44,10 @@ const router = createBrowserRouter([
   {
     path: "/contact",
     element: <Contact />,
+  },
+  {
+    path: "/home",
+    element: <Home />,
   },
   {
     path: "/seller",
