@@ -40,8 +40,6 @@ namespace AMS_B.Models
             }
         }
 
-
-
         public static async Task<List<BidDto>> GetBidHistory(Dbcon dbcon, int buyerId)
         {
             List<BidDto> bidHistory = new List<BidDto>();
@@ -78,12 +76,12 @@ namespace AMS_B.Models
         ORDER BY 
             b.bidtime DESC;";
 
-            var parameters = new Dictionary<string, object>
-    {
-        { "@buyerId", buyerId }
-    };
+            var parameters = new Dictionary<string, object> { { "@buyerId", buyerId } };
 
             await dbcon.Connect();
+
+            // Read bid data into memory first
+            List<int> aucIds = new List<int>(); // Store AucIds for the next query
             using (var reader = await dbcon.ExecuteQuery(query, parameters))
             {
                 while (await reader.ReadAsync())
@@ -95,27 +93,22 @@ namespace AMS_B.Models
                         UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
                         UserName = reader.GetString(reader.GetOrdinal("UserName")),
                         BidTime = reader.GetDateTime(reader.GetOrdinal("BidTime")),
-                        Amount = reader.GetDecimal(reader.GetOrdinal("Amount")),
-                        AuctionDetails = new AuctionDto
-                        {
-                            AuctionId = reader.GetInt32(reader.GetOrdinal("AucId")),
-                            StartDate = reader.GetDateTime(reader.GetOrdinal("AuctionStartDate")),
-                            EndDate = reader.GetDateTime(reader.GetOrdinal("AuctionEndDate")),
-                            CarTitle = reader.GetString(reader.GetOrdinal("CarTitle")),
-                            Img = reader.GetString(reader.GetOrdinal("Img")),
-                            ModelName = reader.GetString(reader.GetOrdinal("ModelName")),
-                            ManufacturerName = reader.GetString(reader.GetOrdinal("ManufacturerName")),
-                            Year = reader.GetInt32(reader.GetOrdinal("Year"))
-                        }
+                        Amount = reader.GetDecimal(reader.GetOrdinal("Amount"))
                     };
 
                     bidHistory.Add(bidDto);
+                    aucIds.Add(bidDto.AucId); // Collect auction IDs to fetch auction details later
                 }
+            }
+
+            // Fetch auction details for each bid
+            foreach (var bid in bidHistory)
+            {
+                bid.AuctionDetails = await Auction.GetAuctionById(dbcon, bid.AucId);
             }
 
             await dbcon.Disconnect();
             return bidHistory;
         }
-
     }
 }

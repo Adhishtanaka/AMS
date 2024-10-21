@@ -80,7 +80,7 @@ interface AnimatedCountdownProps {
           </span>
           <span className="text-lg text-gray-600 ml-1">m</span>
         </div>
-        <span className="ml-1 w-1 h-1 bg-green-500 rounded-full animate-ping" />
+       
       </div>
     </div>
   );
