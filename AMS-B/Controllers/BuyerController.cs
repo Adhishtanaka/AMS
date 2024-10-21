@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AMS_B.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BuyerController : ControllerBase
@@ -47,9 +47,10 @@ namespace AMS_B.Controllers
         }
 
         [HttpGet("GetBidHistory")]
-        public async Task<IActionResult> GetBidHistory([FromQuery] int auctionId, [FromServices] Dbcon dbcon)
+        public async Task<IActionResult> GetBidHistory([FromServices] Dbcon dbcon)
         {
-            var bidHistory = await Buyer.GetBidHistory(dbcon, auctionId);
+            int buyer_id = GetBuyerId();
+            List<BidDto> bidHistory = await Buyer.GetBidHistory(dbcon,5);
             return Ok(bidHistory);
         }
     }

@@ -16,10 +16,10 @@ import SellerAddCar from './routes/SellerAddCar';
 import SellerCarDetail from './routes/SellerCarDetails';
 import SellerAddAuction from './routes/SellerAddAuction';
 import SellerAuctionDetails from './routes/SellerAuctionDetails';
-import BidHistory from './components/BidHistory'; 
 import All from './routes/AllAuctions';
 import AuctionDetails from './routes/AuctionDetails';
 import ProfilePage from './routes/Profile';
+import BuyerDashboard from './routes/BuyerDashboard';
 
 const router = createBrowserRouter([
   {
@@ -67,8 +67,8 @@ const router = createBrowserRouter([
     element: <SellerAuctionDetails />,
   },
   {
-    path: "/buyer/auction/:auctionId/bid-history", 
-    element: <BidHistory />,
+    path: "/buyer", 
+    element: <BuyerDashboard />,
   },
   {
     path: "/auctions",
