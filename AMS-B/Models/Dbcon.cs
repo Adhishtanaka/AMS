@@ -70,10 +70,17 @@ namespace AMS_B.Models
                 }
             }
 
-            var result = await command.ExecuteNonQueryAsync();
+            await command.ExecuteNonQueryAsync();
+
+            command.CommandText = "SELECT LAST_INSERT_ID()";
+            var lastId = await command.ExecuteScalarAsync();
+
             await Disconnect();
-            return result;
+
+            return Convert.ToInt32(lastId);
         }
+
+
 
         public async Task<object> ExecuteScalar(string query, Dictionary<string, object>? parameters = null)
         {
@@ -92,6 +99,8 @@ namespace AMS_B.Models
             await Disconnect();
             return result ?? DBNull.Value;
         }
+
+
 
         public void Dispose()
         {

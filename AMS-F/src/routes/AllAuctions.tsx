@@ -114,7 +114,6 @@ const All = () => {
                     {auction.manufacturerName} {auction.modelName}-{" "}
                     {auction.year}
                   </h2>
-                  <p className="text-base text-gray-600">{auction.carTitle}</p>
                   <div className="flex justify-between items-center mt-2">
                     <div>
                       <p className="text-xs text-gray-600">{auction.currentPrice != null

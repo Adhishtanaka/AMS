@@ -11,26 +11,36 @@ namespace AMS_B.Models
         public static async Task<bool> PlaceBid(Dbcon dbcon, Bid bid)
         {
             await dbcon.Connect();
+
             string insertBidQuery = $@"
-                INSERT INTO bid (aucid, userid, bidtime, amount)
-                VALUES ({bid.AucId}, {bid.UserId}, '{bid.BidTime:yyyy-MM-dd HH:mm:ss}', {bid.Amount})";
-            string updateAuctionQuery = $@"
-                UPDATE auction
-                SET current_price = {bid.Amount}
-                WHERE aucid = {bid.AucId} AND current_price < {bid.Amount}";
+        INSERT INTO bid (aucid, userid, bidtime, amount)
+        VALUES ({bid.AucId}, {bid.UserId}, '{bid.BidTime:yyyy-MM-dd HH:mm:ss}', {bid.Amount});";
+
             try
             {
-                await dbcon.ExecuteNonQuery(insertBidQuery);
+                int bid_id = await dbcon.ExecuteNonQuery(insertBidQuery);
+
+                string updateAuctionQuery = $@"
+            UPDATE auction
+            SET bid_id = {bid_id}
+            WHERE aucid = {bid.AucId};";
+
                 await dbcon.ExecuteNonQuery(updateAuctionQuery);
-                dbcon.Disconnect();
+
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
-                dbcon.Disconnect();
+                Console.WriteLine(ex.Message);
                 return false;
             }
+            finally
+            {
+                await dbcon.Disconnect();
+            }
         }
+
+
 
         public static async Task<List<BidViewModel>> GetBidHistory(Dbcon dbcon, int auctionId)
         {
