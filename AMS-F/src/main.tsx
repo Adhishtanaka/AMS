@@ -19,6 +19,7 @@ import SellerAuctionDetails from './routes/SellerAuctionDetails';
 import BidHistory from './components/BidHistory'; 
 import All from './routes/AllAuctions';
 import AuctionDetails from './routes/AuctionDetails';
+import ProfilePage from './routes/Profile';
 
 const router = createBrowserRouter([
   {
@@ -75,6 +76,9 @@ const router = createBrowserRouter([
   },{
     path: "/auction-details/:auctionId",
     element: <AuctionDetails />,
+  },{
+    path: "/user-profile/:userID",
+    element: <ProfilePage />,
   }
   
 ]);

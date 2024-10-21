@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import axios from 'axios';
-import { handleErrorResult } from '../util/TostMessage';
-import Navbar from '../components/navbar';
-import Footer from '../components/Footer';
-import BidForm from '../components/BidForm';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import axios from "axios";
+import { handleErrorResult } from "../util/TostMessage";
+import Navbar from "../components/navbar";
+import Footer from "../components/Footer";
+import BidForm from "../components/BidForm";
+import AnimatedCountdown from "../components/AnimatedCountdown";
 
 interface AuctionDto {
   auctionId: number;
@@ -20,6 +21,8 @@ interface AuctionDto {
   modelName: string;
   manufacturerName: string;
   year: number;
+  sellerId: number;
+  sellerName: string;
 }
 
 interface CarDTO {
@@ -56,7 +59,7 @@ const CombinedAuctionCarDetails = () => {
         );
         setCar(carResponse.data);
       } catch (error) {
-        handleErrorResult('Failed to load auction details');
+        handleErrorResult("Failed to load auction details");
       } finally {
         setIsLoading(false);
       }
@@ -82,9 +85,9 @@ const CombinedAuctionCarDetails = () => {
         breakpoint: 640,
         settings: {
           arrows: false,
-        }
-      }
-    ]
+        },
+      },
+    ],
   };
 
   if (isLoading) {
@@ -104,7 +107,9 @@ const CombinedAuctionCarDetails = () => {
   }
 
   const imageUrls = car.img
-    ? car.img.split(',').map((url) => `http://localhost:5000/car-images/${url.trim()}`)
+    ? car.img
+        .split(",")
+        .map((url) => `http://localhost:5000/car-images/${url.trim()}`)
     : [];
 
   // const timeRemaining = new Date(auction.endDate).getTime() - new Date().getTime();
@@ -117,9 +122,13 @@ const CombinedAuctionCarDetails = () => {
         <div className="max-w-7xl mx-auto mb-20 pb-5 bg-white rounded-xl shadow-lg overflow-hidden">
           {/* Header */}
           <div className="bg-gray-100 p-4 sm:p-6">
-            <h1 className="text-2xl sm:text-3xl font-bold text-black mb-2">{car.carTitle}</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-black mb-2">
+              {car.carTitle}
+            </h1>
             <div className="flex flex-wrap gap-2 sm:gap-4">
-              <span className="text-black text-sm sm:text-base">Year: {car.year}</span>
+              <span className="text-black text-sm sm:text-base">
+                Year: {car.year}
+              </span>
               {/* <span
                 className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${
                   isActive ? 'bg-gray-50  text-gray-800 border border-[#ADB4C4]' : 'bg-red-100 text-red-800'
@@ -142,7 +151,9 @@ const CombinedAuctionCarDetails = () => {
           {/* Content Grid */}
           <div className="flex flex-col lg:flex-row gap-4 sm:gap-8 p-4 sm:p-6">
             {/* Image Carousel Column */}
-            <div className="w-full lg:w-1/2 flex items-center"> {/* Added flex and items-center */}
+            <div className="w-full lg:w-1/2 flex items-center">
+              {" "}
+              {/* Added flex and items-center */}
               <div className="w-full">
                 {imageUrls.length > 0 ? (
                   <div className="rounded-lg overflow-hidden shadow-md">
@@ -161,7 +172,9 @@ const CombinedAuctionCarDetails = () => {
                     </Slider>
                   </div>
                 ) : (
-                  <div className="bg-gray-100 rounded-lg p-4 text-center">No images available</div>
+                  <div className="bg-gray-100 rounded-lg p-4 text-center">
+                    No images available
+                  </div>
                 )}
               </div>
             </div>
@@ -169,42 +182,62 @@ const CombinedAuctionCarDetails = () => {
             {/* Details and Bid Form */}
             <div className="w-full lg:w-1/2 space-y-4">
               <div className="bg-gray-50 rounded-lg p-4 sm:p-6 shadow">
-                <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3">About this Car</h2>
-                <p className="text-gray-600 leading-relaxed text-sm sm:text-base">{car.carDescription}</p>
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3">
+                  About this Car
+                </h2>
+                <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
+                  {car.carDescription}
+                </p>
               </div>
 
               <div className="bg-white rounded-lg p-4 sm:p-6 shadow border border-gray-200">
-                <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Auction Details</h2>
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4">
+                  Auction Details
+                </h2>
                 <div className="grid grid-cols-2 gap-4 sm:gap-6">
                   <div>
-                    <p className="text-gray-500 text-xs sm:text-sm">Current Bid</p>
+                    <p className="text-gray-500 text-xs sm:text-sm">
+                      Current Bid
+                    </p>
                     <p className="text-lg font-bold text-gray-800">
-                    ${auction.currentPrice != null
-                          ? auction.currentPrice.toLocaleString() 
-                          : "N/A"} 
+                      $
+                      {auction.currentPrice != null
+                        ? auction.currentPrice.toLocaleString()
+                        : "N/A"}
                     </p>
                   </div>
                   <div>
-                    <p className="text-gray-500 text-xs sm:text-sm">Initial Price</p>
-                    <p className="text-lg sm:text-xl text-gray-800">${car.price.toLocaleString()}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-xs sm:text-sm">Start Date</p>
-                    <p className="text-sm sm:text-base text-gray-800">
-                      {new Date(auction.startDate).toLocaleDateString()}
+                    <p className="text-gray-500 text-xs sm:text-sm">
+                      Initial Price
+                    </p>
+                    <p className="text-lg sm:text-xl text-gray-800">
+                      ${car.price.toLocaleString()}
                     </p>
                   </div>
+
+                  <AnimatedCountdown endDate={auction.endDate} />
+
                   <div>
-                    <p className="text-gray-500 text-xs sm:text-sm">End Date</p>
-                    <p className="text-sm sm:text-base text-gray-800">
-                      {new Date(auction.endDate).toLocaleDateString()}
-                    </p>
+                    <p className="text-gray-500 text-xs sm:text-sm">Seller</p>
+                    <a href={`/user-profile/${auction.sellerId}`}>
+                      <p className="text-lg font-bold text-gray-800">
+                        {auction.sellerName}
+                      </p>
+                    </a>
                   </div>
                 </div>
               </div>
 
               <div className="mt-4">
-                <BidForm bid={{ aucId: auction.auctionId, current_amount: auction.currentPrice !== null ? auction.currentPrice : car.price  }} />
+                <BidForm
+                  bid={{
+                    aucId: auction.auctionId,
+                    current_amount:
+                      auction.currentPrice !== null
+                        ? auction.currentPrice
+                        : car.price,
+                  }}
+                />
               </div>
             </div>
           </div>
