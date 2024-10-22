@@ -173,11 +173,15 @@ namespace AMS_B.Controllers
         [HttpGet("getSellerTransactions")]
         public async Task<IActionResult> GetTransactionsBySellerId([FromServices] Dbcon dbcon)
         {
-
+            int sellerId = GetSellerId();
+            if (sellerId <= 0)
+            {
+                return BadRequest(new { Message = "Invalid seller ID." });
+            }
 
             try
             {
-                var transactions = await Transactions.GetTransactionsbysellerId(dbcon, 7);
+                var transactions = await Transactions.GetTransactionsbysellerId(dbcon, sellerId);
                 if (transactions == null || !transactions.Any())
                 {
                     return NotFound(new { message = "No transactions found for this seller." });

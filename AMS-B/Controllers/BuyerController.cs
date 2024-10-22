@@ -78,9 +78,13 @@ namespace AMS_B.Controllers
         {
             try
             {
+                int buyerId = GetBuyerId();
+                if (buyerId <= 0)
+                {
+                    return BadRequest(new { Message = "Invalid buyer ID." });
+                }
 
-
-                var transactions = await Transactions.GetTransactionbyBuyerId(dbcon, 3);
+                var transactions = await Transactions.GetTransactionbyBuyerId(dbcon, buyerId);
                 if (transactions == null || !transactions.Any())
                 {
                     return NotFound(new { message = "No transactions found for this buyer." });
