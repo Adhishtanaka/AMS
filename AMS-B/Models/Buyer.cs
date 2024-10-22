@@ -80,8 +80,8 @@ namespace AMS_B.Models
 
             await dbcon.Connect();
 
-            // Read bid data into memory first
-            List<int> aucIds = new List<int>(); // Store AucIds for the next query
+            
+            List<int> aucIds = new List<int>(); 
             using (var reader = await dbcon.ExecuteQuery(query, parameters))
             {
                 while (await reader.ReadAsync())
@@ -97,7 +97,7 @@ namespace AMS_B.Models
                     };
 
                     bidHistory.Add(bidDto);
-                    aucIds.Add(bidDto.AucId); // Collect auction IDs to fetch auction details later
+                    aucIds.Add(bidDto.AucId); 
                 }
             }
 
