@@ -47,23 +47,22 @@ const Contact: React.FC = () => {
     <>
       <Navbar />
       <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gray-50">
-        <div className="flex flex-col w-full max-w-6xl gap-10 lg:flex-row">
-          {/* Left Column: Image */}
-          <div className="flex items-center justify-center w-full lg:w-6/12">
-            <img
-              src="/images/cc.jpg"
-              alt="Contact Us Illustration"
-              className="object-contain w-full h-auto max-w-md rounded-lg shadow-md" // Updated to use object-contain and max-w-md
-            />
-          </div>
-
-          {/* Right Column: Contact Form */}
-          <div className="w-full p-6 bg-white rounded-lg shadow-lg lg:w-6/12">
-            <h2 className="mb-6 text-3xl font-bold text-center">Contact Us</h2>
+        {/* Background with Image */}
+        <div
+          className="bg-img w-full flex justify-center items-center"
+          style={{
+            backgroundImage: `url('images/patrick-fusenich-kg7AIotQVIo-unsplash.jpg')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
+          {/* Contact Form */}
+          <div className="w-full max-w-xl py-32  bg-opacity-90 rounded-lg shadow-lg lg:w-6/12 min-h-fit">
+            <h2 className="mb-6 text-3xl font-bold text-center text-white py-5">Contact Us</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="flex flex-col gap-4 sm:flex-row">
                 <div className="w-full sm:w-1/2">
-                  <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="firstName" className="block text-sm font-semibold text-gray-300">
                     First Name
                   </label>
                   <input
@@ -73,11 +72,11 @@ const Contact: React.FC = () => {
                     value={formData.firstName}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none"
+                    className="w-full px-3 py-2 text-gray-200 border border-gray-500 rounded-md outline-none bg-gray-300 bg-opacity-40"
                   />
                 </div>
                 <div className="w-full sm:w-1/2">
-                  <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="lastName" className="block text-sm font-semibold text-gray-300">
                     Last Name
                   </label>
                   <input
@@ -87,14 +86,13 @@ const Contact: React.FC = () => {
                     value={formData.lastName}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none"
-
+                    className="w-full px-3 py-2 text-gray-200 border border-gray-500 rounded-md outline-none bg-gray-300 bg-opacity-40"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="email" className="block text-sm font-semibold text-gray-300">
                   Email
                 </label>
                 <input
@@ -104,12 +102,12 @@ const Contact: React.FC = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none"
+                  className="w-full px-3 py-2 text-gray-200 border border-gray-500 rounded-md outline-none bg-gray-300 bg-opacity-40"
                 />
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="message" className="block text-sm font-semibold text-gray-300">
                   Message
                 </label>
                 <textarea
@@ -119,7 +117,7 @@ const Contact: React.FC = () => {
                   onChange={handleInputChange}
                   required
                   rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none"
+                  className="w-full px-3 py-2 text-gray-100 border border-gray-500 rounded-md outline-none bg-gray-300 bg-opacity-40"
                 />
               </div>
 
@@ -134,9 +132,7 @@ const Contact: React.FC = () => {
               {submitMessage && (
                 <div
                   className={`mt-4 p-4 rounded-md ${
-                    submitMessage.includes('error')
-                      ? 'bg-red-100 text-red-700'
-                      : 'bg-green-100 text-green-700'
+                    submitMessage.includes('error') ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
                   }`}
                 >
                   {submitMessage}
@@ -146,9 +142,7 @@ const Contact: React.FC = () => {
           </div>
         </div>
       </div>
-      
       <Footer />
-      
     </>
   );
 };

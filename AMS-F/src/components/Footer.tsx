@@ -10,7 +10,7 @@ const socialItems = [
 
 const Footer = () => {
   return (
-    <footer className="w-full py-10 text-black bg-gray-50">
+    <footer className="w-full py-20 text-black bg-gray-50">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* Company Information */}
