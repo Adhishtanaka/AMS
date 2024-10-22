@@ -161,47 +161,21 @@ namespace AMS_B.Controllers
             }
         }
 
-        [HttpGet("GetRevenue")]
-        public async Task<IActionResult> GetRevenue()
+        [HttpGet("GetAllTransactions")]
+        public async Task<IActionResult> GetAllTransactions([FromServices] Dbcon dbcon)
         {
             try
             {
-                
-                var revenue = await GetRevenueDetails.GetRevenue(_dbcon);
-                return Ok(revenue);
+                var transactions = await Transactions.GetAllTransactions(dbcon);
+                if (transactions == null || !transactions.Any())
+                {
+                    return NotFound(new { message = "No transactions found." });
+                }
+                return Ok(transactions);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "An error occurred while retrieving users.", Error = ex.Message });
-            }
-        }
-
-        [HttpGet("GetDashboardDetails")]
-        public async Task<IActionResult> DashboardDetails()
-        {
-            try
-            {
-
-                var dashboardDetails = await GetDashboardDetails.GetDashboard(_dbcon);
-                return Ok(dashboardDetails);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { Message = "An error occurred while retrieving users.", Error = ex.Message });
-            }
-        }
-        [HttpGet("GetHigherFinalPriceAuctionsDetails")]
-        public async Task<IActionResult> HigherFinalPriceAuctionsDetails()
-        {
-            try
-            {
-
-                var dashboardDetails = await GetHigherFinalPriceAuctionsDetails.GetHigherFinalPriceAuctions(_dbcon);
-                return Ok(dashboardDetails);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { Message = "An error occurred while retrieving users.", Error = ex.Message });
+                return StatusCode(500, new { message = $"Error retrieving transactions: {ex.Message}" });
             }
         }
 

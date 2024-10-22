@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace AMS_B.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class SellerController : ControllerBase
@@ -168,6 +168,26 @@ namespace AMS_B.Controllers
             
             await Auction.DeleteAuction(dbcon, auctionId);
             return Ok(new { Message = "Auction deleted successfully." });
+        }
+
+        [HttpGet("getSellerTransactions")]
+        public async Task<IActionResult> GetTransactionsBySellerId([FromServices] Dbcon dbcon)
+        {
+
+
+            try
+            {
+                var transactions = await Transactions.GetTransactionsbysellerId(dbcon, 7);
+                if (transactions == null || !transactions.Any())
+                {
+                    return NotFound(new { message = "No transactions found for this seller." });
+                }
+                return Ok(transactions);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Error retrieving transactions: {ex.Message}" });
+            }
         }
     }
 }

@@ -36,7 +36,7 @@ const BuyerDashboard = () => {
   };
 
   return (
-    <div className="max-w-[1240px] mx-auto px-4 lg:px-8">
+    <div className="w-11/12 mx-auto px-4 lg:px-8">
       <header className="flex justify-between items-center h-24">
         <h1 className="text-3xl font-bold text-[#1D2945]">AMS .</h1>
       </header>

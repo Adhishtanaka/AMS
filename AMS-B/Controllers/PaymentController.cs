@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AMS_B.Models;
+using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using Stripe.Checkout;
+using System.Text.Json;
 
 namespace AMS_B.Controllers
 {
@@ -18,8 +20,9 @@ namespace AMS_B.Controllers
         }
 
         [HttpPost("create-checkout-session")]
-        public IActionResult CreateCheckoutSession([FromBody] CheckoutRequest request)
+        public async Task<IActionResult> CreateCheckoutSession([FromBody] CheckoutRequest request, Dbcon dbcon)
         {
+            AuctionDto auc = await Auction.GetAuctionById(dbcon,request.auc_id);
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string> { "card" },
@@ -32,29 +35,28 @@ namespace AMS_B.Controllers
                         Currency = "usd",
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
-                            Name = "Product Name", 
+                            Name = auc.CarTitle 
                         },
-                        UnitAmount = request.Amount,
+                        UnitAmount = (long)auc.CurrentPrice,
                     },
                     Quantity = 1,
                 },
             },
                 Mode = "payment",
-                SuccessUrl = "https://yourwebsite.com/success",
-                CancelUrl = "https://yourwebsite.com/cancel",
+                SuccessUrl = "http://localhost:5173/buyer/Succeed/" + request.auc_id,
+                CancelUrl = "http://localhost:5173/buyer/cancle",
             };
 
             var service = new SessionService();
             Session session = service.Create(options);
 
             return Ok(new { sessionId = session.Id });
-        }
+        }       
     }
+}
 
     public class CheckoutRequest
     {
-        public string ItemId { get; set; }
-        public string BuyerId { get; set; }
-        public int Amount { get; set; }
+        public int auc_id { get; set; }
+       
     }
-}

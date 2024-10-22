@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../util/api";
 import { handleErrorResult } from "../util/TostMessage";
+import CheckoutButton from "./CheckoutButton";
 
 interface AuctionDetails {
   auctionId: number;
@@ -22,7 +23,6 @@ const BuyerSBids: React.FC = () => {
   const [bidHistory, setBidHistory] = useState<Bid[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-
   useEffect(() => {
     const fetchBidHistory = async () => {
       try {
@@ -35,7 +35,7 @@ const BuyerSBids: React.FC = () => {
         }
       } catch (error) {
         console.error("Error fetching bid history:", error);
-       handleErrorResult( 'An error occurred');
+        handleErrorResult('An error occurred');
       } finally {
         setIsLoading(false);
       }
@@ -62,8 +62,6 @@ const BuyerSBids: React.FC = () => {
       </div>
     );
 
-  
-
   return (
     <div className="max-w-3xl mx-auto bg-white shadow-xl rounded-lg overflow-hidden">
       {bidHistory.length === 0 ? (
@@ -83,25 +81,30 @@ const BuyerSBids: React.FC = () => {
                   key={bid.bidId}
                   className="p-5 hover:bg-gray-100 transition duration-200 ease-in-out"
                 >
-                  <div className="flex items-start space-x-6">
-                    <img
-                      className="h-28 w-28 object-cover rounded-lg shadow-lg"
-                      src={`http://localhost:5000/car-images/${bid.auctionDetails.img.split(",")[0]}`}
-                      alt={bid.auctionDetails.carTitle}
-                    />
-                    <div className="flex-grow">
-                      <h3 className="text-xl font-semibold text-[#1D2945]">
-                        {bid.auctionDetails.carTitle}
-                      </h3>
-                      <p className="text-sm text-gray-800 mt-1">
-                        Your Bid:{" "}
-                        <span className="font-semibold text-green-600">
-                          {formatCurrency(bid.amount)}
-                        </span>
-                      </p>
-                      <p className="text-xs text-gray-500 mt-3">
-                        Bid Time: {formatDate(bid.bidTime)}
-                      </p>
+                  <div className="flex items-center justify-between space-x-6">
+                    <div className="flex items-start space-x-6">
+                      <img
+                        className="h-28 w-28 object-cover rounded-lg shadow-lg"
+                        src={`http://localhost:5000/car-images/${bid.auctionDetails.img.split(",")[0]}`}
+                        alt={bid.auctionDetails.carTitle}
+                      />
+                      <div>
+                        <h3 className="text-xl font-semibold text-[#1D2945]">
+                          {bid.auctionDetails.carTitle}
+                        </h3>
+                        <p className="text-sm text-gray-800 mt-1">
+                          Your Bid:{" "}
+                          <span className="font-semibold text-green-600">
+                            {formatCurrency(bid.amount)}
+                          </span>
+                        </p>
+                        <p className="text-xs text-gray-500 mt-3">
+                          Bid Time: {formatDate(bid.bidTime)}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex-shrink-0">
+                      <CheckoutButton auc_id={bid.auctionDetails.auctionId} />
                     </div>
                   </div>
                 </li>

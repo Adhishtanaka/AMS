@@ -1,100 +1,283 @@
-using System.Runtime.InteropServices;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
-
 namespace AMS_B.Models
 {
-    public class TransactionDetails
+    public class TransactionsDTO
     {
         public required int TransactionID { get; set; }
         public required int AucID { get; set; }
-        public required string BuyerName { get; set; }
-        public required string SellerName { get; set; }
-        public required int FinalPrice { get; set; }
-        public required string Status { get; set; }
+        public required AuctionDto AuctionDto { get; set; }
         public required DateTime Date { get; set; }
     }
 
-    public class DisplayTransaction
+    public class UpdateTransactionRequest
     {
-        public static async Task<List<TransactionDetails>> GetTransactionDetails(Dbcon db, int? SellerID, string? Status)
+        public int AucId { get; set; }
+    }
+
+
+    public class Transactions
+    {
+        public required int TransactionID { get; set; }
+        public required int AucID { get; set; }
+        public required DateTime Date { get; set; }
+        public required int BuyerID { get; set; }
+        public required int SellerID { get; set; }
+
+        public static async Task<List<TransactionsDTO>> GetTransactionsbysellerId(Dbcon db, int SellerID)
         {
-            var result = new List<TransactionDetails>();
+            var result = new List<TransactionsDTO>();
             try
             {
                 await db.Connect();
 
                 string query = @"
-                    SELECT 
-                        Transactions.TransactionID,
-                        Transactions.AucID,
-                        Buyer.name AS BuyerName,
-                        Seller.name AS SellerName,
-                        Transactions.FinalPrice,
-                        Transactions.PaymentStatus,
-                        Transactions.TransactionDate
-                    FROM Transactions
-                    JOIN User AS Buyer ON Transactions.BuyerID = Buyer.UserID AND Buyer.Role = 'buyer'
-                    JOIN User AS Seller ON Transactions.SellerID = Seller.UserID AND Seller.Role = 'seller'
-                ";
+            SELECT 
+                t.TransactionID,
+                t.AucID,
+                t.TransactionDate
+            FROM Transactions t
+            JOIN auction a ON t.AucID = a.aucid
+            WHERE t.SellerID = @SellerID
+            ORDER BY t.TransactionDate DESC";
 
-                if (SellerID.HasValue || !string.IsNullOrEmpty(Status))
-                {
-                    query += " WHERE 1 = 1";
+                var parameters = new Dictionary<string, object>
+        {
+            { "@SellerID", SellerID }
+        };
 
-                    if (SellerID.HasValue)
-                    {
-                        query += " AND Transactions.SellerID = @SellerID";
-                    }
-
-                    if (!string.IsNullOrEmpty(Status))
-                    {
-                        query += " AND Transactions.PaymentStatus = @Status";
-                    }
-                }
-
-                var parameters = new Dictionary<string, object>();
-                if (SellerID.HasValue)
-                {
-                    parameters.Add("@SellerID", SellerID.Value);
-                }
-                if (!string.IsNullOrEmpty(Status))
-                {
-                    parameters.Add("@Status", Status);
-                }
+                var transactions = new List<(int TransactionID, int AucID, DateTime Date)>();
 
                 using (var reader = await db.ExecuteQuery(query, parameters))
                 {
-                    while (reader.Read())
+                    while (await reader.ReadAsync())
                     {
-                        var transactionDetails = new TransactionDetails
-                        {
-                            TransactionID = reader.GetInt32(0),
-                            AucID = reader.GetInt32(1),
-                            BuyerName = reader.GetString(2),
-                            SellerName = reader.GetString(3),
-                            FinalPrice = reader.GetInt32(4),
-                            Status = reader.GetString(5),
-                            Date = reader.GetDateTime(6)
-                        };
-                        result.Add(transactionDetails);
+                        transactions.Add((
+                            reader.GetInt32("TransactionID"),
+                            reader.GetInt32("AucID"),
+                            reader.GetDateTime("TransactionDate")
+                        ));
                     }
+                    await reader.CloseAsync();
                 }
 
-                return result;
-            }
-            catch (MySqlException ex)
-            {
-                throw new Exception("An error occurred while retrieving transaction details.", ex);
+                // Get unique auction IDs
+                var auctionIds = transactions.Select(t => t.AucID).Distinct().ToList();
+
+                // Get all auctions in a single batch
+                var auctions = new Dictionary<int, AuctionDto>();
+                foreach (var auctionId in auctionIds)
+                {
+                    var auction = await Auction.GetAuctionById(db, auctionId);
+                    auctions[auctionId] = auction;
+                }
+
+                // Combine the data
+                foreach (var trans in transactions)
+                {
+                    result.Add(new TransactionsDTO
+                    {
+                        TransactionID = trans.TransactionID,
+                        AucID = trans.AucID,
+                        Date = trans.Date,
+                        AuctionDto = auctions[trans.AucID]
+                    });
+                }
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while retrieving transaction details.", ex);
+                throw new Exception($"Error getting seller transactions: {ex.Message}");
             }
             finally
             {
-                db.Disconnect();
+                await db.Disconnect();
+            }
+            return result;
+        }
+        public static async Task<List<TransactionsDTO>> GetTransactionbyBuyerId(Dbcon db, int BuyerID)
+        {
+            var result = new List<TransactionsDTO>();
+            try
+            {
+                await db.Connect();
+
+                // First, get all transactions for this buyer
+                string query = @"
+            SELECT 
+                t.TransactionID,
+                t.AucID,
+                t.TransactionDate
+            FROM Transactions t
+            JOIN auction a ON t.AucID = a.aucid
+            WHERE t.BuyerID = @BuyerID
+            ORDER BY t.TransactionDate DESC";
+
+                var parameters = new Dictionary<string, object>
+        {
+            { "@BuyerID", BuyerID }
+        };
+
+                var transactions = new List<(int TransactionID, int AucID, DateTime Date)>();
+
+                using (var reader = await db.ExecuteQuery(query, parameters))
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        transactions.Add((
+                            reader.GetInt32("TransactionID"),
+                            reader.GetInt32("AucID"),
+                            reader.GetDateTime("TransactionDate")
+                        ));
+                    }
+                    await reader.CloseAsync();
+                }
+
+                // Get unique auction IDs
+                var auctionIds = transactions.Select(t => t.AucID).Distinct().ToList();
+
+                // Get all auctions in a single batch
+                var auctions = new Dictionary<int, AuctionDto>();
+                foreach (var auctionId in auctionIds)
+                {
+                    var auction = await Auction.GetAuctionById(db, auctionId);
+                    auctions[auctionId] = auction;
+                }
+
+                // Combine the data
+                foreach (var trans in transactions)
+                {
+                    result.Add(new TransactionsDTO
+                    {
+                        TransactionID = trans.TransactionID,
+                        AucID = trans.AucID,
+                        Date = trans.Date,
+                        AuctionDto = auctions[trans.AucID]
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error getting buyer transactions: {ex.Message}");
+            }
+            finally
+            {
+                await db.Disconnect();
+            }
+            return result;
+        }
+
+        public static async Task<List<TransactionsDTO>> GetAllTransactions(Dbcon db)
+        {
+            var result = new List<TransactionsDTO>();
+            try
+            {
+                await db.Connect();
+
+                // First, get all transactions
+                string query = @"
+            SELECT 
+                t.TransactionID,
+                t.AucID,
+                t.TransactionDate
+            FROM Transactions t
+            JOIN auction a ON t.AucID = a.aucid
+            ORDER BY t.TransactionDate DESC";
+
+                var transactions = new List<(int TransactionID, int AucID, DateTime Date)>();
+
+                using (var reader = await db.ExecuteQuery(query))
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        transactions.Add((
+                            reader.GetInt32("TransactionID"),
+                            reader.GetInt32("AucID"),
+                            reader.GetDateTime("TransactionDate")
+                        ));
+                    }
+                    await reader.CloseAsync();
+                }
+
+                // Now get all unique auction IDs
+                var auctionIds = transactions.Select(t => t.AucID).Distinct().ToList();
+
+                // Get all auctions in a single query
+                var auctions = new Dictionary<int, AuctionDto>();
+                foreach (var auctionId in auctionIds)
+                {
+                    var auction = await Auction.GetAuctionById(db, auctionId);
+                    auctions[auctionId] = auction;
+                }
+
+                // Combine the data
+                foreach (var trans in transactions)
+                {
+                    result.Add(new TransactionsDTO
+                    {
+                        TransactionID = trans.TransactionID,
+                        AucID = trans.AucID,
+                        Date = trans.Date,
+                        AuctionDto = auctions[trans.AucID]
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error getting all transactions: {ex.Message}");
+            }
+            finally
+            {
+                await db.Disconnect();
+            }
+            return result;
+        }
+
+        public static async Task CreateTransaction(Dbcon db, int auctionId)
+        {
+            try
+            {
+                await db.Connect();
+
+                var auction = await Auction.GetAuctionById(db, auctionId);
+                if (auction.BuyerId == null)
+                {
+                    throw new Exception("Cannot create transaction: No buyer found for this auction");
+                }
+
+                string query = @"
+                    INSERT INTO Transactions 
+                    (AucID, BuyerID, SellerID, TransactionDate) 
+                    VALUES 
+                    (@AucID, @BuyerID, @SellerID, @TransactionDate)";
+
+                var parameters = new Dictionary<string, object>
+                {
+                    { "@AucID", auctionId },
+                    { "@BuyerID", auction.BuyerId },
+                    { "@SellerID", auction.SellerId },
+                    { "@TransactionDate", DateTime.Now }
+                };
+
+                await db.ExecuteNonQuery(query, parameters);
+
+                string updateAuctionQuery = @"
+                    UPDATE auction 
+                    SET status = 'completed' 
+                    WHERE aucid = @AuctionId";
+
+                var auctionParameters = new Dictionary<string, object>
+                {
+                    { "@AuctionId", auctionId }
+                };
+
+                await db.ExecuteNonQuery(updateAuctionQuery, auctionParameters);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error creating transaction: {ex.Message}");
+            }
+            finally
+            {
+                await db.Disconnect();
             }
         }
     }

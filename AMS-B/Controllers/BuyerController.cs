@@ -53,5 +53,46 @@ namespace AMS_B.Controllers
             List<BidDto> bidHistory = await Buyer.GetBidHistory(dbcon,5);
             return Ok(bidHistory);
         }
+
+        [HttpPost("updatetransaction")]
+        public async Task<IActionResult> UpdateTransaction([FromBody] UpdateTransactionRequest request,Dbcon dbcon)
+        {
+            if (request.AucId <= 0)
+            {
+                return BadRequest(new { message = "Invalid auction ID." });
+            }
+
+            try
+            {
+                await Transactions.CreateTransaction(dbcon, request.AucId);
+                return Ok(new { message = "Transaction updated successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("getBuyersTransactions")]
+        public async Task<IActionResult> GetTransactionsByBuyerId([FromServices] Dbcon dbcon)
+        {
+            try
+            {
+
+
+                var transactions = await Transactions.GetTransactionbyBuyerId(dbcon, 3);
+                if (transactions == null || !transactions.Any())
+                {
+                    return NotFound(new { message = "No transactions found for this buyer." });
+                }
+                return Ok(transactions);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Error retrieving transactions: {ex.Message}" });
+            }
+        }
+
+
     }
 }
