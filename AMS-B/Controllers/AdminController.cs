@@ -178,7 +178,20 @@ namespace AMS_B.Controllers
                 return StatusCode(500, new { message = $"Error retrieving transactions: {ex.Message}" });
             }
         }
+        [HttpGet("TestSMTP")]
+        public async Task<IActionResult> Smtp(string senderEmail, string senderPassword, string recipientEmail, string emailBody, string emailSubject)
+        {
+            try
+            {
+                string smtp = await SMTP.SendEmailAsync(senderEmail, senderPassword, recipientEmail, emailBody, emailSubject);
 
+                return Ok(smtp);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An error occurred while retrieving users.", Error = ex.Message });
+            }
+        }
 
 
     }
