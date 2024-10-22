@@ -1,18 +1,19 @@
 import { useState } from 'react';
-import SellerDashboardC from '../components/SellersDashboardC';
-import SellerCars from '../components/SellerCars';
-import SellerAuction from '../components/SellerAuction';
-import SellerHistory from '../components/SellerHistory';
-import SellerTransactions from '../components/SellerTransactions';
-import Footer from '../components/Footer';
 
-const SellerDashboard = () => {
+import Footer from '../components/Footer';
+import BuyerDashboardC from '../components/BuyerDashboard';
+import BuyerBids from '../components/BuyerBids';
+import BuyerSBids from '../components/BuyerSBids';
+import BuyerHistory from '../components/BuyerHistory';
+import BuyerTransactions from '../components/BuyerTransactions';
+
+const BuyerDashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard' },
-    { id: 'cars', label: 'Cars details' },
-    { id: 'auctions', label: 'Auctions details' },
+    { id: 'bids', label: 'Active bids' },
+    { id: 'sbids', label: 'Successful bids' },
     { id: 'Transactions', label: 'Transactions' },
     { id: 'history', label: 'History' },
   ];
@@ -20,15 +21,15 @@ const SellerDashboard = () => {
   const renderActiveTabContent = () => {
     switch (activeTab) {
       case 'dashboard':
-        return <SellerDashboardC />;
-      case 'cars':
-        return <SellerCars />;
-      case 'auctions':
-        return <SellerAuction />;
+        return <BuyerDashboardC />;
+      case 'bids':
+        return <BuyerBids/>;
+      case 'sbids':
+        return <BuyerSBids />;
       case 'history':
-        return <SellerHistory />;
+        return <BuyerHistory />;
       case 'Transactions':
-        return <SellerTransactions />;
+        return <BuyerTransactions />;
       default:
         return null;
     }
@@ -87,4 +88,4 @@ const SellerDashboard = () => {
   );
 };
 
-export default SellerDashboard;
+export default BuyerDashboard;

@@ -54,7 +54,7 @@ namespace AMS_B.Controllers
                 return BadRequest(new { Message = "Invalid seller ID." });
             }
 
-            List<Auction> auctions = await Seller.GetAuctionsBySellerId(dbcon, sellerId);
+            List<AuctionDto> auctions = await Seller.GetAuctionsBySellerId(dbcon, sellerId);
             if (auctions == null || auctions.Count == 0)
             {
                 return NotFound(new { Message = "No auctions found for this seller." });
@@ -140,7 +140,6 @@ namespace AMS_B.Controllers
             {
                 return Conflict(new { Message = "An active auction already exists for this car." });
             }
-            auction.Current_Price = car.Price;
             await Auction.CreateAuction(dbcon, auction);
             return Ok(new { Message = "Auction created successfully." });
         }

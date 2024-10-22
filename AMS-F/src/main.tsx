@@ -16,10 +16,12 @@ import SellerAddCar from './routes/SellerAddCar';
 import SellerCarDetail from './routes/SellerCarDetails';
 import SellerAddAuction from './routes/SellerAddAuction';
 import SellerAuctionDetails from './routes/SellerAuctionDetails';
-import BidHistory from './components/BidHistory'; 
 import All from './routes/AllAuctions';
 import AuctionDetails from './routes/AuctionDetails';
-
+import Home from './components/Home';
+import ProfilePage from './routes/Profile';
+import BuyerDashboard from './routes/BuyerDashboard';
+        
 const router = createBrowserRouter([
   {
     path: "*",
@@ -46,6 +48,10 @@ const router = createBrowserRouter([
     element: <Contact />,
   },
   {
+    path: "/",
+    element: <Home />,
+  },
+  {
     path: "/seller",
     element: <SellerDashboard />,
   },
@@ -66,8 +72,8 @@ const router = createBrowserRouter([
     element: <SellerAuctionDetails />,
   },
   {
-    path: "/buyer/auction/:auctionId/bid-history", 
-    element: <BidHistory />,
+    path: "/buyer", 
+    element: <BuyerDashboard />,
   },
   {
     path: "/auctions",
@@ -75,6 +81,9 @@ const router = createBrowserRouter([
   },{
     path: "/auction-details/:auctionId",
     element: <AuctionDetails />,
+  },{
+    path: "/user-profile/:userID",
+    element: <ProfilePage />,
   }
   
 ]);

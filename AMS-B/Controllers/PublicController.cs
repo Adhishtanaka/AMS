@@ -1,6 +1,7 @@
 ﻿using AMS_B.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AMS_B.Controllers
 {
@@ -137,5 +138,48 @@ namespace AMS_B.Controllers
                 return StatusCode(500, new { Message = "An error occurred while retrieving transaction details.", Error = ex.Message });
             }
         }
+
+        [HttpGet("GetProfileData")]
+        public async Task<IActionResult> GetProfileData([FromQuery] int userID, [FromServices] Dbcon dbcon)
+        {
+            if (userID <= 0)
+            {
+                return BadRequest(new { Message = "Invalid User ID." });
+            }
+
+            Users? us = await Users.GetUser(dbcon, userID);
+            if (us == null)
+            {
+                return NotFound(new { Message = "User not found." });
+            }
+
+            return Ok(new
+            {
+                us.Role,
+                us.Name,
+                us.Email,
+                us.Telephone,
+                us.Address
+            });
+        }
+
+        [HttpGet("GetAuctionsBySellerId")]
+        public async Task<IActionResult> GetAuctionsBySellerId([FromQuery] int sellerId,[FromServices] Dbcon dbcon)
+        {
+            
+            if (sellerId <= 0)
+            {
+                return BadRequest(new { Message = "Invalid seller ID." });
+            }
+
+            List<AuctionDto> auctions = await Seller.GetAuctionsBySellerId(dbcon, sellerId);
+            if (auctions == null || auctions.Count == 0)
+            {
+                return NotFound(new { Message = "No auctions found for this seller." });
+            }
+
+            return Ok(auctions);
+        }
+
     }
 }

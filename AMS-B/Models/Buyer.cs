@@ -11,63 +11,104 @@ namespace AMS_B.Models
         public static async Task<bool> PlaceBid(Dbcon dbcon, Bid bid)
         {
             await dbcon.Connect();
+
             string insertBidQuery = $@"
-                INSERT INTO bid (aucid, userid, bidtime, amount)
-                VALUES ({bid.AucId}, {bid.UserId}, '{bid.BidTime:yyyy-MM-dd HH:mm:ss}', {bid.Amount})";
-            string updateAuctionQuery = $@"
-                UPDATE auction
-                SET current_price = {bid.Amount}
-                WHERE aucid = {bid.AucId} AND current_price < {bid.Amount}";
+        INSERT INTO bid (aucid, userid, bidtime, amount)
+        VALUES ({bid.AucId}, {bid.UserId}, '{bid.BidTime:yyyy-MM-dd HH:mm:ss}', {bid.Amount});";
+
             try
             {
-                await dbcon.ExecuteNonQuery(insertBidQuery);
+                int bid_id = await dbcon.ExecuteNonQuery(insertBidQuery);
+
+                string updateAuctionQuery = $@"
+            UPDATE auction
+            SET bid_id = {bid_id}
+            WHERE aucid = {bid.AucId};";
+
                 await dbcon.ExecuteNonQuery(updateAuctionQuery);
-                dbcon.Disconnect();
+
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
-                dbcon.Disconnect();
+                Console.WriteLine(ex.Message);
                 return false;
+            }
+            finally
+            {
+                await dbcon.Disconnect();
             }
         }
 
-        public static async Task<List<BidViewModel>> GetBidHistory(Dbcon dbcon, int auctionId)
+        public static async Task<List<BidDto>> GetBidHistory(Dbcon dbcon, int buyerId)
         {
-            List<BidViewModel> bidHistory = new List<BidViewModel>();
-            string query = $@"
-                SELECT b.bidid, b.userid, u.name, b.bidtime, b.amount
-                FROM bid b
-                JOIN user u ON b.userid = u.userid
-                WHERE b.aucid = {auctionId}
-                ORDER BY b.bidtime DESC";
+            List<BidDto> bidHistory = new List<BidDto>();
+
+            string query = @"
+        SELECT 
+            b.bidid AS BidId,
+            b.aucid AS AucId,
+            b.userid AS UserId,
+            b.bidtime AS BidTime,
+            b.amount AS Amount,
+            us.name AS UserName,
+            a.startdate AS AuctionStartDate,
+            a.enddate AS AuctionEndDate,
+            c.car_title AS CarTitle,
+            c.img AS Img,
+            m.model_name AS ModelName,
+            ma.name AS ManufacturerName,
+            c.year AS Year
+        FROM 
+            bid b
+        JOIN 
+            auction a ON b.aucid = a.aucid
+        JOIN 
+            car c ON a.car_id = c.id
+        JOIN 
+            user us ON b.userid = us.userid
+        JOIN 
+            model m ON c.model_id = m.model_id
+        JOIN 
+            manufacturer ma ON m.manufacturer_id = ma.id
+        WHERE 
+            b.userid = @buyerId
+        ORDER BY 
+            b.bidtime DESC;";
+
+            var parameters = new Dictionary<string, object> { { "@buyerId", buyerId } };
+
             await dbcon.Connect();
-            using (var reader = await dbcon.ExecuteQuery(query))
+
+            
+            List<int> aucIds = new List<int>(); 
+            using (var reader = await dbcon.ExecuteQuery(query, parameters))
             {
                 while (await reader.ReadAsync())
                 {
-                    BidViewModel bid = new BidViewModel
+                    BidDto bidDto = new BidDto
                     {
-                        BidId = reader.GetInt32(0),
-                        UserId = reader.GetInt32(1),
-                        UserName = reader.GetString(2),
-                        BidTime = reader.GetDateTime(3),
-                        Amount = reader.GetDecimal(4)
+                        BidId = reader.GetInt32(reader.GetOrdinal("BidId")),
+                        AucId = reader.GetInt32(reader.GetOrdinal("AucId")),
+                        UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
+                        UserName = reader.GetString(reader.GetOrdinal("UserName")),
+                        BidTime = reader.GetDateTime(reader.GetOrdinal("BidTime")),
+                        Amount = reader.GetDecimal(reader.GetOrdinal("Amount"))
                     };
-                    bidHistory.Add(bid);
+
+                    bidHistory.Add(bidDto);
+                    aucIds.Add(bidDto.AucId); 
                 }
             }
-            dbcon.Disconnect();
+
+            // Fetch auction details for each bid
+            foreach (var bid in bidHistory)
+            {
+                bid.AuctionDetails = await Auction.GetAuctionById(dbcon, bid.AucId);
+            }
+
+            await dbcon.Disconnect();
             return bidHistory;
         }
-    }
-
-    public class BidViewModel
-    {
-        public int BidId { get; set; }
-        public int UserId { get; set; }
-        public string UserName { get; set; }
-        public DateTime BidTime { get; set; }
-        public decimal Amount { get; set; }
     }
 }

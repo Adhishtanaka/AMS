@@ -1,5 +1,6 @@
 ﻿using AMS_B.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AMS_B.Controllers
 {
@@ -14,6 +15,17 @@ namespace AMS_B.Controllers
             _dbcon = dbcon;
         }
 
+        private int GetUserId()
+        {
+            var idClaim = User.FindFirst("id");
+            if (idClaim == null)
+            {
+                idClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            }
+
+            return idClaim != null ? int.Parse(idClaim.Value) : 0;
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login()
         {
@@ -23,7 +35,7 @@ namespace AMS_B.Controllers
                 return BadRequest(new { Message = "Invalid login request." });
             }
 
-            
+
             var userrole = await Users.checkjobRole(_dbcon, request.Email);
             Users user;
 
@@ -82,5 +94,16 @@ namespace AMS_B.Controllers
                 return BadRequest(new { Message = "Registration failed." });
             }
         }
+
+        [HttpGet("GetUsersId")]
+        public async Task<IActionResult> GetUsersId()
+        {
+            int userId = GetUserId();
+            if (userId <= 0)
+            {
+                return BadRequest(-1);
+            }
+            return Ok(userId);
+        }
     }
-}
+    }
