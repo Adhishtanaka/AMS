@@ -71,6 +71,10 @@ const TransactionTable: React.FC<TransactionTableProps> = ({ className = '' }) =
     return <div className="p-4 text-red-500">{error}</div>;
   }
 
+  const handleRowClick = (auctionId: number) => {
+    window.location.href = `/buyer/auction-details/${auctionId}`;
+  };
+
   return (
     <div className={`w-full max-w-4xl mx-auto p-4 ${className}`}>
       <div className="bg-white rounded-lg shadow">
@@ -93,12 +97,11 @@ const TransactionTable: React.FC<TransactionTableProps> = ({ className = '' }) =
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-            
               {transactions.map((transaction) => (
-                <a href={`/buyer/auction-details/${transaction.auctionDto.auctionId}`}>
-                <tr 
+                <tr
                   key={transaction.transactionID}
-                  className="hover:bg-gray-50"
+                  className="hover:bg-gray-50 cursor-pointer"
+                  onClick={() => handleRowClick(transaction.auctionDto.auctionId)}
                 >
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {formatDate(transaction.date)}
@@ -109,7 +112,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({ className = '' }) =
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {formatPrice(transaction.auctionDto.currentPrice)}
                   </td>
-                </tr>  </a>
+                </tr>
               ))}
             </tbody>
           </table>
