@@ -1,19 +1,32 @@
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Mail;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
-public class EmailDetails
-{
-    public required string SenderEmail { get; set; }
-    public required string SenderPassword { get; set; }
-    public required string RecipientEmail { get; set; }
-    public required string EmailBody { get; set; }
-    public required string EmailSubject { get; set; }
-}
 public class SMTP
 {
-    public static async Task<string> SendEmailAsync(string senderEmail, string senderPassword, string recipientEmail, string emailBody, string emailSubject)
+    public static async Task<string> SendEmailAsync(string recipientEmail, string emailSubject, string emailBody)
     {
+        
+        var builder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddUserSecrets<Program>();
+
+        var configuration = builder.Build();
+
+       
+        string? senderEmail = configuration["SMTPSettings:SenderEmail"];
+        string? senderPassword = configuration["SMTPSettings:SenderPassword"];
+
+        if (string.IsNullOrEmpty(senderEmail) || string.IsNullOrEmpty(senderPassword))
+        {
+            throw new InvalidOperationException("Sender email or password is not configured properly.");
+        }
+
+
         var mailMessage = new MailMessage(senderEmail, recipientEmail)
         {
             From = new MailAddress(senderEmail),
@@ -21,9 +34,8 @@ public class SMTP
             Body = emailBody
         };
 
-        var smtpClient = new SmtpClient("smtp.gmail.com.")
+        var smtpClient = new SmtpClient("outlook.office365.com")
         {
-            Host = "smtp.gmail.com.",
             Port = 587,
             UseDefaultCredentials = false,
             Credentials = new NetworkCredential(senderEmail, senderPassword),
@@ -41,3 +53,5 @@ public class SMTP
         }
     }
 }
+
+

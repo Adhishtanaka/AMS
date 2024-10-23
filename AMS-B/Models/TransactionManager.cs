@@ -1,4 +1,5 @@
 using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI;
 namespace AMS_B.Models
 {
     public class TransactionsDTO
@@ -20,9 +21,7 @@ namespace AMS_B.Models
         public required int TransactionID { get; set; }
         public required int AucID { get; set; }
         public required DateTime Date { get; set; }
-        public required int BuyerID { get; set; }
-        public required int SellerID { get; set; }
-
+        
         public static async Task<List<TransactionsDTO>> GetTransactionsbysellerId(Dbcon db, int SellerID)
         {
             var result = new List<TransactionsDTO>();
@@ -270,6 +269,68 @@ namespace AMS_B.Models
                 };
 
                 await db.ExecuteNonQuery(updateAuctionQuery, auctionParameters);
+
+
+
+
+
+                
+
+                
+
+                string buyerEmailSubject = "Auction Purchase Confirmation";
+                string sellerEmailSubject = "Auction Sale Confirmation";
+
+                string buyerEmailBody = $@"Dear Buyer,
+
+                Your purchase for auction ID {auctionId} has been successfully completed.
+
+                Auction Details:
+                - Item: {auction.CarTitle}
+                - Price: {auction.CurrentPrice:C}
+                - Date: {DateTime.Now:f}
+
+                Thank you for your purchase!";
+
+                string sellerEmailBody = $@"Dear Seller,
+
+                Your sale for auction ID {auctionId} has been successfully completed.
+
+                Auction Details:
+                - Item: {auction.CarTitle}
+                - Final Price: {auction.CurrentPrice:C}
+                - Date: {DateTime.Now:f}
+
+                Thank you for using our platform!
+                ";
+
+                await db.Connect();
+                string emailQuery = @"
+                SELECT 
+                    seller.email as SellerEmail,
+                    buyer.email as BuyerEmail
+                FROM Transactions t
+                JOIN users seller ON t.SellerID = seller.userid
+                JOIN users buyer ON t.BuyerID = buyer.userid
+                ";
+                string? BuyerEmail = null;
+                string? SellerEmail = null;
+                using var reader = await db.ExecuteQuery(emailQuery);
+                if (await reader.ReadAsync())
+                {
+                    BuyerEmail = reader.ToString();
+                    SellerEmail = reader.ToString();
+                }
+                
+
+                await SMTP.SendEmailAsync(BuyerEmail, buyerEmailSubject, buyerEmailBody);
+                await SMTP.SendEmailAsync(SellerEmail, sellerEmailSubject, sellerEmailBody);
+
+
+
+
+
+
             }
             catch (Exception ex)
             {
