@@ -47,8 +47,8 @@ const SellerDashboard: React.FC = () => {
     const fetchData = async () => {
       try {
         const [transactionsRes, auctionsRes] = await Promise.all([
-          api.get<Transaction[]>('https://localhost:7006/api/Seller/getSellerTransactions'),
-          api.get<Auction[]>('https://localhost:7006/api/Seller/GetAuctionsBySellerId')
+          api.get<Transaction[]>('https://localhost:5000/api/Seller/getSellerTransactions'),
+          api.get<Auction[]>('https://localhost:5000/api/Seller/GetAuctionsBySellerId')
         ]);
 
         setTransactions(transactionsRes.data);
