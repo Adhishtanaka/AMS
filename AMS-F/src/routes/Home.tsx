@@ -48,7 +48,7 @@ const categories = [
     title: "Sedans",
   },
   {
-    img: "/src/assets/cat2.png",
+    img: "/src/assets/suv.png",
     title: "SUVs",
   },
   {
