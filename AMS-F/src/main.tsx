@@ -18,9 +18,11 @@ import SellerAddAuction from './routes/SellerAddAuction';
 import SellerAuctionDetails from './routes/SellerAuctionDetails';
 import All from './routes/AllAuctions';
 import AuctionDetails from './routes/AuctionDetails';
-import Home from './components/Home';
+import Home from './routes/Home';
 import ProfilePage from './routes/Profile';
 import BuyerDashboard from './routes/BuyerDashboard';
+import PaymentCanceled from './routes/Cancled';
+import PaymentSuccess from './routes/Sucseed';
         
 const router = createBrowserRouter([
   {
@@ -72,6 +74,14 @@ const router = createBrowserRouter([
     element: <SellerAuctionDetails />,
   },
   {
+    path: "/buyer/auction-details/:auctionId",
+    element: <SellerAuctionDetails />,
+  },
+  {
+    path: "/admin/auction-details/:auctionId",
+    element: <SellerAuctionDetails />,
+  },
+  {
     path: "/buyer", 
     element: <BuyerDashboard />,
   },
@@ -84,6 +94,13 @@ const router = createBrowserRouter([
   },{
     path: "/user-profile/:userID",
     element: <ProfilePage />,
+  },
+  {
+    path: "/buyer/Cancel",
+    element: <PaymentCanceled />,
+  },{
+    path:"/buyer/Succeed/:auc_id",
+    element: <PaymentSuccess /> 
   }
   
 ]);

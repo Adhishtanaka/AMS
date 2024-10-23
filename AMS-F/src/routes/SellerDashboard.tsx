@@ -35,7 +35,7 @@ const SellerDashboard = () => {
   };
 
   return (
-    <div className="max-w-[1240px] mx-auto px-4 lg:px-8">
+    <div className="w-5/6 mx-auto px-4 lg:px-8">
       <header className="flex justify-between items-center h-24">
         <h1 className="text-3xl font-bold text-[#1D2945]">AMS .</h1>
       </header>
@@ -72,7 +72,14 @@ const SellerDashboard = () => {
                 {label}
               </div>
             </li>
+            
           ))}
+          {/* <button
+        className="mb-6 text-white bg-[#1D2945] hover:bg-[#3d517f] font-semibold p-1 px-2 rounded"
+        // onClick={() => navigate('/seller/add-car')}
+      >
+        Add Car
+      </button> */}
         </ul>
       </nav>
 

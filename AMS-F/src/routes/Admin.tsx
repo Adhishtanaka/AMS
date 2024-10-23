@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ManageUsers from '../components/AdminManageUsers';
 import AdminDashboard from '../components/AdminDashboard';
 import CategoryManager from '../components/AdminCategoryManager';
+import TransactionTable from '../components/AdminTransactions';
 
 
 const Admin: React.FC = () => {
@@ -17,6 +18,8 @@ const Admin: React.FC = () => {
                 return <ManageUsers />;
             case 'Categories':
                 return <CategoryManager/>;
+            case 'Transactions':
+                return <TransactionTable />;
             default:
                 return <AdminDashboard />;
             
@@ -39,12 +42,12 @@ const Admin: React.FC = () => {
             >
                 <h1 className="text-2xl text-[#1D2945] font-semibold text-center">AMS .</h1>
                 <nav>
-                    {['Dashboard', 'Users','Categories'].map((item) => (
+                    {['Dashboard', 'Users','Categories','Transactions'].map((item) => (
                         <a
                             key={item}
                             href="#"
                             className={`block py-2.5 px-4 rounded transition duration-200 ${
-                                selectedComponent === item ? 'bg-blue-50 text-gray-900' : 'hover:bg-gray-50'
+                                selectedComponent === item ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50'
                             }`}
                             onClick={() => {
                                 setSelectedComponent(item);

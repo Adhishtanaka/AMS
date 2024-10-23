@@ -44,7 +44,7 @@
             string query = $"INSERT INTO auction (car_id, startdate, enddate, status) VALUES ({auction.ProductId}, '{auction.StartDate:yyyy-MM-dd HH:mm:ss}', '{auction.EndDate:yyyy-MM-dd HH:mm:ss}', '{auction.Status}')";
             await dbcon.Connect();
             await dbcon.ExecuteNonQuery(query);
-            dbcon.Disconnect();
+            await dbcon.Disconnect();
         }
 
         public static async Task DeleteAuction(Dbcon dbcon, int auctionId)
@@ -52,7 +52,7 @@
             string query = $"DELETE FROM auction WHERE aucid = {auctionId}";
             await dbcon.Connect();
             await dbcon.ExecuteNonQuery(query);
-            dbcon.Disconnect();
+            await dbcon.Disconnect();
         }
 
         public static async Task<List<Auction>> GetAllAuctions(Dbcon dbcon)
@@ -77,7 +77,7 @@
                 }
             }
 
-            dbcon.Disconnect();
+            await dbcon.Disconnect();
             return auctions;
         }
 
@@ -149,7 +149,7 @@
                 }
             }
 
-            dbcon.Disconnect();
+            await dbcon.Disconnect();
             return auctions;
         }
 
@@ -219,11 +219,12 @@
                         ManufacturerName = reader.GetString(reader.GetOrdinal("ManufacturerName")),
                         Year = reader.GetInt32(reader.GetOrdinal("Year"))
                     };
-                    dbcon.Disconnect();
+                    await dbcon.Disconnect();
                     return auction;
                 }
+                await reader.CloseAsync();
             }
-            dbcon.Disconnect();
+            await dbcon.Disconnect();
             throw new KeyNotFoundException($"Auction with ID {auctionId} not found");
         }
     }

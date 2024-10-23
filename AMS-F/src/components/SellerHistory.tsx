@@ -87,35 +87,112 @@ if (loading) {
 return (
   <div className="container mx-auto px-4 mb-48">
     {auctions.length === 0 ? (
-      <div>No History found for this seller.</div>
+      <div className="text-center p-4">No History found for this seller.</div>
     ) : (
-      <table className="min-w-full table-auto border-collapse bg-white shadow-md rounded-lg overflow-hidden">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-4 py-2 border text-left font-semibold text-black">Auction Item</th>
-            <th className="px-4 py-2 border text-left font-semibold text-black">Final Bid</th>
-            <th className="px-4 py-2 border text-left font-semibold text-black">Start Date</th>
-            <th className="px-4 py-2 border text-left font-semibold text-black">End Date</th>
-            <th className="px-4 py-2 border text-left font-semibold text-black">Status</th>
-          </tr>
-        </thead>
-        <tbody className='divide-y divide-gray-200'>
+      <div className="w-full overflow-x-auto">
+        {/* Mobile View (Card Layout) */}
+        <div className="lg:hidden space-y-4">
           {auctions.map((auction) => (
-            <tr key={auction.auctionId}>
-              <td className="px-4 py-2 border">
-                <Link to={`auction-details/${auction.auctionId}`} className="text-gray-600 hover:underline">
+            <div key={auction.auctionId} className="bg-white rounded-lg shadow p-4">
+              <Link 
+                to={`auction-details/${auction.auctionId}`} 
+                className="flex flex-col space-y-2 mb-3"
+              >
+                <img
+                  src="/src/assets/image.png"
+                  alt={auction.carTitle}
+                  className="w-full h-48 object-cover rounded-lg"
+                />
+                <h3 className="font-semibold text-lg text-gray-800">
                   {auction.carTitle}
-                </Link>
-              </td>
-              <td className="px-4 py-1 border text-gray-800">${auction.currentPrice !== null ? auction.currentPrice : 0}</td>
-              <td className="px-4 py-1 border text-gray-800">{new Date(auction.startDate).toLocaleString()}</td>
-              <td className="px-4 py-1 border text-gray-800">{new Date(auction.endDate).toLocaleString()}</td>
-              <td className="px-4 py-1 border text-gray-800">{auction.status}</td>
-              
-            </tr>
+                </h3>
+              </Link>
+
+              <div className="grid grid-cols-2 gap-3 text-sm mt-2">
+                <div className="space-y-1">
+                  <p className="text-gray-500">Final Bid</p>
+                  <p className="font-medium">
+                    ${auction.currentPrice !== null ? auction.currentPrice : 0}
+                  </p>
+                </div>
+
+                <div className="space-y-1">
+                  <p className="text-gray-500">Status</p>
+                  <p className="font-medium">{auction.status}</p>
+                </div>
+
+                <div className="space-y-1 col-span-2">
+                  <p className="text-gray-500">Start Date</p>
+                  <p className="font-medium text-sm">
+                    {new Date(auction.startDate).toLocaleString()}
+                  </p>
+                </div>
+
+                <div className="space-y-1 col-span-2">
+                  <p className="text-gray-500">End Date</p>
+                  <p className="font-medium text-sm">
+                    {new Date(auction.endDate).toLocaleString()}
+                  </p>
+                </div>
+              </div>
+            </div>
           ))}
-        </tbody>
-      </table>
+        </div>
+
+        {/* Desktop View (Table Layout) */}
+        <table className="hidden lg:table min-w-full bg-white rounded-lg overflow-hidden">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-4 py-2 text-left font-semibold text-black border-b">
+                Auction Item
+              </th>
+              <th className="px-4 py-2 text-left font-semibold text-black border-b">
+                Final Bid
+              </th>
+              <th className="px-4 py-2 text-left font-semibold text-black border-b">
+                Start Date
+              </th>
+              <th className="px-4 py-2 text-left font-semibold text-black border-b">
+                End Date
+              </th>
+              <th className="px-4 py-2 text-left font-semibold text-black border-b">
+                Status
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-300">
+            {auctions.map((auction) => (
+              <tr key={auction.auctionId}>
+                <td className="px-4 py-2">
+                  <Link
+                    to={`auction-details/${auction.auctionId}`}
+                    className="text-gray-600 flex items-center hover:underline"
+                  >
+                    <img
+                      src="/src/assets/image.png"
+                      alt={auction.carTitle}
+                      className="w-24 h-16 object-cover rounded-lg mr-3"
+                    />
+                    <span>{auction.carTitle}</span>
+                  </Link>
+                </td>
+                <td className="px-4 py-2 text-gray-800">
+                  ${auction.currentPrice !== null ? auction.currentPrice : 0}
+                </td>
+                <td className="px-4 py-2 text-gray-800">
+                  {new Date(auction.startDate).toLocaleString()}
+                </td>
+                <td className="px-4 py-2 text-gray-800">
+                  {new Date(auction.endDate).toLocaleString()}
+                </td>
+                <td className="px-4 py-2 text-gray-800">
+                  {auction.status}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     )}
   </div>
 );

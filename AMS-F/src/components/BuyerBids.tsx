@@ -61,54 +61,63 @@ const BuyerBids: React.FC = () => {
       </div>
     );
 
-  return (
-    <div className="max-w-3xl mx-auto bg-white shadow-xl rounded-lg overflow-hidden">
-      {bidHistory.length === 0 ? (
-        <div className="px-4 py-5 text-gray-500 text-center">
-          No active bids available.
-        </div>
-      ) : (
-        <>
-          <ul className="divide-y divide-gray-200">
-            {bidHistory
-              .filter((bid) => {
-                // Ensure the bid matches the current price and the auction end date hasn't passed
-                const auctionEndDate = new Date(bid.auctionDetails.endDate);
-                return bid.auctionDetails.currentPrice === bid.amount && auctionEndDate > new Date();
-              })
-              .map((bid) => (
-                <li
-                  key={bid.bidId}
-                  className="p-5 hover:bg-gray-100 transition duration-200 ease-in-out"
-                >
-                  <div className="flex items-start space-x-6">
-                    <img
-                      className="h-28 w-28 object-cover rounded-lg shadow-lg"
-                      src={`http://localhost:5000/car-images/${bid.auctionDetails.img.split(",")[0]}`}
-                      alt={bid.auctionDetails.carTitle}
-                    />
-                    <div className="flex-grow">
-                      <h3 className="text-xl font-semibold text-[#1D2945]">
-                        {bid.auctionDetails.carTitle}
-                      </h3>
-                      <p className="text-sm text-gray-800 mt-1">
-                        Your Bid:{" "}
-                        <span className="font-semibold text-green-600">
-                          {formatCurrency(bid.amount)}
-                        </span>
-                      </p>
-                      <p className="text-xs text-gray-500 mt-3">
-                        Bid Time: {formatDate(bid.bidTime)}
-                      </p>
-                    </div>
-                  </div>
-                </li>
-              ))}
-          </ul>
-        </>
-      )}
-    </div>
-  );
+    return (
+      <div className="max-w-3xl mx-auto bg-white rounded-lg overflow-hidden p-2 sm:p-0">
+        {bidHistory.length === 0 ? (
+          <div className="px-4 py-5 text-gray-500 text-center">
+            No active bids available.
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-white border-collapse rounded-lg shadow-md table-auto">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-2 sm:px-4 py-2 font-semibold text-left text-black border-b">Car Title</th>
+                  <th className="px-2 sm:px-4 py-2 font-semibold text-left text-black border-b">Your Bid</th>
+                  <th className="hidden sm:table-cell px-2 sm:px-4 py-2 font-semibold text-left text-black border-b">Bid Time</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-300">
+                {bidHistory
+                  .filter((bid) => {
+                    const auctionEndDate = new Date(bid.auctionDetails.endDate);
+                    return bid.auctionDetails.currentPrice === bid.amount && auctionEndDate > new Date();
+                  })
+                  .map((bid) => (
+                    <tr key={bid.bidId} className="hover:bg-gray-50">
+                      <td className="px-2 sm:px-4 py-2">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                          <img
+                            className="w-full sm:w-28 h-28 object-cover rounded-lg shadow-lg"
+                            src={`http://localhost:5000/car-images/${bid.auctionDetails.img.split(",")[0]}`}
+                            alt={bid.auctionDetails.carTitle}
+                          />
+                          <span className="text-[#1D2945] font-semibold text-sm sm:text-base">
+                            {bid.auctionDetails.carTitle}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-2 sm:px-4 py-2">
+                        <div className="flex flex-col gap-1">
+                          <span className="text-green-600 font-semibold text-sm sm:text-base">
+                            {formatCurrency(bid.amount)}
+                          </span>
+                          <span className="sm:hidden text-xs text-gray-500">
+                            {formatDate(bid.bidTime)}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="hidden sm:table-cell px-2 sm:px-4 py-2 text-gray-500">
+                        {formatDate(bid.bidTime)}
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    );
 };
 
 export default BuyerBids;

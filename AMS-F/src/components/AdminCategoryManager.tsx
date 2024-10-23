@@ -171,11 +171,11 @@ const CategoryManager: React.FC = () => {
                 placeholder="New car type"
                 value={newCarType}
                 onChange={(e) => setNewCarType(e.target.value)}
-                className="flex-grow p-2 border rounded-lg"
+                className="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200"
               />
               <button
                 onClick={handleAddCarType}
-                className="p-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+                className="p-2 text-[#1D2945] font-semibold bg-[#AABFEF] rounded-lg hover:bg-[#8BAEFF]"
               >
                 Add
               </button>
@@ -197,11 +197,11 @@ const CategoryManager: React.FC = () => {
                 placeholder="New manufacturer"
                 value={newManufacturer}
                 onChange={(e) => setNewManufacturer(e.target.value)}
-                className="flex-grow p-2 border rounded-lg"
+                className="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200"
               />
               <button
                 onClick={handleAddManufacturer}
-                className="p-2 text-white bg-blue-500 rounded-lg hover:bg-blue-700"
+                className="p-2 text-[#1D2945] font-semibold bg-[#AABFEF] rounded-lg hover:bg-[#8BAEFF]"
               >
                 Add
               </button>
@@ -221,7 +221,7 @@ const CategoryManager: React.FC = () => {
               <select
                 value={selectedManufacturerId}
                 onChange={(e) => setSelectedManufacturerId(Number(e.target.value))}
-                className="p-2 border rounded-lg"
+                className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200"
               >
                 <option value="">Select Manufacturer</option>
                 {manufacturers.map((manufacturer) => (
@@ -236,11 +236,11 @@ const CategoryManager: React.FC = () => {
                   placeholder="New model"
                   value={newModel}
                   onChange={(e) => setNewModel(e.target.value)}
-                  className="flex-grow p-2 border rounded-lg"
+                  className="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200"
                 />
                 <button
                   onClick={handleAddModel}
-                  className="p-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+                  className="p-2 text-[#1D2945] font-semibold bg-[#AABFEF] rounded-lg hover:bg-[#8BAEFF]"
                 >
                   Add
                 </button>
@@ -294,19 +294,19 @@ const CategoryManager: React.FC = () => {
       <div className="flex mb-8 space-x-4">
         <button
           onClick={() => setActiveTab('carTypes')}
-          className={`p-2 ${activeTab === 'carTypes' ? 'bg-blue-600 text-white' : 'bg-gray-300'} rounded-lg`}
+          className={`p-2 px-4 ${activeTab === 'carTypes' ? 'bg-[#1D2945] text-white' : 'bg-gray-300'} rounded-lg`}
         >
           Car Types
         </button>
         <button
           onClick={() => setActiveTab('manufacturers')}
-          className={`p-2 ${activeTab === 'manufacturers' ? 'bg-blue-600 text-white' : 'bg-gray-300'} rounded-lg`}
+          className={`p-2 ${activeTab === 'manufacturers' ? 'bg-[#1D2945] text-white' : 'bg-gray-300'} rounded-lg`}
         >
           Manufacturers
         </button>
         <button
           onClick={() => setActiveTab('models')}
-          className={`p-2 ${activeTab === 'models' ? 'bg-blue-600 text-white' : 'bg-gray-300'} rounded-lg`}
+          className={`p-2 ${activeTab === 'models' ? 'bg-[#1D2945] text-white' : 'bg-gray-300'} rounded-lg`}
         >
           Models
         </button>
