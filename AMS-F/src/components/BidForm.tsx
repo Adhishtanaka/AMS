@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import api from '../util/api';
+import { useNavigate } from 'react-router-dom';
 import { handleErrorResult, handleSuccessResult } from '../util/TostMessage';
 
 interface Bid {
@@ -14,8 +15,15 @@ interface BidFormProps {
 const BidForm: React.FC<BidFormProps> = ({ bid }) => {
   const [amount, setAmount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleBid = async () => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      handleErrorResult('Please login to place a bid');
+      navigate('/login');
+      return;
+    }
     if (amount <= bid.current_amount) {
       handleErrorResult('Please enter a valid bid amount.');
       return;
