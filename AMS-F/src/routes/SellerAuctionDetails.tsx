@@ -115,18 +115,10 @@ const CombinedAuctionCarDetails = () => {
       <Navbar />
       <div className="container mx-auto px-4 py-4 sm:py-8">
         <div className="max-w-7xl mx-auto mb-20 pb-5 bg-white rounded-xl shadow-lg overflow-hidden">
-          {/* Header */}
           <div className="bg-gray-100 p-4 sm:p-6">
             <h1 className="text-2xl sm:text-3xl font-bold text-black mb-2">{car.carTitle}</h1>
             <div className="flex flex-wrap gap-2 sm:gap-4">
               <span className="text-black text-sm sm:text-base">Year: {car.year}</span>
-              {/* <span
-                className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${
-                  isActive ? 'bg-gray-50  text-gray-800 border border-[#ADB4C4]' : 'bg-red-100 text-red-800'
-                }`}
-              >
-                {auction.status}
-              </span> */}
               <span className="px-2 sm:px-3 py-1 border border-[#ADB4C4] bg-gray-50 text-gray-800 text-xs sm:text-sm font-semibold rounded-full">
                 {car.modelName}
               </span>
@@ -154,6 +146,9 @@ const CombinedAuctionCarDetails = () => {
                               src={url}
                               alt={`${car.carTitle} - View ${index + 1}`}
                               className="absolute top-0 left-0 w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = '/public/images/placeholder.jpg';
+                              }}
                             />
                           </div>
                         </div>

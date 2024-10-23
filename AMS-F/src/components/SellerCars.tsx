@@ -85,6 +85,15 @@ const SellerCars: React.FC = () => {
     return <div>Loading cars...</div>;
   }
 
+  const imageUrl = (car: Car) => {
+    if (!car || !car.img) {
+      return 'http://localhost:5173/public/images/placeholder.jpg'; 
+    }
+    return `http://localhost:5000/car-images/${car.img.split(",")[0].trim()}`;
+  };
+  
+  
+
   return (
     <div className="container px-4 mx-auto mb-48">
       <button
@@ -104,9 +113,12 @@ const SellerCars: React.FC = () => {
               <div key={car.id} className="bg-white rounded-lg shadow p-4 space-y-3">
                 <Link to={`car-details/${car.id}`} className="flex flex-col space-y-2">
                   <img
-                    src="/src/assets/image.png"
+                    src={imageUrl(car)}
                     alt={car.carTitle}
                     className="w-full h-48 object-cover rounded-lg"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/public/images/placeholder.jpg';
+                    }}
                   />
                   <h3 className="font-semibold text-lg text-gray-800">{car.carTitle}</h3>
                 </Link>
@@ -156,9 +168,12 @@ const SellerCars: React.FC = () => {
                       className="text-gray-600 flex items-center hover:underline"
                     >
                       <img
-                        src="/src/assets/image.png"
+                        src={imageUrl(car)}
                         className="w-24 h-16 object-cover rounded-lg mr-3"
                         alt={car.carTitle}
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/public/images/placeholder.jpg';
+                        }}
                       />
                       <span>{car.carTitle}</span>
                     </Link>

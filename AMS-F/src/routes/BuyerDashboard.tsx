@@ -1,6 +1,5 @@
-import { useState } from 'react';
-
-import Footer from '../components/Footer';
+import { useState,ChangeEvent } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import BuyerDashboardC from '../components/BuyerDashboard';
 import BuyerBids from '../components/BuyerBids';
 import BuyerSBids from '../components/BuyerSBids';
@@ -9,12 +8,13 @@ import BuyerTransactions from '../components/BuyerTransactions';
 
 const BuyerDashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
+  const navigate = useNavigate();
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard' },
     { id: 'bids', label: 'Active bids' },
     { id: 'sbids', label: 'Successful bids' },
-    { id: 'Transactions', label: 'Transactions' },
+    { id: 'transactions', label: 'Transactions' },
     { id: 'history', label: 'History' },
   ];
 
@@ -23,29 +23,40 @@ const BuyerDashboard = () => {
       case 'dashboard':
         return <BuyerDashboardC />;
       case 'bids':
-        return <BuyerBids/>;
+        return <BuyerBids />;
       case 'sbids':
         return <BuyerSBids />;
       case 'history':
         return <BuyerHistory />;
-      case 'Transactions':
+      case 'transactions':
         return <BuyerTransactions />;
       default:
         return null;
     }
   };
 
+  const handleTabChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = e.target.value;
+    setActiveTab(selectedValue);
+    
+  };
+
   return (
     <div className="w-5/6 mx-auto px-4 lg:px-8">
       <header className="flex justify-between items-center h-24">
-        <h1 className="text-3xl font-bold text-[#1D2945]">AMS .</h1>
+        <h1 className="text-3xl font-bold text-[#1D2945]">AMS . <span className='text-2xl'>Buyers</span></h1>
+        <button 
+          onClick={() => navigate('/')} 
+          className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300"
+        >
+          Exit
+        </button>
       </header>
 
-      {/* Mobile View - Dropdown Select */}
       <div className="sm:hidden mb-4">
         <select
           value={activeTab}
-          onChange={(e) => setActiveTab(e.target.value)}
+          onChange={handleTabChange} 
           className="w-full p-2 border border-gray-300 rounded-lg"
         >
           {tabs.map(({ id, label }) => (
@@ -82,8 +93,6 @@ const BuyerDashboard = () => {
           {renderActiveTabContent()}
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 };

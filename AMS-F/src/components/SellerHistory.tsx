@@ -84,6 +84,13 @@ if (loading) {
   return <div>Loading History...</div>;
 }
 
+const imageUrl = (auction: AuctionDto) => {
+  if (!auction || !auction.img) {
+    return 'http://localhost:5173/public/images/placeholder.jpg'; 
+  }
+  return `http://localhost:5000/car-images/${auction.img.split(",")[0].trim()}`;
+};
+
 return (
   <div className="container mx-auto px-4 mb-48">
     {auctions.length === 0 ? (
@@ -99,9 +106,12 @@ return (
                 className="flex flex-col space-y-2 mb-3"
               >
                 <img
-                  src="/src/assets/image.png"
+                  src={imageUrl(auction)}
                   alt={auction.carTitle}
                   className="w-full h-48 object-cover rounded-lg"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/public/images/placeholder.jpg';
+                  }}
                 />
                 <h3 className="font-semibold text-lg text-gray-800">
                   {auction.carTitle}
@@ -169,9 +179,12 @@ return (
                     className="text-gray-600 flex items-center hover:underline"
                   >
                     <img
-                      src="/src/assets/image.png"
+                      src={imageUrl(auction)}
                       alt={auction.carTitle}
                       className="w-24 h-16 object-cover rounded-lg mr-3"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/public/images/placeholder.jpg';
+                      }}
                     />
                     <span>{auction.carTitle}</span>
                   </Link>

@@ -36,7 +36,7 @@ const CheckoutButton: React.FC<CheckoutButtonProps> = ({ auc_id }) => {
   return (
     <button
       role="link"
-      className="px-6 py-3 bg-[#2b2b72] hover:bg-[#2b2b68] text-white font-semibold rounded-lg shadow-md transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-navy-500 focus:ring-offset-2 active:scale-95"
+      className="px-6 py-2 w-full bg-[#2b2b72] hover:bg-[#2b2b68] text-white font-semibold rounded-lg shadow-md transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-navy-500 focus:ring-offset-2 active:scale-95"
     onClick={handleClick}>
       Checkout
     </button>

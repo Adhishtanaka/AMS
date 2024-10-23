@@ -23,6 +23,7 @@ import ProfilePage from './routes/Profile';
 import BuyerDashboard from './routes/BuyerDashboard';
 import PaymentCanceled from './routes/Cancled';
 import PaymentSuccess from './routes/Sucseed';
+import MyProfilePage from './routes/MyProfile';
         
 const router = createBrowserRouter([
   {
@@ -94,6 +95,10 @@ const router = createBrowserRouter([
   },{
     path: "/user-profile/:userID",
     element: <ProfilePage />,
+  },
+  {
+    path: "/user-profile/Me",
+    element: <MyProfilePage />,
   },
   {
     path: "/buyer/Cancel",

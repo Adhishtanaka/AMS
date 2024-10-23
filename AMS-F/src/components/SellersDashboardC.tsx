@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import api from '../util/api';
 
-// Types
 interface AuctionDto {
   auctionId: number;
   productId: number;
@@ -64,7 +63,6 @@ const SellerDashboard: React.FC = () => {
     fetchData();
   }, []);
 
-  // Process transaction data for the line chart
   const chartData = transactions
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .map(t => ({
@@ -77,7 +75,8 @@ const SellerDashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <> <h1 className='mb-6 text-3xl font-bold text-[#1D2945]'>Dashboard</h1>
+    <div className=" bg-gray-50 p-8">
       {/* Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div className="bg-white rounded-lg shadow p-6">
@@ -92,8 +91,8 @@ const SellerDashboard: React.FC = () => {
             </span>
           </div>
         </div>
-
-        <div className="bg-white rounded-lg shadow p-6">
+        
+        <div className="bg-white rounded-lg shadow p-6 ">
           <h3 className="text-gray-500 text-sm font-medium">Total Transactions</h3>
           <p className="text-3xl font-bold text-gray-900">{transactions.length}</p>
           <p className="mt-2 text-sm text-gray-500">
@@ -102,9 +101,9 @@ const SellerDashboard: React.FC = () => {
           </p>
         </div>
       </div>
-
+      <div className='grid grid-cols-1 md:grid-cols-3  gap-6'>
       {/* Transaction History Chart */}
-      <div className="bg-white rounded-lg shadow p-6 mb-8">
+      <div className="bg-white rounded-lg shadow p-6 col-span-2">
         <h3 className="text-lg font-semibold mb-4">Transaction History</h3>
         <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">
@@ -135,10 +134,10 @@ const SellerDashboard: React.FC = () => {
       </div>
 
       {/* Recent Auctions */}
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="bg-white rounded-lg shadow px-6 pt-3">
         <h3 className="text-lg font-semibold mb-4">Recent Auctions</h3>
         <div className="grid gap-4">
-          {auctions.slice(0, 5).map((auction) => (
+          {auctions.slice(0, 3).map((auction) => (
             <div 
               key={auction.auctionId} 
               className="border-b border-gray-200 pb-4 last:border-0"
@@ -175,9 +174,9 @@ const SellerDashboard: React.FC = () => {
               )}
             </div>
           ))}
-        </div>
+        </div></div>
       </div>
-    </div>
+    </div></>
   );
 };
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { handleErrorResult } from '../util/TostMessage';
-import { useParams, Link} from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Navbar from '../components/navbar';
 import axios from 'axios';
