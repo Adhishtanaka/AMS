@@ -161,7 +161,7 @@ const Home: React.FC = () => {
                   alt={car.name}
                   className="w-full h-96 object-cover rounded-lg"
                 />
-                <h2 className="text-xl font-bold text-center mt-4">{car.name}</h2>
+                {/* <h2 className="text-xl font-bold text-center mt-4">{car.name}</h2> */}
               </div>
             ))}
           </Slider>
