@@ -93,47 +93,92 @@ const SellerCars: React.FC = () => {
       >
         Add Car
       </button>
+
       {cars.length === 0 ? (
-        <div>No cars found for this seller.</div>
+        <div className="text-center p-4">No cars found for this seller.</div>
       ) : (
-        <table className="min-w-full overflow-hidden bg-white border-collapse rounded-lg table-auto">
-          <thead className="bg-gray-50">
-            <tr className='justify-center'>
-              <th className="px-4 py-2 font-semibold text-left text-black border-b">Car Title</th>
-              <th className="px-4 py-2 font-semibold text-left text-black border-b">Model</th>
-              <th className="px-4 py-2 font-semibold text-left text-black border-b">Year</th>
-              <th className="px-4 py-2 font-semibold text-left text-black border-b">Price</th>
-              <th className="px-4 py-2 font-semibold text-left text-black border-b">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-300">
+        <div className="w-full overflow-x-auto">
+          {/* Mobile View (Card Layout) */}
+          <div className="lg:hidden space-y-4">
             {cars.map((car) => (
-              <tr key={car.id} className='justify-center'>
-                <td className="px-4 py-2 ">
-                  <Link to={`car-details/${car.id}`} className="text-gray-600 flex flex-row items-center hover:underline">
-                  <img 
-                  src='/src/assets/image.png'
-                  className="w-35 h-20 mx-3 rounded-lg"
+              <div key={car.id} className="bg-white rounded-lg shadow p-4 space-y-3">
+                <Link to={`car-details/${car.id}`} className="flex flex-col space-y-2">
+                  <img
+                    src="/src/assets/image.png"
+                    alt={car.carTitle}
+                    className="w-full h-48 object-cover rounded-lg"
                   />
-                    {car.carTitle}
-                  </Link>
-                </td>
-                <td className="px-4 py-1 text-gray-800 ">
-                  {getModelName(car.modelId)}</td>
-                <td className="px-4 py-1 text-gray-800 ">{car.year}</td>
-                <td className="px-4 py-1 text-gray-800 ">${car.price}</td>
-                <td className="px-4 py-1 text-gray-800 ">
-                  <button
-                    className="px-2 text-red-500 rounded-lg bg-gray-50 hover:text-red-600 hover:bg-red-50"
-                    onClick={() => deleteCar(car.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
+                  <h3 className="font-semibold text-lg text-gray-800">{car.carTitle}</h3>
+                </Link>
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div className="space-y-1">
+                    <p className="text-gray-500">Model</p>
+                    <p className="font-medium">{getModelName(car.modelId)}</p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-gray-500">Year</p>
+                    <p className="font-medium">{car.year}</p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-gray-500">Price</p>
+                    <p className="font-medium">${car.price}</p>
+                  </div>
+                  <div className="flex items-end">
+                    <button
+                      className="w-full py-1 text-red-500 rounded-lg bg-gray-50 hover:text-red-600 hover:bg-red-50"
+                      onClick={() => deleteCar(car.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
+          </div>
+
+          {/* Desktop View (Table Layout) */}
+          <table className="hidden lg:table min-w-full bg-white border-collapse rounded-lg">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-2 font-semibold text-left text-black border-b">Car Title</th>
+                <th className="px-4 py-2 font-semibold text-left text-black border-b">Model</th>
+                <th className="px-4 py-2 font-semibold text-left text-black border-b">Year</th>
+                <th className="px-4 py-2 font-semibold text-left text-black border-b">Price</th>
+                <th className="px-4 py-2 font-semibold text-left text-black border-b">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-300">
+              {cars.map((car) => (
+                <tr key={car.id}>
+                  <td className="px-4 py-2">
+                    <Link
+                      to={`car-details/${car.id}`}
+                      className="text-gray-600 flex items-center hover:underline"
+                    >
+                      <img
+                        src="/src/assets/image.png"
+                        className="w-24 h-16 object-cover rounded-lg mr-3"
+                        alt={car.carTitle}
+                      />
+                      <span>{car.carTitle}</span>
+                    </Link>
+                  </td>
+                  <td className="px-4 py-2 text-gray-800">{getModelName(car.modelId)}</td>
+                  <td className="px-4 py-2 text-gray-800">{car.year}</td>
+                  <td className="px-4 py-2 text-gray-800">${car.price}</td>
+                  <td className="px-4 py-2 text-gray-800">
+                    <button
+                      className="px-2 py-1 text-red-500 rounded-lg bg-gray-50 hover:text-red-600 hover:bg-red-50"
+                      onClick={() => deleteCar(car.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
