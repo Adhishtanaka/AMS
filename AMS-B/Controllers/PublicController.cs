@@ -122,22 +122,6 @@ namespace AMS_B.Controllers
             return Ok(auctions);
         }
 
-        [HttpGet("TransactionDetails")]
-        public async Task<IActionResult> DisplayTransactionDetails([FromQuery] int? SellerId, [FromQuery] string? status)
-        {
-            try
-            {
-
-                var transactionDetails = await DisplayTransaction.GetTransactionDetails(_dbcon, SellerId, string.IsNullOrEmpty(status) ? null : status);
-
-                return Ok(transactionDetails);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex}");
-                return StatusCode(500, new { Message = "An error occurred while retrieving transaction details.", Error = ex.Message });
-            }
-        }
 
         [HttpGet("GetProfileData")]
         public async Task<IActionResult> GetProfileData([FromQuery] int userID, [FromServices] Dbcon dbcon)
