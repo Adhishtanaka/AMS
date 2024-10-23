@@ -9,7 +9,7 @@ import Register from './routes/register';
 import Error from './routes/error';
 import Admin from './routes/Admin';
 import Nav from './components/navbar';
-import Contact from './routes/contact';
+import Contact from './components/contact';
 import { ToastContainer } from 'react-toastify';
 import SellerDashboard from './routes/SellerDashboard';
 import SellerAddCar from './routes/SellerAddCar';

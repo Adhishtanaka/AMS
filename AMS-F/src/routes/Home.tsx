@@ -7,6 +7,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import CategoryCard from "../components/CategoryCard";
+import Cont from '../components/contact.tsx'; 
 
 const cars = [
   {
@@ -148,7 +149,7 @@ const Home: React.FC = () => {
 
         {/* Carousel Section */}
         <motion.div 
-          className="carousel-container mb-8"
+          className="carousel-container mb w-full mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
@@ -159,7 +160,7 @@ const Home: React.FC = () => {
                 <img
                   src={car.img}
                   alt={car.name}
-                  className="w-full h-96 object-cover rounded-lg"
+                  className="w-screen h-screen object-cover rounded-lg"
                 />
                 <h2 className="text-xl font-bold text-center mt-4">{car.name}</h2>
               </div>
@@ -253,8 +254,9 @@ const Home: React.FC = () => {
             ))}
           </div>
         </div>
+        
       </motion.div>
-      
+      <Cont />
       <Footer />
     </>
   );

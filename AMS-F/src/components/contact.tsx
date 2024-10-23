@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import Navbar from '../components/navbar';
-import Footer from '../components/Footer';
+
 
 interface ContactFormData {
   firstName: string;
@@ -45,8 +44,8 @@ const Contact: React.FC = () => {
 
   return (
     <>
-      <Navbar />
-      <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gray-50">
+
+      <div className=" flex items-center justify-center min-h-screen py-12 bg-gray-50">
         {/* Background with Image */}
         <div
           className="bg-img w-full flex justify-center items-center"
@@ -142,7 +141,7 @@ const Contact: React.FC = () => {
           </div>
         </div>
       </div>
-      <Footer />
+   
     </>
   );
 };
