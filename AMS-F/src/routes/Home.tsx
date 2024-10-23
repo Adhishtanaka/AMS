@@ -237,7 +237,7 @@ const Home: React.FC = () => {
       {/* New Testimonials Section */}
       <div className="max-w-7xl mx-auto px-4 py-16 bg-gray-50">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900">What Our Users Say</h2>
+          <h2 className="text-3xl font-bold text-gray-900">Featured Auctions</h2>
           <p className="mt-4 text-gray-600">Discover why car enthusiasts trust our platform</p>
         </div>
         
