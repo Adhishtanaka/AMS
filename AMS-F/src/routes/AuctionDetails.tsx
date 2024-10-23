@@ -165,6 +165,9 @@ const CombinedAuctionCarDetails = () => {
                               src={url}
                               alt={`${car.carTitle} - View ${index + 1}`}
                               className="absolute top-0 left-0 w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = '/public/images/placeholder.jpg';
+                              }}
                             />
                           </div>
                         </div>

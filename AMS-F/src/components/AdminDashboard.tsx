@@ -55,8 +55,8 @@ const AdminDashboard: React.FC = () => {
       try {
         const [usersRes, transactionsRes, auctionsRes] = await Promise.all([
           api.get<User[]>('http://localhost:5000/api/Admin/ManageAllUsers?nameFilter='),
-          api.get<Transaction[]>('https://localhost:7006/api/Admin/GetAllTransactions'),
-          api.get<Auction[]>('https://localhost:7006/api/Public/GetALLAuctionDetails')
+          api.get<Transaction[]>('Admin/GetAllTransactions'),
+          api.get<Auction[]>('public/GetALLAuctionDetails')
         ]);
 
         setUsers(usersRes.data);
