@@ -175,38 +175,39 @@ const Home: React.FC = () => {
       </div>
 
       <div className="container mx-auto p-4 relative">
-        {/* Hero Section with animation */}
-        <motion.div 
-          className="text-center py-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h1 className="text-4xl font-bold text-gray-800">Welcome to Car Bidding</h1>
-          <p className="text-gray-600 mt-2">Find your dream car and place your bids now!</p>
-        </motion.div>
+  {/* Hero Section with animation */}
+  <motion.div 
+    className="text-center py-8 absolute inset-0 z-10 flex flex-col items-center justify-center"
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6 }}
+  >
+    <h1 className="text-4xl font-bold text-white">Welcome to Car Bidding</h1>
+    <p className="text-white mt-2">Find your dream car and place your bids now!</p>
+  </motion.div>
 
-        {/* Carousel Section */}
-        <motion.div 
-          className="carousel-container mb-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-        >
-          <Slider {...carouselSettings}>
-            {cars.map((car, index) => (
-              <div key={index} className="p-4">
-                <img
-                  src={car.img}
-                  alt={car.name}
-                  className="w-full h-96 object-cover rounded-lg"
-                />
-                {/* <h2 className="text-xl font-bold text-center mt-4">{car.name}</h2> */}
-              </div>
-            ))}
-          </Slider>
-        </motion.div>
-      </div>
+  {/* Carousel Section */}
+  <motion.div 
+    className="carousel-container mb-8 relative z-0"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ delay: 0.3 }}
+  >
+    <Slider {...carouselSettings}>
+      {cars.map((car, index) => (
+        <div key={index} className="p-4">
+          <img
+            src={car.img}
+            alt={car.name}
+            className="w-full h-96 object-cover rounded-lg"
+          />
+          {/* <h2 className="text-xl font-bold text-center mt-4">{car.name}</h2> */}
+        </div>
+      ))}
+    </Slider>
+  </motion.div>
+</div>
+
 
       {/* Category Cards Section with stagger animation */}
       <motion.div 
