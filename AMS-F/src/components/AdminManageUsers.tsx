@@ -71,28 +71,28 @@ const ManageUsers: React.FC = () => {
               placeholder="Search by name"
               value={nameFilter}
               onChange={handleNameFilterChange}
-              className="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-100"
+              className="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200"
             />
           </div>
 
           <div className="overflow-x-auto">
             <table className="min-w-full table-auto border-collapse">
-              <thead className="bg-blue-50">
+              <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-4 py-2 border text-left text-sm font-medium text-[#1D2945]">Name</th>
-                  <th className="px-4 py-2 border text-left text-sm font-medium text-[#1D2945]">Email</th>
-                  <th className="px-4 py-2 border text-left text-sm font-medium text-[#1D2945]">Role</th>
-                  <th className="px-4 py-2 border text-left text-sm font-medium text-[#1D2945]">Status</th>
-                  <th className="px-4 py-2 border text-left text-sm font-medium text-[#1D2945]">Actions</th>
+                  <th className="px-4 py-2 border-b text-left text-sm font-medium text-[#1D2945]">Name</th>
+                  <th className="px-4 py-2 border-b text-left text-sm font-medium text-[#1D2945]">Email</th>
+                  <th className="px-4 py-2 border-b text-left text-sm font-medium text-[#1D2945]">Role</th>
+                  <th className="px-4 py-2 border-b text-left text-sm font-medium text-[#1D2945]">Status</th>
+                  <th className="px-4 py-2 border-b text-left text-sm font-medium text-[#1D2945]">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {users.map(user => (
                   <tr key={user.email}>
-                    <td className="px-4 py-1 border">{user.name}</td>
-                    <td className="px-4 py-1 border">{user.email}</td>
-                    <td className="px-4 py-1 border">{user.role}</td>
-                    <td className="px-4 py-1 border">
+                    <td className="px-4 py-1 ">{user.name}</td>
+                    <td className="px-4 py-1 ">{user.email}</td>
+                    <td className="px-4 py-1 ">{user.role}</td>
+                    <td className="px-4 py-1 ">
                     <span
                         className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
                           user.isBanned ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
@@ -101,7 +101,7 @@ const ManageUsers: React.FC = () => {
                         {user.isBanned ? 'Banned' : 'Active'}
                       </span>
                     </td>
-                    <td className="px-4 py-2 border space-x-2">
+                    <td className="px-4 py-2  space-x-2">
                       <button
                         onClick={() => handleBanUnban(user.email, !user.isBanned)}
                         className={`m-1 px-2 py-1 rounded ${user.isBanned ? 'bg-green-100 hover:bg-green-200 text-green-800' : 'bg-red-100 hover:bg-red-200 text-red-800'}`}

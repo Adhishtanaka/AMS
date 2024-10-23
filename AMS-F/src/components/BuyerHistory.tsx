@@ -62,54 +62,53 @@ const BuyerHistory: React.FC = () => {
     );
 
   return (
-    <div className="max-w-3xl mx-auto bg-white shadow-xl rounded-lg overflow-hidden">
-      {bidHistory.length === 0 ? (
-        <div className="px-4 py-5 text-gray-500 text-center">
-          No active bids available.
-        </div>
-      ) : (
-        <>
-          <ul className="divide-y divide-gray-200">
-            {bidHistory.map((bid) => (
-              <li
-                key={bid.bidId}
-                className="p-5 hover:bg-gray-100 transition duration-200 ease-in-out"
-              >
-                <div className="flex items-start space-x-6">
+  <div className="max-w-3xl mx-auto bg-white shadow-xl rounded-lg overflow-hidden">
+    {bidHistory.length === 0 ? (
+      <div className="px-4 py-5 text-gray-500 text-center">
+        No active bids available.
+      </div>
+    ) : (
+      <table className="min-w-full overflow-hidden bg-white border-collapse rounded-lg shadow-md table-auto">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="px-4 py-2 font-semibold text-left text-black border-b">Car Title</th>
+            <th className="px-4 py-2 font-semibold text-left text-black border-b">Current Bid</th>
+            <th className="px-4 py-2 font-semibold text-left text-black border-b">Your Bid</th>
+            <th className="px-4 py-2 font-semibold text-left text-black border-b">Bid Time</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-200">
+          {bidHistory.map((bid) => (
+            <tr key={bid.bidId}>
+              <td className="px-4 py-2">
+                <div className="flex items-center">
                   <img
-                    className="h-28 w-28 object-cover rounded-lg shadow-lg"
+                    className="w-28 h-28 object-cover rounded-lg shadow-lg mr-4"
                     src={`http://localhost:5000/car-images/${bid.auctionDetails.img.split(",")[0]}`}
                     alt={bid.auctionDetails.carTitle}
                   />
-                  <div className="flex-grow">
-                    <h3 className="text-xl font-semibold text-[#1D2945]">
-                      {bid.auctionDetails.carTitle}
-                    </h3>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Current Bid:{" "}
-                      <span className="font-medium text-[#1D2945]">
-                        {formatCurrency(bid.auctionDetails.currentPrice)}
-                      </span>
-                    </p>
-                    <p className="text-sm text-gray-800 mt-1">
-                      Your Bid:{" "}
-                      <span className="font-semibold text-green-600">
-                        {formatCurrency(bid.amount)}
-                      </span>
-                    </p>
-                    <p className="text-xs text-gray-500 mt-3">
-                      Bid Time: {formatDate(bid.bidTime)}
-                    </p>
-                  </div>
+                  <span className="text-[#1D2945] font-semibold">
+                    {bid.auctionDetails.carTitle}
+                  </span>
                 </div>
-              </li>
-            ))}
-          </ul>
-          
-        </>
-      )}
-    </div>
-  );
+              </td>
+              <td className="px-4 py-2 text-[#1D2945] font-medium">
+                {formatCurrency(bid.auctionDetails.currentPrice)}
+              </td>
+              <td className="px-4 py-2 text-green-600 font-semibold">
+                {formatCurrency(bid.amount)}
+              </td>
+              <td className="px-4 py-2 text-gray-500">
+                {formatDate(bid.bidTime)}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
+);
+
 };
 
 export default BuyerHistory;

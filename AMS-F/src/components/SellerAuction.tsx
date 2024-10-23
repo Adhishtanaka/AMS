@@ -113,27 +113,31 @@ const SellerAuction = () => {
         <table className="min-w-full table-auto border-collapse bg-white shadow-md rounded-lg overflow-hidden">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-4 py-2 border text-left font-semibold text-black">Auction Item</th>
-              <th className="px-4 py-2 border text-left font-semibold text-black">Last Bid</th>
-              <th className="px-4 py-2 border text-left font-semibold text-black">Start Date</th>
-              <th className="px-4 py-2 border text-left font-semibold text-black">End Date</th>
-              <th className="px-4 py-2 border text-left font-semibold text-black">Status</th>
-              <th className="px-4 py-2 border text-left font-semibold text-black">Actions</th>
+              <th className="px-4 py-2 text-left font-semibold text-black border-b">Auction Item</th>
+              <th className="px-4 py-2 text-left font-semibold text-black border-b">Last Bid</th>
+              <th className="px-4 py-2 text-left font-semibold text-black border-b">Start Date</th>
+              <th className="px-4 py-2 text-left font-semibold text-black border-b">End Date</th>
+              <th className="px-4 py-2 text-left font-semibold text-black border-b">Status</th>
+              <th className="px-4 py-2 text-left font-semibold text-black border-b">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
             {auctions.map((auction) => (
               <tr key={auction.auctionId}>
-                <td className="px-4 py-2 border">
-                  <Link to={`auction-details/${auction.auctionId}`} className="text-gray-600 hover:underline">
+                <td className="px-4 py-2">
+                  <Link to={`auction-details/${auction.auctionId}`} className="text-gray-600 flex items-center flex-row hover:underline">
+                  <img 
+                  src='/src/assets/image.png'
+                  className="w-35 h-20 mx-3 rounded-lg"
+                  />
                     {auction.carTitle}
                   </Link>
                 </td>
-                <td className="px-4 py-1 border text-gray-800">${auction.currentPrice !== null ? auction.currentPrice : 0}</td>
-                <td className="px-4 py-1 border text-gray-800">{new Date(auction.startDate).toLocaleString()}</td>
-                <td className="px-4 py-1 border text-gray-800">{new Date(auction.endDate).toLocaleString()}</td>
-                <td className="px-4 py-1 border text-gray-800">{auction.status}</td>
-                <td className="px-4 py-1 border text-gray-800">
+                <td className="px-4 py-1 text-gray-800">${auction.currentPrice !== null ? auction.currentPrice : 0}</td>
+                <td className="px-4 py-1 text-gray-800">{new Date(auction.startDate).toLocaleString()}</td>
+                <td className="px-4 py-1 text-gray-800">{new Date(auction.endDate).toLocaleString()}</td>
+                <td className="px-4 py-1 text-gray-800">{auction.status}</td>
+                <td className="px-4 py-1 text-gray-800">
                   <button
                     className="text-red-500 px-2 rounded-lg bg-gray-50 hover:text-red-600 hover:bg-red-50"
                     onClick={() => deleteAuction(auction.auctionId)}

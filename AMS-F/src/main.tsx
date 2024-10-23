@@ -18,7 +18,7 @@ import SellerAddAuction from './routes/SellerAddAuction';
 import SellerAuctionDetails from './routes/SellerAuctionDetails';
 import All from './routes/AllAuctions';
 import AuctionDetails from './routes/AuctionDetails';
-import Home from './components/Home';
+import Home from './routes/Home';
 import ProfilePage from './routes/Profile';
 import BuyerDashboard from './routes/BuyerDashboard';
         
