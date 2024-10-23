@@ -40,7 +40,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({ className = '' }) =
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const response = await api.get<Transaction[]>('Buyer/getBuyersTransactions');
+        const response = await api.get<Transaction[]>('Admin/GetAllTransactions');
         setTransactions(response.data);
         setLoading(false);
       } catch (err) {
@@ -72,7 +72,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({ className = '' }) =
   }
 
   const handleRowClick = (auctionId: number) => {
-    window.location.href = `/buyer/auction-details/${auctionId}`;
+    window.location.href = `/admin/auction-details/${auctionId}`;
   };
 
   return (
