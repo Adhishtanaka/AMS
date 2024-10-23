@@ -32,31 +32,31 @@ const categories = [
     title: "Sedans",
   },
   {
-    img: "/src/assets/cat1.png",
+    img: "/src/assets/cat2.png",
     title: "SUVs",
   },
   {
-    img: "/src/assets/cat1.png",
+    img: "/src/assets/cat3.png",
     title: "Coupes",
   },
   {
-    img: "/src/assets/cat1.png",
+    img: "/src/assets/cat4.png",
     title: "Trucks",
   },
   {
-    img: "/src/assets/cat1.png",
+    img: "/src/assets/cat5.png",
     title: "Electric Cars",
   },
   {
-    img: "/src/assets/cat1.png",
+    img: "/src/assets/cat6.png",
     title: "Luxury Cars",
   },
   {
-    img: "/src/assets/cat1.png",
+    img: "/src/assets/image.png",
     title: "Sports Cars",
   },
   {
-    img: "/src/assets/cat1.png",
+    img: "/src/assets/cat8.png",
     title: "Convertibles",
   },
 ];
