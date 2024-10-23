@@ -62,7 +62,7 @@ const BuyerBids: React.FC = () => {
     );
 
     return (
-      <div className="max-w-3xl mx-auto bg-white shadow-xl rounded-lg overflow-hidden">
+      <div className="max-w-3xl mx-auto bg-white rounded-lg overflow-hidden">
         {bidHistory.length === 0 ? (
           <div className="px-4 py-5 text-gray-500 text-center">
             No active bids available.
@@ -76,7 +76,7 @@ const BuyerBids: React.FC = () => {
                 <th className="px-4 py-2 font-semibold text-left text-black border-b">Bid Time</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-300">
               {bidHistory
                 .filter((bid) => {
                   const auctionEndDate = new Date(bid.auctionDetails.endDate);

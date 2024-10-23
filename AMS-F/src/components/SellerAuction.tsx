@@ -110,7 +110,7 @@ const SellerAuction = () => {
       {auctions.length === 0 ? (
         <div>No auctions found for this seller.</div>
       ) : (
-        <table className="min-w-full table-auto border-collapse bg-white shadow-md rounded-lg overflow-hidden">
+        <table className="min-w-full table-auto border-collapse bg-white  rounded-lg overflow-hidden">
           <thead className="bg-gray-50">
             <tr>
               <th className="px-4 py-2 text-left font-semibold text-black border-b">Auction Item</th>
@@ -121,7 +121,7 @@ const SellerAuction = () => {
               <th className="px-4 py-2 text-left font-semibold text-black border-b">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-300">
             {auctions.map((auction) => (
               <tr key={auction.auctionId}>
                 <td className="px-4 py-2">
