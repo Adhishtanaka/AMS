@@ -23,7 +23,7 @@ namespace AMS_B.Models
     {
         public override string Role => "Admin";
 
-        public async Task<List<ManageUser>> ManageAllUsers(Dbcon dbcon, string nameFilter = "")
+        public static async Task<List<ManageUser>> ManageAllUsers(Dbcon dbcon, string nameFilter = "")
         {
             var users = new List<ManageUser>();
             try
@@ -59,7 +59,7 @@ namespace AMS_B.Models
             }
             finally
             {
-                dbcon.Disconnect();
+                await dbcon.Disconnect();
             }
         }
 
@@ -79,7 +79,7 @@ namespace AMS_B.Models
 
                 if (!emailExists)
                 {
-                    dbcon.Disconnect();
+                    await dbcon.Disconnect();
                     return false;
                 }
 
@@ -87,7 +87,7 @@ namespace AMS_B.Models
                 string updateQuery = $"UPDATE user SET status = '{newStatus}' WHERE email = '{Email}'";
                 int affectedRows = await dbcon.ExecuteNonQuery(updateQuery);
 
-                return affectedRows > 0;
+                return true;
             }
             catch (Exception ex)
             {
@@ -95,7 +95,7 @@ namespace AMS_B.Models
             }
             finally
             {
-                dbcon.Disconnect();
+                await dbcon.Disconnect();
             }
 
         }

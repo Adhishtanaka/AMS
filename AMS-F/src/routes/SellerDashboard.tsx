@@ -1,13 +1,15 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SellerDashboardC from '../components/SellersDashboardC';
 import SellerCars from '../components/SellerCars';
 import SellerAuction from '../components/SellerAuction';
 import SellerHistory from '../components/SellerHistory';
 import SellerTransactions from '../components/SellerTransactions';
-import Footer from '../components/Footer';
+
 
 const SellerDashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
+  const navigate = useNavigate();
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard' },
@@ -35,12 +37,18 @@ const SellerDashboard = () => {
   };
 
   return (
+    <>
     <div className="w-5/6 mx-auto px-4 lg:px-8">
       <header className="flex justify-between items-center h-24">
-        <h1 className="text-3xl font-bold text-[#1D2945]">AMS .</h1>
+        <h1 className="text-3xl font-bold text-[#1D2945]">AMS . <span className='text-xl'>Sellers</span></h1>
+        <button 
+          onClick={() => navigate('/')} 
+          className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300"
+        >
+          Exit
+        </button>
       </header>
 
-      {/* Mobile View - Dropdown Select */}
       <div className="sm:hidden mb-4">
         <select
           value={activeTab}
@@ -55,7 +63,6 @@ const SellerDashboard = () => {
         </select>
       </div>
 
-      {/* Desktop View - Tab List */}
       <nav className="hidden sm:block mb-4 border-b pb-4 border-gray-200">
         <ul className="flex flex-wrap -mb-px text-sm font-medium text-center" role="tablist">
           {tabs.map(({ id, label }) => (
@@ -71,26 +78,21 @@ const SellerDashboard = () => {
               >
                 {label}
               </div>
-            </li>
-            
+            </li>           
           ))}
-          {/* <button
-        className="mb-6 text-white bg-[#1D2945] hover:bg-[#3d517f] font-semibold p-1 px-2 rounded"
-        // onClick={() => navigate('/seller/add-car')}
-      >
-        Add Car
-      </button> */}
         </ul>
       </nav>
 
       <main>
-        <div className="p-4 lg:p-8 rounded-lg">
+        <div className="py-4 lg:p-8 rounded-lg">
           {renderActiveTabContent()}
         </div>
       </main>
 
-      <Footer />
+      
     </div>
+   
+    </>
   );
 };
 

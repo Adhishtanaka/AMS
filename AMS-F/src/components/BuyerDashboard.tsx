@@ -73,13 +73,14 @@ const BuyerDashboardC: React.FC = () => {
            !transactions.some(t => t.aucID === bid.aucId);
   }).length;
 
-  // Prepare chart data
-  const chartData = transactions.map(trans => ({
-    date: new Date(trans.date).toLocaleDateString(),
-    amount: trans.auctionDto.currentPrice || trans.auctionDto.initialPrice
-  })).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-
+  const chartData = transactions
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .map(t => ({
+      date: new Date(t.date).toLocaleDateString(),
+      amount: t.auctionDto.currentPrice || 0
+    }));
   return (
+    <> <h1 className='mb-6 text-3xl font-bold text-[#1D2945]'>Dashboard</h1>
     <div className=" bg-gray-100 p-4">
       {/* Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -131,7 +132,7 @@ const BuyerDashboardC: React.FC = () => {
         </div>
       </div>
     </div>
-    
+    </>
   );
 };
-  export default BuyerDashboardC
+export default BuyerDashboardC

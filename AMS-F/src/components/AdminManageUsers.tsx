@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { handleErrorResult, handleSuccessResult } from '../util/TostMessage';
+import api from '../util/api';
 
 interface User {
   email: string;
@@ -19,7 +20,7 @@ const ManageUsers: React.FC = () => {
   const fetchUsers = useCallback(async () => {
     
       const encodedFilter = encodeURIComponent(nameFilter);
-      const response = await axios.get<User[]>(`http://localhost:5000/api/Admin/ManageAllUsers?nameFilter=${encodedFilter}`);
+      const response = await api.get<User[]>(`http://localhost:5000/api/Admin/ManageAllUsers?nameFilter=${encodedFilter}`);
       const usersData = response.data.map(user => ({
         ...user,
         isBanned: user.status === 'Banned'
@@ -36,7 +37,7 @@ const ManageUsers: React.FC = () => {
 
   const handleBanUnban = async (email: string, ban: boolean) => {
     try {
-      const response = await axios.put('http://localhost:5000/api/Admin/BanUser', { Email: email, Ban: ban });
+      const response = await api.put('http://localhost:5000/api/Admin/BanUser', { Email: email, Ban: ban });
       handleSuccessResult(response.data?.Message || 'Operation successful');
       fetchUsers(); 
     } catch (error) {
@@ -71,12 +72,12 @@ const ManageUsers: React.FC = () => {
               placeholder="Search by name"
               value={nameFilter}
               onChange={handleNameFilterChange}
-              className="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200"
+              className="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-100"
             />
           </div>
 
           <div className="overflow-x-auto">
-            <table className="min-w-full table-auto border-collapse">
+          <table className="min-w-full table-auto border-collapse">
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-4 py-2 border-b text-left text-sm font-medium text-[#1D2945]">Name</th>
@@ -101,7 +102,7 @@ const ManageUsers: React.FC = () => {
                         {user.isBanned ? 'Banned' : 'Active'}
                       </span>
                     </td>
-                    <td className="px-4 py-2  space-x-2">
+                    <td className="px-4 py-2 space-x-2">
                       <button
                         onClick={() => handleBanUnban(user.email, !user.isBanned)}
                         className={`m-1 px-2 py-1 rounded ${user.isBanned ? 'bg-green-100 hover:bg-green-200 text-green-800' : 'bg-red-100 hover:bg-red-200 text-red-800'}`}

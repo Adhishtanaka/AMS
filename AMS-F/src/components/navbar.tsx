@@ -9,9 +9,9 @@ const Navbar = () => {
   };
 
   const Links =[
-    {name:"Dashboard",link:"/"},
+    {name:"Home",link:"/"},
     {name:"Auctions",link:"/auctions"},
-    {name:"Contact",link:"/contact"},
+    {name:"Profile",link:"/user-profile/Me"},
   ];
 
   return (
@@ -33,7 +33,7 @@ const Navbar = () => {
         <h1 className='w-full text-3xl font-bold text-[#1D2945] m-4'>AMS .</h1>
           <li className='p-4 border-b border-gray-200 hover:text-[#1D2945] cursor-pointer'><a href=''>Dashboard</a></li>
           <li className='p-4 border-b border-gray-200 hover:text-[#1D2945] cursor-pointer'><a href=''>Auctions</a></li>
-          <li className='p-4 hover:text-[#1D2945] cursor-pointer'><a href='/contact'>Contact</a></li>
+          <li className='p-4 hover:text-[#1D2945] cursor-pointer'><a href='/user-profile/Me'>Profile</a></li>
       </ul>
     </div>
   );

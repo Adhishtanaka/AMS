@@ -92,6 +92,7 @@ const AdminDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
+      <h1 className='mb-6 text-4xl font-bold text-[#1D2945]'>Dashboard</h1>
       {/* Stats Section */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div className="bg-white rounded-lg shadow p-6">

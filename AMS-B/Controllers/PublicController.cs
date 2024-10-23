@@ -16,6 +16,17 @@ namespace AMS_B.Controllers
             _dbcon = dbcon;
         }
 
+        private int GetUserId()
+        {
+            var idClaim = User.FindFirst("id");
+            if (idClaim == null)
+            {
+                idClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            }
+
+            return idClaim != null ? int.Parse(idClaim.Value) : 0;
+        }
+
         [HttpGet("GetCarById")]
         public async Task<IActionResult> GetCarById([FromQuery] int carId, [FromServices] Dbcon dbcon)
         {
@@ -147,6 +158,31 @@ namespace AMS_B.Controllers
             });
         }
 
+        [HttpGet("GetMyProfileData")]
+        public async Task<IActionResult> GetMyProfileData([FromServices] Dbcon dbcon)
+        {
+            int userId = GetUserId();
+            if (userId <= 0)
+            {
+                return BadRequest(-1);
+            }
+
+            Users? us = await Users.GetUser(dbcon, userId);
+            if (us == null)
+            {
+                return NotFound(new { Message = "User not found." });
+            }
+
+            return Ok(new
+            {
+                us.Role,
+                us.Name,
+                us.Email,
+                us.Telephone,
+                us.Address
+            });
+        }
+
         [HttpGet("GetAuctionsBySellerId")]
         public async Task<IActionResult> GetAuctionsBySellerId([FromQuery] int sellerId,[FromServices] Dbcon dbcon)
         {
@@ -164,6 +200,9 @@ namespace AMS_B.Controllers
 
             return Ok(auctions);
         }
+
+       
+        
 
     }
 }

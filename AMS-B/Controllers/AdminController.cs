@@ -1,9 +1,10 @@
 ﻿using AMS_B.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Transactions;
 
 namespace AMS_B.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase
@@ -15,7 +16,7 @@ namespace AMS_B.Controllers
             _dbcon = dbcon;
         }
 
-        [HttpPut("BanUser")] 
+        [HttpPut("BanUser")]
         public async Task<IActionResult> BanUser([FromBody] AdminBanRequest request)
         {
             if (request == null || string.IsNullOrEmpty(request.Email))
@@ -48,8 +49,7 @@ namespace AMS_B.Controllers
         {
             try
             {
-                Admin admin = new Admin();
-                var users = await admin.ManageAllUsers(_dbcon, nameFilter);
+                var users = await Admin.ManageAllUsers(_dbcon, nameFilter);
                 return Ok(users);
             }
             catch (Exception ex)
@@ -169,7 +169,7 @@ namespace AMS_B.Controllers
                 var transactions = await Transactions.GetAllTransactions(dbcon);
                 if (transactions == null || !transactions.Any())
                 {
-                    return NotFound(new { message = "No transactions found." });
+                    return Ok(transactions);
                 }
                 return Ok(transactions);
             }

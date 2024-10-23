@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace AMS_B.Controllers
 {
-    //[Authorize]
+    [Authorize(Roles = "Seller")]
     [Route("api/[controller]")]
     [ApiController]
     public class SellerController : ControllerBase
@@ -184,7 +184,7 @@ namespace AMS_B.Controllers
                 var transactions = await Transactions.GetTransactionsbysellerId(dbcon, sellerId);
                 if (transactions == null || !transactions.Any())
                 {
-                    return NotFound(new { message = "No transactions found for this seller." });
+                    return Ok(transactions);
                 }
                 return Ok(transactions);
             }

@@ -40,6 +40,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("SellerPolicy", policy => policy.RequireRole("Seller"));
+    options.AddPolicy("BuyerPolicy", policy => policy.RequireRole("Buyer"));
+});
+
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
