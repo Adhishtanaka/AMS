@@ -96,28 +96,33 @@ const SellerCars: React.FC = () => {
       {cars.length === 0 ? (
         <div>No cars found for this seller.</div>
       ) : (
-        <table className="min-w-full overflow-hidden bg-white border-collapse rounded-lg shadow-md table-auto">
+        <table className="min-w-full overflow-hidden bg-white border-collapse rounded-lg table-auto">
           <thead className="bg-gray-50">
-            <tr>
-              <th className="px-4 py-2 font-semibold text-left text-black border">Car Title</th>
-              <th className="px-4 py-2 font-semibold text-left text-black border">Model</th>
-              <th className="px-4 py-2 font-semibold text-left text-black border">Year</th>
-              <th className="px-4 py-2 font-semibold text-left text-black border">Price</th>
-              <th className="px-4 py-2 font-semibold text-left text-black border">Actions</th>
+            <tr className='justify-center'>
+              <th className="px-4 py-2 font-semibold text-left text-black border-b">Car Title</th>
+              <th className="px-4 py-2 font-semibold text-left text-black border-b">Model</th>
+              <th className="px-4 py-2 font-semibold text-left text-black border-b">Year</th>
+              <th className="px-4 py-2 font-semibold text-left text-black border-b">Price</th>
+              <th className="px-4 py-2 font-semibold text-left text-black border-b">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-300">
             {cars.map((car) => (
-              <tr key={car.id}>
-                <td className="px-4 py-2 border">
-                  <Link to={`car-details/${car.id}`} className="text-gray-600 hover:underline">
+              <tr key={car.id} className='justify-center'>
+                <td className="px-4 py-2 ">
+                  <Link to={`car-details/${car.id}`} className="text-gray-600 flex flex-row items-center hover:underline">
+                  <img 
+                  src='/src/assets/image.png'
+                  className="w-35 h-20 mx-3 rounded-lg"
+                  />
                     {car.carTitle}
                   </Link>
                 </td>
-                <td className="px-4 py-1 text-gray-800 border">{getModelName(car.modelId)}</td>
-                <td className="px-4 py-1 text-gray-800 border">{car.year}</td>
-                <td className="px-4 py-1 text-gray-800 border">${car.price}</td>
-                <td className="px-4 py-1 text-gray-800 border">
+                <td className="px-4 py-1 text-gray-800 ">
+                  {getModelName(car.modelId)}</td>
+                <td className="px-4 py-1 text-gray-800 ">{car.year}</td>
+                <td className="px-4 py-1 text-gray-800 ">${car.price}</td>
+                <td className="px-4 py-1 text-gray-800 ">
                   <button
                     className="px-2 text-red-500 rounded-lg bg-gray-50 hover:text-red-600 hover:bg-red-50"
                     onClick={() => deleteCar(car.id)}
