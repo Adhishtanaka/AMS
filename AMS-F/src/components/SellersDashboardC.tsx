@@ -128,9 +128,9 @@ const SellerDashboard: React.FC = () => {
           
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-gray-500 text-sm font-medium">Total Revenue</h3>
-            <p className="text-3xl font-bold text-gray-900">{transactions.length}</p>
+            <p className="text-3xl font-bold text-gray-900">${(totalValue*0.9).toLocaleString()}</p>
             <p className="mt-2 text-sm text-gray-500">
-              Total Value: ${(totalValue*0.9).toLocaleString()}
+              Total Transactions: {transactions.length}
             </p>
           </div>
         </div>

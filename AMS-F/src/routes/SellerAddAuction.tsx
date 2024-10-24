@@ -41,10 +41,15 @@ const AddAuction: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const now = new Date();
+    const startDate = new Date(now.getTime() + (5.5 * 60 * 60 * 1000));
+    const utcEndDate = new Date(endDate);
+    const sriLankaEndDate = new Date(utcEndDate.getTime() + (5.5 * 60 * 60 * 1000));
+
     const auctionData = {
       ProductId: selectedCarId,
-      StartDate: new Date(),
-      EndDate: new Date(endDate),
+      StartDate: startDate.toISOString(),
+      EndDate: sriLankaEndDate.toISOString(),
       Status: 'Active',
     };
     try {
