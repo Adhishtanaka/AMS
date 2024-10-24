@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Navbar from "../components/navbar";
 import Footer from "../components/Footer";
+import AnimatedCountdown from "../components/AnimatedCountdown";
 
 interface AuctionDto {
   auctionId: number;
@@ -43,7 +44,12 @@ const All = () => {
   }, []);
 
   useEffect(() => {
+    const currentDate = new Date();
     const filtered = auctions.filter((auction) => {
+      const endDate = new Date(auction.endDate);
+      if (endDate < currentDate) {
+        return false; 
+      }
       const searchString = searchTerm.toLowerCase();
       return (
         auction.carTitle.toLowerCase().includes(searchString) ||
@@ -155,10 +161,7 @@ const All = () => {
                    )
                : [];
  
-             const daysLeft = Math.ceil(
-               (new Date(auction.endDate).getTime() - new Date().getTime()) /
-                 (1000 * 60 * 60 * 24)
-             );
+             
  
              return (
                <div
@@ -207,14 +210,7 @@ const All = () => {
                        </p>
                      </div>
                      <div className="text-right">
-                       <p className="text-xs text-gray-600">Time Left</p>
-                       <p
-                         className={`text-sm font-bold ${
-                           daysLeft <= 3 ? "text-red-600" : "text-gray-800"
-                         }`}
-                       >
-                         {daysLeft} days
-                       </p>
+                       <AnimatedCountdown endDate={auction.endDate} />
                      </div>
                    </div>
  

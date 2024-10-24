@@ -26,10 +26,10 @@
         public int ProductId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public int Bid_id { get; set; }
+        public int? Bid_id { get; set; }
         public string Status { get; set; } 
 
-        public Auction(int auctionId, int productId, DateTime startDate, DateTime endDate,int bid_id, string status)
+        public Auction(int auctionId, int productId, DateTime startDate, DateTime endDate,int? bid_id, string status)
         {
             AuctionId = auctionId;
             ProductId = productId;
@@ -70,7 +70,7 @@
                         reader.GetInt32(1),
                         reader.GetDateTime(2),
                         reader.GetDateTime(3),
-                        reader.GetInt32(4),
+                        reader.IsDBNull(4) ? (int?)null : reader.GetInt32(4),
                         reader.GetString(5) 
                     );
                     auctions.Add(auction);

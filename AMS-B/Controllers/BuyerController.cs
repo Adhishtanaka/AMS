@@ -50,7 +50,11 @@ namespace AMS_B.Controllers
         public async Task<IActionResult> GetBidHistory([FromServices] Dbcon dbcon)
         {
             int buyer_id = GetBuyerId();
-            List<BidDto> bidHistory = await Buyer.GetBidHistory(dbcon,5);
+            if (buyer_id <= 0)
+            {
+                return BadRequest(new { Message = "Invalid buyer ID." });
+            }
+            List<BidDto> bidHistory = await Buyer.GetBidHistory(dbcon, buyer_id);
             return Ok(bidHistory);
         }
 
@@ -83,7 +87,6 @@ namespace AMS_B.Controllers
                 {
                     return BadRequest(new { Message = "Invalid buyer ID." });
                 }
-
                 var transactions = await Transactions.GetTransactionbyBuyerId(dbcon,buyerId);
                 if (transactions == null || !transactions.Any())
                 {

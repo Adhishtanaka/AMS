@@ -92,9 +92,11 @@ const AddCarForm: React.FC = () => {
 
     const formData = new FormData();
 
+    const sanitizedDescription = carData.carDescription.replace(/'/g, "")
+
     // Append all fields as required by the backend
     formData.append("carTitle", carData.carTitle);
-    formData.append("carDescription", carData.carDescription);
+    formData.append("carDescription", sanitizedDescription);
     formData.append("modelId", carData.modelId.toString());  // Convert numbers to string
     formData.append("performanceClassId", carData.performanceClassId.toString());
     formData.append("year", carData.year.toString());

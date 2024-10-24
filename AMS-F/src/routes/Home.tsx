@@ -10,6 +10,7 @@ import "slick-carousel/slick/slick-theme.css";
 import CategoryCard from "../components/CategoryCard";
 import Cont from '../components/contact.tsx'; 
 import { useNavigate } from "react-router-dom";
+import AnimatedCountdown from "../components/AnimatedCountdown.tsx";
 
 interface AuctionDto {
   auctionId: number;
@@ -141,7 +142,6 @@ const Home: React.FC = () => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
-    // Add these settings to fix the image display issues
     adaptiveHeight: true,
     centerMode: false,
     variableWidth: false,
@@ -254,7 +254,7 @@ const Home: React.FC = () => {
             <div className="mx-auto w-10/12 px-4 py-8">
         {auctions.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-600 text-lg">No auctions found matching your search.</p>
+            <p className="text-gray-600 text-lg">No auctions found.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -267,10 +267,6 @@ const Home: React.FC = () => {
                    )
                : [];
  
-             const daysLeft = Math.ceil(
-               (new Date(auction.endDate).getTime() - new Date().getTime()) /
-                 (1000 * 60 * 60 * 24)
-             );
  
              return (
                <div
@@ -319,14 +315,7 @@ const Home: React.FC = () => {
                        </p>
                      </div>
                      <div className="text-right">
-                       <p className="text-xs text-gray-600">Time Left</p>
-                       <p
-                         className={`text-sm font-bold ${
-                           daysLeft <= 3 ? "text-red-600" : "text-gray-800"
-                         }`}
-                       >
-                         {daysLeft} days
-                       </p>
+                     <AnimatedCountdown endDate={auction.endDate} />
                      </div>
                    </div>
  

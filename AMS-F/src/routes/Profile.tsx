@@ -8,6 +8,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import api from '../util/api';
+import AnimatedCountdown from '../components/AnimatedCountdown';
 
 interface Profile {
   role: string;
@@ -19,6 +20,7 @@ interface Profile {
 
 interface AuctionDto {
   auctionId: number;
+  initialPrice: number;
   productId: number;
   startDate: string;
   endDate: string;
@@ -121,6 +123,9 @@ const ProfilePage: React.FC = () => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
+    adaptiveHeight: true,
+    centerMode: false,
+    variableWidth: false,
   };
 
   const handleLogout = () => {
@@ -266,11 +271,7 @@ const ProfilePage: React.FC = () => {
       ) : (
         <>
           
-          {auctions.map((auction) => {
-            const endDate = new Date(auction.endDate);
-            const currentDate = new Date();
-            const timeDiff = endDate.getTime() - currentDate.getTime();
-            const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
+          {auctions.map((auction) => {        
             const imageUrls = auction.img
               ? auction.img
                   .split(",")
@@ -317,16 +318,11 @@ const ProfilePage: React.FC = () => {
                       <p className="text-lg font-bold text-[#1D2945]">
                         ${auction.currentPrice != null 
                           ? auction.currentPrice.toLocaleString() 
-                          : '0'}
+                          : auction.initialPrice.toLocaleString()}
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-xs text-gray-600">Time Left</p>
-                      <p className={`text-sm font-bold ${
-                        daysLeft <= 3 ? "text-red-600" : "text-gray-800"
-                      }`}>
-                        {daysLeft} days
-                      </p>
+                    <AnimatedCountdown endDate={auction.endDate} />
                     </div>
                   </div>
 

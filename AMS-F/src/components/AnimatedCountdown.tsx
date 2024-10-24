@@ -60,7 +60,7 @@ interface AnimatedCountdownProps {
 
   return (
     <div>
-      <p className="text-gray-500 text-xs sm:text-sm">Time Remaining</p>
+      <p className="text-gray-500 text-lg sm:text-sm">Time Remaining</p>
       <div className="flex gap-1 items-baseline">
         <div className={`inline-flex items-center ${animate ? 'animate-pulse' : ''}`}>
           <span className="text-sm sm:text-base font-semibold text-gray-800">
