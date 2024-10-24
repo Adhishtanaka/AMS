@@ -75,7 +75,7 @@ const SellerDashboard: React.FC = () => {
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .map(t => ({
       date: new Date(t.date).toLocaleDateString(),
-      amount: t.auctionDto?.currentPrice || 0
+      amount: (t.auctionDto?.currentPrice || 0) * 0.9
     }));
 
   if (loading) {
@@ -127,10 +127,10 @@ const SellerDashboard: React.FC = () => {
           </div>
           
           <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-gray-500 text-sm font-medium">Total Transactions</h3>
+            <h3 className="text-gray-500 text-sm font-medium">Total Revenue</h3>
             <p className="text-3xl font-bold text-gray-900">{transactions.length}</p>
             <p className="mt-2 text-sm text-gray-500">
-              Total Value: ${totalValue.toLocaleString()}
+              Total Value: ${(totalValue*0.9).toLocaleString()}
             </p>
           </div>
         </div>

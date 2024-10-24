@@ -83,7 +83,7 @@ const AdminDashboard: React.FC = () => {
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .map(t => ({
       date: new Date(t.date).toLocaleDateString(),
-      amount: t.auctionDto.currentPrice || 0
+      amount: (t.auctionDto.currentPrice || 0)*0.1
     }));
 
   if (loading) {
@@ -108,9 +108,9 @@ const AdminDashboard: React.FC = () => {
           <p className="text-3xl font-bold text-gray-900">{totalAuctions}</p>
         </div>
         <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-gray-500 text-sm font-medium">Total Transaction Amount</h3>
+          <h3 className="text-gray-500 text-sm font-medium">Total Revenue</h3>
           <p className="text-3xl font-bold text-gray-900">
-            ${totalTransactionAmount.toLocaleString()}
+            ${((totalTransactionAmount*0.1).toLocaleString())}
           </p>
         </div>
       </div>
