@@ -65,7 +65,7 @@ const Footer = () => {
         href={item.link}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-gray-400 transition-colors hover:text-blue-950"
+        className="text-gray-400 transition-colors hover:text-gray-600"
       >
         {React.cloneElement(item.icon, { size: 24 })}
       </a>
