@@ -65,7 +65,10 @@ const SellerCarDetail: React.FC = () => {
       slidesToScroll: 1,
       autoplay: true,        
       autoplaySpeed: 3000,   
-      pauseOnHover: true,    
+      pauseOnHover: true,
+      adaptiveHeight: true,
+      centerMode: false,
+      variableWidth: false,    
     };
 
   return (

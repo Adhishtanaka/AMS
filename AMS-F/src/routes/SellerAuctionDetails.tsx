@@ -77,6 +77,9 @@ const CombinedAuctionCarDetails = () => {
     autoplaySpeed: 4000,
     pauseOnHover: true,
     arrows: true,
+    adaptiveHeight: true,
+    centerMode: false,
+    variableWidth: false,
     responsive: [
       {
         breakpoint: 640,

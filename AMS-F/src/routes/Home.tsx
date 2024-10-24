@@ -141,6 +141,10 @@ const Home: React.FC = () => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
+    // Add these settings to fix the image display issues
+    adaptiveHeight: true,
+    centerMode: false,
+    variableWidth: false,
   };
 
   return (
