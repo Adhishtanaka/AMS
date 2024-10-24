@@ -270,14 +270,6 @@ namespace AMS_B.Models
 
                 await db.ExecuteNonQuery(updateAuctionQuery, auctionParameters);
 
-
-
-
-
-                
-
-                
-
                 string buyerEmailSubject = "Auction Purchase Confirmation";
                 string sellerEmailSubject = "Auction Sale Confirmation";
 
@@ -303,33 +295,26 @@ namespace AMS_B.Models
 
                 Thank you for using our platform!
                 ";
-
-                await db.Connect();
                 string emailQuery = @"
                 SELECT 
                     seller.email as SellerEmail,
                     buyer.email as BuyerEmail
                 FROM Transactions t
-                JOIN users seller ON t.SellerID = seller.userid
-                JOIN users buyer ON t.BuyerID = buyer.userid
+                JOIN user seller ON t.SellerID = seller.userid
+                JOIN user buyer ON t.BuyerID = buyer.userid
                 ";
                 string? BuyerEmail = null;
                 string? SellerEmail = null;
                 using var reader = await db.ExecuteQuery(emailQuery);
                 if (await reader.ReadAsync())
                 {
-                    BuyerEmail = reader.ToString();
-                    SellerEmail = reader.ToString();
+                    BuyerEmail = reader.GetString("BuyerEmail");
+                    SellerEmail = reader.GetString("SellerEmail");
                 }
-                
-
+                Console.WriteLine(BuyerEmail);
+                Console.WriteLine(SellerEmail);
                 await SMTP.SendEmailAsync(BuyerEmail, buyerEmailSubject, buyerEmailBody);
                 await SMTP.SendEmailAsync(SellerEmail, sellerEmailSubject, sellerEmailBody);
-
-
-
-
-
 
             }
             catch (Exception ex)
