@@ -193,12 +193,16 @@ const BuyerSBids: React.FC = () => {
                       {formatDate(bid.auctionDetails.endDate)}
                     </td>
                     <td className="px-4 py-2 text-gray-800">
-                    <button
+                    {bid.auctionDetails.status === "Active" ? (
+                      <CheckoutButton auc_id={bid.auctionDetails.auctionId} />
+                    ) : (
+                      <button
                         className="bg-gray-400 text-white font-bold py-2 px-4 rounded-lg w-full cursor-not-allowed"
                         disabled
                       >
                         Already Paid
                       </button>
+                    )}
                     </td>
                   </tr>
                 ))}
