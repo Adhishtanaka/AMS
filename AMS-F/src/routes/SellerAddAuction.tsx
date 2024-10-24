@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../util/api';
 import axios from 'axios';
 import { handleErrorResult, handleSuccessResult } from '../util/TostMessage';
-import Footer from '../components/Footer';
-import Navbar from '../components/navbar';
+
 
 interface Car {
   id: number;
@@ -63,8 +62,7 @@ const AddAuction: React.FC = () => {
 
   return (
     <>
-      {/* Navbar with spacing below */}
-      <Navbar />
+
       <div className="mt-6"></div>
 
       <div className="max-w-md p-4 mx-auto mt-10 bg-gray-100 rounded-lg shadow-lg sm:max-w-2xl sm:p-6">
@@ -117,8 +115,7 @@ const AddAuction: React.FC = () => {
       {/* Add space between form and footer */}
       <div className="mt-12"></div>
       
-      {/* Footer */}
-      <Footer/>
+
     </>
   );
 };

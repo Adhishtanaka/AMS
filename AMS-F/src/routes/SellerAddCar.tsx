@@ -1,8 +1,7 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { handleErrorResult, handleSuccessResult } from "../util/TostMessage";
 import api from "../util/api";
-import Navbar from "../components/navbar";
-import Footer from "../components/Footer";
+
 
 interface CarData {
   carTitle: string;
@@ -123,7 +122,6 @@ const AddCarForm: React.FC = () => {
 
   return (
     <>
-      <Navbar />
       <form onSubmit={handleSubmit} className="max-w-sm p-6 m-6 mx-auto space-y-5 bg-gray-100 rounded-lg shadow-lg">
         <h1 className="mb-6 text-2xl font-bold text-gray-800 sm:text-2xl">Add A Car</h1>
         <div>
@@ -273,7 +271,6 @@ const AddCarForm: React.FC = () => {
           Add Car
         </button>
       </form>
-      <Footer />
     </>
   );
 };
