@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>AMS_B</RootNamespace>
+    <UserSecretsId>f42585de-cfa7-46e2-af84-b440af5f3e80</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

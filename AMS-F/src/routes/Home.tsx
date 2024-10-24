@@ -8,6 +8,7 @@ import axios from "axios";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import CategoryCard from "../components/CategoryCard";
+import Cont from '../components/contact.tsx'; 
 import { useNavigate } from "react-router-dom";
 
 interface AuctionDto {
@@ -209,6 +210,7 @@ const Home: React.FC = () => {
 </div>
 
 
+
       {/* Category Cards Section with stagger animation */}
       <motion.div 
         className="max-w-7xl p-8 mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1 gap-y-4 mb-8"
@@ -388,8 +390,9 @@ const Home: React.FC = () => {
             ))}
           </div>
         </div>
+        
       </motion.div>
-      
+      <Cont />
       <Footer />
     </>
   );
