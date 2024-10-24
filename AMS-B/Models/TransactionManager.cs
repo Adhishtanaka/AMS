@@ -311,8 +311,6 @@ namespace AMS_B.Models
                     BuyerEmail = reader.GetString("BuyerEmail");
                     SellerEmail = reader.GetString("SellerEmail");
                 }
-                Console.WriteLine(BuyerEmail);
-                Console.WriteLine(SellerEmail);
                 await SMTP.SendEmailAsync(BuyerEmail, buyerEmailSubject, buyerEmailBody);
                 await SMTP.SendEmailAsync(SellerEmail, sellerEmailSubject, sellerEmailBody);
 
