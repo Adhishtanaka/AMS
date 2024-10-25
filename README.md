@@ -2,6 +2,10 @@
 
 A comprehensive web-based platform built with ASP.NET Core and React, designed to facilitate secure online car auctions with real-time bidding capabilities and integrated payment processing.
 
+<div align="center">
+<img src="./ss.png" width="600px" ></img>
+</div>
+
 ## Getting Started
 Follow these steps to set up the project on your local machine.
 
@@ -68,4 +72,4 @@ Follow these steps to set up the project on your local machine.
 
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
