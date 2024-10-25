@@ -56,13 +56,16 @@ Follow these steps to set up the project on your local machine.
    - Configure webhook endpoints
 
 
-## Authors
-- K.A.A.T Kulasooriya 
-- H.P.G.D Mewan 
-- T.M Uduwana 
-- T.R.D.T. Dulshan 
-- J.H.A.H Divyanjalee 
-- D.P.H.J Samarawickrama 
+### Team Members
+<div align="left">
+
+<img src="https://github.com/Adhishtanaka.png" width="75px" height="75px"/> | <img src="https://github.com/tdulshan3.png" width="75px" height="75px"/> | <img src="https://github.com/dilinamewan.png" width="75px" height="75px"/> | <img src="https://github.com/TanujMalinda.png" width="75px" height="75px"/> | <img src="https://github.com/Hirunidiv.png" width="75px" height="75px"/> | <img src="https://github.com/Janandie.png" width="75px" height="75px"/>
+:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
+**K.A.A.T Kulasooriya** | **T.R.D.T. Dulshan** | **H.P.G.D Mewan** | **T.M Uduwana** | **J.H.A.H Divyanjalee** | **D.P.H.J Samarawickrama**
+[@Adhishtanaka](https://github.com/Adhishtanaka) | [@tdulshan3](https://github.com/tdulshan3) | [@dilinamewan](https://github.com/dilinamewan) | [@TanujMalinda](https://github.com/TanujMalinda) | [@Hirunidiv](https://github.com/Hirunidiv) | [@Janandie](https://github.com/Janandie)
+
+</div>
+
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
