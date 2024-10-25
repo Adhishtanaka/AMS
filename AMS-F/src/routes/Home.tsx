@@ -204,7 +204,7 @@ const Home: React.FC = () => {
           <img
             src={car.img}
             alt={car.name}
-            className="w-full h-96 object-cover rounded-lg"
+            className="w-full h-screen object-cover rounded-lg"
           />
           {/* <h2 className="text-xl font-bold text-center mt-4">{car.name}</h2> */}
         </div>
