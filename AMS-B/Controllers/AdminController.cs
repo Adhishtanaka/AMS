@@ -13,7 +13,7 @@ namespace AMS_B.Controllers
         
         public AdminController(Dbcon dbcon)
         {
-            _dbcon = dbcon;
+            _dbcon = DbconSingleton.Instance;
         }
 
         [HttpPut("BanUser")]

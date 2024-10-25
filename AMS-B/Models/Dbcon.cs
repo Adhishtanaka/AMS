@@ -1,6 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
 
-
 namespace AMS_B.Models
 {
     public class Dbcon : IDisposable
@@ -20,7 +19,6 @@ namespace AMS_B.Models
             {
                 conn = new MySqlConnection(connectionString);
             }
-
             if (conn.State != System.Data.ConnectionState.Open)
             {
                 await conn.OpenAsync();
@@ -43,7 +41,6 @@ namespace AMS_B.Models
         public async Task<MySqlDataReader> ExecuteQuery(string query, Dictionary<string, object>? parameters = null)
         {
             await EnsureConnectionOpen();
-
             using var cmd = new MySqlCommand(query, conn);
             if (parameters != null)
             {
@@ -52,15 +49,12 @@ namespace AMS_B.Models
                     cmd.Parameters.AddWithValue(param.Key, param.Value);
                 }
             }
-
-            // CommandBehavior.CloseConnection will automatically close the connection when the reader is closed
             return (MySqlDataReader)await cmd.ExecuteReaderAsync(System.Data.CommandBehavior.CloseConnection);
         }
 
         public async Task<int> ExecuteNonQuery(string query, Dictionary<string, object>? parameters = null)
         {
             await EnsureConnectionOpen();
-
             using var command = new MySqlCommand(query, conn);
             if (parameters != null)
             {
@@ -69,23 +63,16 @@ namespace AMS_B.Models
                     command.Parameters.AddWithValue(param.Key, param.Value);
                 }
             }
-
             await command.ExecuteNonQueryAsync();
-
             command.CommandText = "SELECT LAST_INSERT_ID()";
             var lastId = await command.ExecuteScalarAsync();
-
             await Disconnect();
-
             return Convert.ToInt32(lastId);
         }
-
-
 
         public async Task<object> ExecuteScalar(string query, Dictionary<string, object>? parameters = null)
         {
             await EnsureConnectionOpen();
-
             using var command = new MySqlCommand(query, conn);
             if (parameters != null)
             {
@@ -94,13 +81,10 @@ namespace AMS_B.Models
                     command.Parameters.AddWithValue(param.Key, param.Value);
                 }
             }
-
             var result = await command.ExecuteScalarAsync();
             await Disconnect();
             return result ?? DBNull.Value;
         }
-
-
 
         public void Dispose()
         {
@@ -123,6 +107,35 @@ namespace AMS_B.Models
         ~Dbcon()
         {
             Dispose(false);
+        }
+
+        internal bool IsDisposed => disposed;
+    }
+
+    // Singleton wrapper class
+    public class DbconSingleton
+    {
+        private static Dbcon? _instance;
+        private static readonly object _lock = new object();
+
+        private DbconSingleton() { }
+
+        public static Dbcon Instance
+        {
+            get
+            {
+                if (_instance == null || _instance.IsDisposed)
+                {
+                    lock (_lock)
+                    {
+                        if (_instance == null || _instance.IsDisposed)
+                        {
+                            _instance = new Dbcon();
+                        }
+                    }
+                }
+                return _instance;
+            }
         }
     }
 }
