@@ -13,7 +13,7 @@ namespace AMS_B.Controllers
 
         public PublicController(Dbcon dbcon)
         {
-            _dbcon = DbconSingleton.Instance;
+            _dbcon = dbcon;
         }
 
         private int GetUserId()

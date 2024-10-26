@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<Dbcon>();
+builder.Services.AddScoped<Dbcon>(); //program.cs
 
 
 var stripeSettings = builder.Configuration.GetSection("Stripe");
